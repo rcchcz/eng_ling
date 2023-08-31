@@ -12,8 +12,10 @@
 - Tudo maiúsculo para constantes
 
 ### Structs
+TODO: documentar uso
 
 ### Arranjos
+TODO: documentar uso
 - Simples
 - Bidimensionais
 - Multidimensionais
