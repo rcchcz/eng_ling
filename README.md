@@ -1,9 +1,9 @@
 # eng_ling
 
-### Comentário
+## Comentário
 `# exemplo de comentário`
 
-### Nomenclatura de variáveis
+## Nomenclatura de variáveis
 - Definição de nomes
   - É permitido letras, dígitos e underscore.
   - Deve iniciar com letra.
@@ -11,6 +11,7 @@
 - Snake case
 - Tudo maiúsculo para constantes
 
+## Dados definidos pelo usuário
 ### Structs
 TODO: documentar uso
 
@@ -19,3 +20,14 @@ TODO: documentar uso
 - Simples
 - Bidimensionais
 - Multidimensionais
+
+## Binding
+| Atributo      | Tipo               |
+|---------------|--------------------|
+| Nome          | Estático           |
+| Tipo          | Estático           |
+| Valor         | Estático/Dinâmico  |
+| Endereço      | Estático/Dinâmico  |
+| Escopo        | ?                  |
+| Tempo de vida | ?                  |
+
