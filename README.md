@@ -53,5 +53,5 @@ TODO: documentar uso
 | Tempo de vida | ?                  |
 
 ## Curto-circuito
-- falso && qualquer coisa resulta em falso,
+- falso && qualquer coisa resulta em falso
 - verdadeiro || qualquer coisa resulta em verdadeiro
