@@ -19,9 +19,9 @@
 ## Expressões
 ### Aritméticas
 - Precedência de operadores
-  - parênteses
-  - multiplicação, divisão, módulo
-  - soma e subtração
+  - Parênteses
+  - Multiplicação, divisão, módulo
+  - Soma, subtração
 
 ### Relacionais
 - Operadores: >, <, >=, <=, !=, ==
