@@ -4,6 +4,7 @@
 `# exemplo de comentário`
 
 ## Nomenclatura de variáveis
+- Case sensitive
 - Definição de nomes
   - É permitido letras, dígitos e underscore.
   - Deve iniciar com letra.
