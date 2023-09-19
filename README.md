@@ -11,6 +11,10 @@
 - Snake case
 - Tudo maiúsculo para constantes
 
+## Operadores
+
+## Dados primitivos
+
 ## Dados definidos pelo usuário
 ### Structs
 TODO: documentar uso
