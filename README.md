@@ -15,6 +15,23 @@
 
 ## Dados primitivos
 
+## Expressões
+### Aritméticas
+- Precedência de operadores
+  - parênteses
+  - multiplicação, divisão, módulo
+  - soma e subtração
+
+### Relacionais
+- Operadores: >, <, >=, <=, !=, ==
+- Sempre binário e infixo
+
+### Booleanas
+- Precedência de operadores
+  - !
+  - &&
+  - ||
+
 ## Dados definidos pelo usuário
 ### Structs
 TODO: documentar uso
@@ -35,3 +52,6 @@ TODO: documentar uso
 | Escopo        | ?                  |
 | Tempo de vida | ?                  |
 
+## Curto-circuito
+- falso && qualquer coisa resulta em falso,
+- verdadeiro || qualquer coisa resulta em verdadeiro
