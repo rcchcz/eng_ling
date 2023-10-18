@@ -58,6 +58,7 @@ TODO: documentar uso
 - verdadeiro || qualquer coisa resulta em verdadeiro
 
 # BNF
+````bash
 <program> → <decs_var> <subprograms> <principal>
 
 <decs_var> → 
@@ -105,3 +106,4 @@ TODO: documentar uso
 
 <params> →
          | <decs_var>
+````
