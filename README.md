@@ -56,3 +56,52 @@ TODO: documentar uso
 ## Curto-circuito
 - falso && qualquer coisa resulta em falso
 - verdadeiro || qualquer coisa resulta em verdadeiro
+
+# BNF
+<program> → <decs_var> <subprograms> <principal>
+
+<decs_var> → 
+            | <dec_var>
+            | <dec_var> <decs_var>
+            | <assigns>
+
+
+<dec_var> → <type_modifiers> <type> <ids>
+          | <type_modifiers> <type> id EQUAL <values>
+	
+<values> → value
+        | value COLOM <values>
+        | <expr>
+        | <expr> COLOM <values>
+
+<expr> → <expr> + <expr>
+       | <expr> - <expr>
+       | <term>
+
+<term> → <term> * <term>
+       | <term> / <term>
+       | <term> % <term>
+       | <factor>
+
+<factor> → OP <expr> CP
+         | id
+         | <function_call>
+         | value
+
+<assigns> → <assign>
+          | <assign> SC <assigns>
+
+<assign> → id EQUAL <expr>
+
+<subprograms> →
+              | <subprogram> <subprograms>
+
+<subprogram> → <proc>
+             | <function>
+
+<proc> → id OP <params> CP <stmts>
+
+<function> → <type> id OP <params> CP <stmts> return value
+
+<params> →
+         | <decs_var>
