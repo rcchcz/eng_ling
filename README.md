@@ -13,8 +13,19 @@
 - Tudo maiúsculo para constantes
 
 ## Operadores
+soma: **\+** <br> 
+subtração: **\-** <br>
+multiplicação: **\*** <br>
+divisão: **/**  <br>
+resto: **%** <br>
+concatenação: **++** <br>
+
 
 ## Dados primitivos
+- bool
+- int
+- float
+- string
 
 ## Expressões
 ### Aritméticas
@@ -35,13 +46,26 @@
 
 ## Dados definidos pelo usuário
 ### Structs
+<u>lexema:</u> str <br>
+<u>definição:</u> struct nome {
+	tipo_campo1 nome_campo1;
+	tipo_campo2 nome_campo2;
+}
 TODO: documentar uso
 
 ### Arranjos
+<u>lexema:</u> arr <br>
+<u>definição:</u>  arr<tipo> <nome>[tamanho];
+
 TODO: documentar uso
 - Simples
 - Bidimensionais
 - Multidimensionais
+
+### Tuplas
+<u>lexema:</u> tpl <br>
+<u>definição:</u> tpl (tipo1,tipo2) <nome_tupla> = (valor_tipo1, valor_tipo2)
+<br>TODO: documentar uso
 
 ## Binding
 | Atributo      | Tipo               |
