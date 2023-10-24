@@ -1,0 +1,28 @@
+def void swap(arr<int> vetor[], int i, int j) {
+    int temp = vetor[i];
+    vetor[i] = vetor[j];
+    vetor[j] = temp;
+}
+
+def int particao(arr<int> vetor[], int inicio, int fim) {
+    int pivo = vetor[fim];
+    int i = inicio - 1;
+
+    for (int j : (inicio, fim)) {
+        if (vetor[j] <= pivo) {
+            i = i + 1;
+            swap(vetor, i, j);
+        }
+    }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+    swap(vetor, i+1, fim);
+
+    return i+1;
+}
+
+def void quicksort(arr<int> vetor[], int inicio, int fim) {
+    if (inicio < fim) {
+        int part = particao(vetor, inicio, fim);
+        quicksort(vetor, fim, part-1);
+        quicksort(vetor, part+1, fim);
+    }
+}
