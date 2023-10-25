@@ -18,7 +18,9 @@
 [ \t\n]                 ;
 [0-9]+.[0-9]+           {printf("FLOAT_VALUE(%s)\n",yytext);}
 [0-9]+                  {printf("INT_VALUE(%s)\n",yytext);}
-\"[a-zA-Z0-9 ]*\"       {printf("STRING_VALUE(%s)\n",yytext);}
+\"([^"]*)\"             {printf("STRING_VALUE(%s)\n",yytext);}
+"true"                  {printf("TRUE_VALUE\n");}
+"false"                 {printf("FALSE_VALUE\n");}
 "void"                  {printf("TYPE(VOID)\n");}
 "bool"                  {printf("TYPE(BOOL)\n");}
 "int"                   {printf("TYPE(INT)\n");}
@@ -63,7 +65,7 @@
 "**"                    {printf("POWER_OPERATOR\n");}
 "="                     {printf("ASSIGNMENT\n");}
 [a-zA-Z][a-zA-Z0-9]*    {printf("ID(%s)\n",yytext);}
-\#[^\#]*\n                {printf("COMMENT(%s)\n",yytext);}
+^\#[^\n]*               {printf("COMMENT(%s)\n",yytext);}
 .                       {printf("Invalid character.\n");}
 
 %%
