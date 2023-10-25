@@ -54,6 +54,7 @@
 ">="                    {printf("GEQ\n");}
 ">"                     {printf("GREATER_THAN\n");}
 "=="                    {printf("EQUAL\n");}
+"!="                    {printf("NOT_EQUAL\n");}
 "!"                     {printf("NOT\n");}
 "&&"                    {printf("AND\n");}
 "||"                    {printf("OR\n");}
