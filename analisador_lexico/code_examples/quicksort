@@ -1,9 +1,11 @@
+# Função auxiliar de troca de  valores em um array
 def void swap(arr<int> vetor[], int i, int j) {
     int temp = vetor[i];
     vetor[i] = vetor[j];
     vetor[j] = temp;
 }
 
+# Função auxiliar de partição do array
 def int particao(arr<int> vetor[], int inicio, int fim) {
     int pivo = vetor[fim];
     int i = inicio - 1;
@@ -19,6 +21,7 @@ def int particao(arr<int> vetor[], int inicio, int fim) {
     return i+1;
 }
 
+# Função principal
 def void quicksort(arr<int> vetor[], int inicio, int fim) {
     if (inicio < fim) {
         int part = particao(vetor, inicio, fim);
