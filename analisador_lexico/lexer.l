@@ -51,6 +51,7 @@
 ","                     {printf("COMMA\n");}
 ";"                     {printf("SEMICOLON\n");}
 "<="                    {printf("LEQ\n");}
+"<-"                    {printf("COPY_STRING\n");}
 "<"                     {printf("LESS_THAN\n");}
 ">="                    {printf("GEQ\n");}
 ">"                     {printf("GREATER_THAN\n");}
@@ -69,6 +70,7 @@
 "="                     {printf("ASSIGNMENT\n");}
 [a-zA-Z][a-zA-Z0-9]*    {printf("ID(%s)\n",yytext);}
 ^\#[^\n]*               {printf("COMMENT(%s)\n",yytext);}
+[a-zA-Z][a-zA-Z0-9]*\.len\(\)               {printf("LEN_STRING(%s)\n", yytext);}
 [a-zA-Z][a-zA-Z0-9]*\.[a-zA-Z][a-zA-Z0-9]*  {printf("ATTRIBUTE_ACCESS(%s)\n", yytext);}
 .                       {printf("Invalid character.\n");}
 
