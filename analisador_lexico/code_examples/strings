@@ -1,0 +1,33 @@
+# String Manipulation Example
+
+# Copying a string
+string name = "Frank", surname;
+# surname = "Frank"
+surname <- name;
+out("Copied string: " + surname);
+
+# String comparison
+string name = "Frank", empty = "";
+bool result;
+# result = false
+result = name == empty;
+out("String comparison result: " + result);
+
+# Concatenating strings
+string first_name = "Frank", last_name = "Steve", full_name;
+# full_name = "FrankSteve"
+full_name = first_name ++ last_name;
+out("Concatenated string: " + full_name);
+
+# Getting the length of a string
+string name = "Frank";
+int length;
+# length = 3
+length = name.len();
+out("String length: " + length);
+
+# Accessing a character in a string
+string name = "Frank", letter;
+# letter = "n"
+letter = name[1];
+out("Character at index 1: " + letter);
