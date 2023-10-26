@@ -28,6 +28,7 @@
 "string"                {printf("TYPE(STRING)\n");}
 "arr"                   {printf("ARRAY\n");}
 "struct"                {printf("STRUCT\n");}
+"tpl"                   {printf("TUPLE\n");}
 "while"                 {printf("WHILE\n");}
 "{"                     {printf("BRACES_INITIATOR\n");}
 "}"                     {printf("BRACES_TERMINATOR\n");}
@@ -58,6 +59,7 @@
 "!"                     {printf("NOT\n");}
 "&&"                    {printf("AND\n");}
 "||"                    {printf("OR\n");}
+"++"                    {printf("CONCAT\n");}
 "+"                     {printf("PLUS_OPERATOR\n");}
 "-"                     {printf("MINUS_OPERATOR\n");}
 "*"                     {printf("MULTI_OPERATOR\n");}
@@ -67,6 +69,7 @@
 "="                     {printf("ASSIGNMENT\n");}
 [a-zA-Z][a-zA-Z0-9]*    {printf("ID(%s)\n",yytext);}
 ^\#[^\n]*               {printf("COMMENT(%s)\n",yytext);}
+[a-zA-Z][a-zA-Z0-9]*\.[a-zA-Z][a-zA-Z0-9]*  {printf("ATTRIBUTE_ACCESS(%s)\n", yytext);}
 .                       {printf("Invalid character.\n");}
 
 %%

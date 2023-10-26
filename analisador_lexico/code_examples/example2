@@ -1,0 +1,44 @@
+# Declaring variables
+int number = 5;
+string name = "Alice";
+bool condition = true;
+
+# Conditional statement
+if (condition) {
+    out("The condition is true!");
+} else {
+    out("The condition is false!");
+}
+
+# While loop
+int counter = 0;
+while (counter < 5) {
+    out("Count: " ++ counter);
+    counter = counter + 1;
+}
+
+# For loop
+for (int i : (start, end)) {
+    out("Iteration: " ++ i);
+    i = i + 1;
+}
+
+# Defining a struct
+struct Person {
+    string name;
+    int age;
+}
+
+# Creating an instance of the struct
+Person person1;
+person1.name = "Frank" ++ "Steve";
+person1.age = 30;
+
+# Tuple
+tpl (string, int) information = ("Text", 42);
+
+# Printing values
+out("Number: " + counter);
+out("Name: " + person1.name);
+out("Age: " + person1.age);
+out("Tuple: " + information[0] + ", " + information[1]);
