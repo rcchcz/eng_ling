@@ -15,63 +15,63 @@
 
 %%
 
-[ \t\n]                 ;
+[ \t\n]                 {;}
 [0-9]+.[0-9]+           {printf("FLOAT_VALUE(%s)\n",yytext);}
 [0-9]+                  {printf("INT_VALUE(%s)\n",yytext);}
 \"([^"]*)\"             {printf("STRING_VALUE(%s)\n",yytext);}
 "true"                  {printf("TRUE_VALUE\n");}
 "false"                 {printf("FALSE_VALUE\n");}
-"void"                  {printf("TYPE(VOID)\n");}
-"bool"                  {printf("TYPE(BOOL)\n");}
-"int"                   {printf("TYPE(INT)\n");}
-"float"                 {printf("TYPE(FLOAT)\n");}
-"string"                {printf("TYPE(STRING)\n");}
-"arr"                   {printf("ARRAY\n");}
-"struct"                {printf("STRUCT\n");}
-"tpl"                   {printf("TUPLE\n");}
-"while"                 {printf("WHILE\n");}
-"{"                     {printf("BRACES_INITIATOR\n");}
-"}"                     {printf("BRACES_TERMINATOR\n");}
-"["                     {printf("BRACKETS_INITIATOR\n");}
-"]"                     {printf("BRACKETS_TERMINATOR\n");}
-"("                     {printf("PARENTHESES_INITIATOR\n");}
-")"                     {printf("PARENTHESES_TERMINATOR\n");}
-"in"                    {printf("IN\n");}
-"out"                   {printf("OUT\n");}
-"open"                  {printf("OPEN\n");}
-"close"                 {printf("CLOSE\n");}
-"def"                   {printf("DEF\n");}
-"for"                   {printf("FOR\n");}
-":"                     {printf("ITERATOR\n");}
-"if"                    {printf("IF\n");}
-"else"                  {printf("ELSE\n");}
-"elif"                  {printf("ELIF\n");}
-"break"                 {printf("BREAK\n");}
-"return"                {printf("RETURN\n");}
-","                     {printf("COMMA\n");}
-";"                     {printf("SEMICOLON\n");}
-"<="                    {printf("LEQ\n");}
-"<-"                    {printf("COPY_STRING\n");}
-"<"                     {printf("LESS_THAN\n");}
-">="                    {printf("GEQ\n");}
-">"                     {printf("GREATER_THAN\n");}
-"=="                    {printf("EQUAL\n");}
-"!="                    {printf("NOT_EQUAL\n");}
-"!"                     {printf("NOT\n");}
-"&&"                    {printf("AND\n");}
-"||"                    {printf("OR\n");}
-"++"                    {printf("CONCAT\n");}
-"+"                     {printf("PLUS_OPERATOR\n");}
-"-"                     {printf("MINUS_OPERATOR\n");}
-"*"                     {printf("MULTI_OPERATOR\n");}
-"/"                     {printf("DIVISION_OPERATOR\n");}
-"%"                     {printf("MOD_OPERATOR\n");}
-"**"                    {printf("POWER_OPERATOR\n");}
-"="                     {printf("ASSIGNMENT\n");}
-[a-zA-Z][a-zA-Z0-9]*    {printf("ID(%s)\n",yytext);}
-^\#[^\n]*               {printf("COMMENT(%s)\n",yytext);}
-[a-zA-Z][a-zA-Z0-9]*\.len\(\)               {printf("LEN_STRING(%s)\n", yytext);}
-[a-zA-Z][a-zA-Z0-9]*\.[a-zA-Z][a-zA-Z0-9]*  {printf("ATTRIBUTE_ACCESS(%s)\n", yytext);}
+"void"                  {yylval.sValue = strdup(yytext); return(TYPE);}
+"bool"                  {yylval.sValue = strdup(yytext); return(TYPE);}
+"int"                   {yylval.sValue = strdup(yytext); return(TYPE);}
+"float"                 {yylval.sValue = strdup(yytext); return(TYPE);}
+"string"                {yylval.sValue = strdup(yytext); return(TYPE);}
+"arr"                   {return(ARRAY);}
+"struct"                {return(STRUCT);}
+"tpl"                   {return(TUPLE);}
+"while"                 {return(WHILE);}
+"{"                     {return(BRACES_INITIATOR);}
+"}"                     {return(BRACES_TERMINATOR);}
+"["                     {return(BRACKETS_INITIATOR);}
+"]"                     {return(BRACKETS_TERMINATOR);}
+"("                     {return(PARENTHESES_INITIATOR);}
+")"                     {return(PARENTHESES_TERMINATOR);}
+"in"                    {return(IN);}
+"out"                   {return(OUT);}
+"open"                  {return(OPEN);}
+"close"                 {return(CLOSE);}
+"def"                   {return(DEF);}
+"for"                   {return(FOR);}
+":"                     {return(ITERATOR);}
+"if"                    {return(IF);}
+"else"                  {return(ELSE);}
+"elif"                  {return(ELIF);}
+"break"                 {return(BREAK);}
+"return"                {return(RETURN);}
+","                     {return(COMMA);}
+";"                     {return(SEMICOLON);}
+"<="                    {return(LEQ);}
+"<-"                    {return(COPY_STRING);}
+"<"                     {return(LESS_THAN);}
+">="                    {return(GEQ);}
+">"                     {return(GREATER_THAN);}
+"=="                    {return(EQUAL);}
+"!="                    {return(NOT_EQUAL);}
+"!"                     {return(NOT);}
+"&&"                    {return(AND);}
+"||"                    {return(OR);}
+"++"                    {return(CONCAT);}
+"+"                     {return(PLUS_OPERATOR);}
+"-"                     {return(MINUS_OPERATOR);}
+"*"                     {return(MULTI_OPERATOR);}
+"/"                     {return(DIVISION_OPERATOR);}
+"%"                     {return(MOD_OPERATOR);}
+"**"                    {return(POWER_OPERATOR);}
+"="                     {return(ASSIGNMENT);}
+[a-zA-Z][a-zA-Z0-9]*    {yylval.sValue = strdup(yytext); return ID;}
+^\#[^\n]*               {;}
+"."                     {return(SEPARATOR);}
+"len"                   {return(LEN_STRING);}
 .                       {printf("Invalid character.\n");}
 
 %%
