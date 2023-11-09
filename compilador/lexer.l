@@ -79,9 +79,3 @@
 #ifndef yywrap
    int yywrap (void) {return 1;}
 #endif
-
-int main(void)
-{
-  yylex();  
-  return 0;
-}

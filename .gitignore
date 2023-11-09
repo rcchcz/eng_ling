@@ -1,0 +1,12 @@
+# Ignore common executable file extensions
+*.exe
+*.msi
+*.bat
+*.cmd
+*.com
+*.sh
+*.bin
+*.out
+*.run
+*.app
+*.so
