@@ -1,231 +1,346 @@
 Terminals unused in grammar
 
-    PLUS
-    DIVIDE
-    POWER
+    TYPE
+    LEN_STRING
+    COMMENT
+    FLOAT_VALUE
+    INT_VALUE
+    STRING_VALUE
+    TRUE_VALUE
+    FALSE_VALUE
+    COMMA
+    DEF
+    ARRAY
+    STRUCT
+    TUPLE
+    FOR
+    ITERATOR
+    ELIF
+    BREAK
+    RETURN
+    BRACES_INITIATOR
+    BRACES_TERMINATOR
+    BRACKETS_INITIATOR
+    BRACKETS_TERMINATOR
+    PARENTHESES_INITIATOR
+    PARENTHESES_TERMINATOR
+    IN
+    OUT
+    OPEN
+    CLOSE
+    EQUAL
+    NOT_EQUAL
+    LEQ
+    GEQ
+    GREATER_THAN
+    NOT
+    AND
+    OR
+    PLUS_OPERATOR
+    MINUS_OPERATOR
+    MULTI_OPERATOR
+    DIVISION_OPERATOR
+    MOD_OPERATOR
+    POWER_OPERATOR
+    CONCAT
+    COPY_STRING
+
+
+State 20 conflicts: 1 shift/reduce
 
 
 Grammar
 
-    0 $accept: lines $end
+    0 $accept: prog $end
 
-    1 lines: ε
-    2      | lines line
+    1 prog: stmlist
 
-    3 line: exp END
+    2 stm: ID ASSIGN ID
+    3    | WHILE ID DO stm
+    4    | BLOCK_BEGIN stmlist BLOCK_END
+    5    | IF ID THEN stm
+    6    | IF ID THEN stm ELSE stm
 
-    4 exp: term
-    5    | exp '+' term
-    6    | exp MINUS term
-
-    7 term: factor
-    8     | term TIMES factor
-
-    9 factor: NUMBER
-   10       | LEFT_PARENTHESIS exp RIGHT_PARENTHESIS
+    7 stmlist: stm
+    8        | stmlist SEMICOLON stm
 
 
 Terminals, with rules where they appear
 
     $end (0) 0
-    '+' (43) 5
     error (256)
-    NUMBER <iValue> (258) 9
-    PLUS (259)
-    MINUS (260) 6
-    TIMES (261) 8
-    DIVIDE (262)
-    POWER (263)
-    LEFT_PARENTHESIS (264) 10
-    RIGHT_PARENTHESIS (265) 10
-    END (266) 3
+    ID <sValue> (258) 2 3 5 6
+    TYPE <sValue> (259)
+    LEN_STRING <sValue> (260)
+    ASSIGN (261) 2
+    COMMENT (262)
+    FLOAT_VALUE (263)
+    INT_VALUE (264)
+    STRING_VALUE (265)
+    TRUE_VALUE (266)
+    FALSE_VALUE (267)
+    COMMA (268)
+    SEMICOLON (269) 8
+    BLOCK_BEGIN (270) 4
+    BLOCK_END (271) 4
+    DEF (272)
+    ARRAY (273)
+    STRUCT (274)
+    TUPLE (275)
+    WHILE (276) 3
+    FOR (277)
+    ITERATOR (278)
+    IF (279) 5 6
+    ELSE (280) 6
+    ELIF (281)
+    THEN (282) 5 6
+    BREAK (283)
+    RETURN (284)
+    DO (285) 3
+    BRACES_INITIATOR (286)
+    BRACES_TERMINATOR (287)
+    BRACKETS_INITIATOR (288)
+    BRACKETS_TERMINATOR (289)
+    PARENTHESES_INITIATOR (290)
+    PARENTHESES_TERMINATOR (291)
+    IN (292)
+    OUT (293)
+    OPEN (294)
+    CLOSE (295)
+    EQUAL (296)
+    NOT_EQUAL (297)
+    LEQ (298)
+    GEQ (299)
+    GREATER_THAN (300)
+    NOT (301)
+    AND (302)
+    OR (303)
+    PLUS_OPERATOR (304)
+    MINUS_OPERATOR (305)
+    MULTI_OPERATOR (306)
+    DIVISION_OPERATOR (307)
+    MOD_OPERATOR (308)
+    POWER_OPERATOR (309)
+    CONCAT (310)
+    COPY_STRING (311)
 
 
 Nonterminals, with rules where they appear
 
-    $accept (13)
+    $accept (57)
         on left: 0
-    lines (14)
-        on left: 1 2
-        on right: 0 2
-    line (15)
-        on left: 3
-        on right: 2
-    exp <npValue> (16)
-        on left: 4 5 6
-        on right: 3 5 6 10
-    term <npValue> (17)
+    prog (58)
+        on left: 1
+        on right: 0
+    stm <sValue> (59)
+        on left: 2 3 4 5 6
+        on right: 3 5 6 7 8
+    stmlist (60)
         on left: 7 8
-        on right: 4 5 6 8
-    factor <npValue> (18)
-        on left: 9 10
-        on right: 7 8
+        on right: 1 4 8
 
 
 State 0
 
-    0 $accept: • lines $end
+    0 $accept: • prog $end
 
-    $default  reduce using rule 1 (lines)
+    ID           shift, and go to state 1
+    BLOCK_BEGIN  shift, and go to state 2
+    WHILE        shift, and go to state 3
+    IF           shift, and go to state 4
 
-    lines  go to state 1
+    prog     go to state 5
+    stm      go to state 6
+    stmlist  go to state 7
 
 
 State 1
 
-    0 $accept: lines • $end
-    2 lines: lines • line
+    2 stm: ID • ASSIGN ID
 
-    $end              shift, and go to state 2
-    NUMBER            shift, and go to state 3
-    LEFT_PARENTHESIS  shift, and go to state 4
-
-    line    go to state 5
-    exp     go to state 6
-    term    go to state 7
-    factor  go to state 8
+    ASSIGN  shift, and go to state 8
 
 
 State 2
 
-    0 $accept: lines $end •
+    4 stm: BLOCK_BEGIN • stmlist BLOCK_END
 
-    $default  accept
+    ID           shift, and go to state 1
+    BLOCK_BEGIN  shift, and go to state 2
+    WHILE        shift, and go to state 3
+    IF           shift, and go to state 4
+
+    stm      go to state 6
+    stmlist  go to state 9
 
 
 State 3
 
-    9 factor: NUMBER •
+    3 stm: WHILE • ID DO stm
 
-    $default  reduce using rule 9 (factor)
+    ID  shift, and go to state 10
 
 
 State 4
 
-   10 factor: LEFT_PARENTHESIS • exp RIGHT_PARENTHESIS
+    5 stm: IF • ID THEN stm
+    6    | IF • ID THEN stm ELSE stm
 
-    NUMBER            shift, and go to state 3
-    LEFT_PARENTHESIS  shift, and go to state 4
-
-    exp     go to state 9
-    term    go to state 7
-    factor  go to state 8
+    ID  shift, and go to state 11
 
 
 State 5
 
-    2 lines: lines line •
+    0 $accept: prog • $end
 
-    $default  reduce using rule 2 (lines)
+    $end  shift, and go to state 12
 
 
 State 6
 
-    3 line: exp • END
-    5 exp: exp • '+' term
-    6    | exp • MINUS term
+    7 stmlist: stm •
 
-    MINUS  shift, and go to state 10
-    END    shift, and go to state 11
-    '+'    shift, and go to state 12
+    $default  reduce using rule 7 (stmlist)
 
 
 State 7
 
-    4 exp: term •
-    8 term: term • TIMES factor
+    1 prog: stmlist •
+    8 stmlist: stmlist • SEMICOLON stm
 
-    TIMES  shift, and go to state 13
+    SEMICOLON  shift, and go to state 13
 
-    $default  reduce using rule 4 (exp)
+    $default  reduce using rule 1 (prog)
 
 
 State 8
 
-    7 term: factor •
+    2 stm: ID ASSIGN • ID
 
-    $default  reduce using rule 7 (term)
+    ID  shift, and go to state 14
 
 
 State 9
 
-    5 exp: exp • '+' term
-    6    | exp • MINUS term
-   10 factor: LEFT_PARENTHESIS exp • RIGHT_PARENTHESIS
+    4 stm: BLOCK_BEGIN stmlist • BLOCK_END
+    8 stmlist: stmlist • SEMICOLON stm
 
-    MINUS              shift, and go to state 10
-    RIGHT_PARENTHESIS  shift, and go to state 14
-    '+'                shift, and go to state 12
+    SEMICOLON  shift, and go to state 13
+    BLOCK_END  shift, and go to state 15
 
 
 State 10
 
-    6 exp: exp MINUS • term
+    3 stm: WHILE ID • DO stm
 
-    NUMBER            shift, and go to state 3
-    LEFT_PARENTHESIS  shift, and go to state 4
-
-    term    go to state 15
-    factor  go to state 8
+    DO  shift, and go to state 16
 
 
 State 11
 
-    3 line: exp END •
+    5 stm: IF ID • THEN stm
+    6    | IF ID • THEN stm ELSE stm
 
-    $default  reduce using rule 3 (line)
+    THEN  shift, and go to state 17
 
 
 State 12
 
-    5 exp: exp '+' • term
+    0 $accept: prog $end •
 
-    NUMBER            shift, and go to state 3
-    LEFT_PARENTHESIS  shift, and go to state 4
-
-    term    go to state 16
-    factor  go to state 8
+    $default  accept
 
 
 State 13
 
-    8 term: term TIMES • factor
+    8 stmlist: stmlist SEMICOLON • stm
 
-    NUMBER            shift, and go to state 3
-    LEFT_PARENTHESIS  shift, and go to state 4
+    ID           shift, and go to state 1
+    BLOCK_BEGIN  shift, and go to state 2
+    WHILE        shift, and go to state 3
+    IF           shift, and go to state 4
 
-    factor  go to state 17
+    stm  go to state 18
 
 
 State 14
 
-   10 factor: LEFT_PARENTHESIS exp RIGHT_PARENTHESIS •
+    2 stm: ID ASSIGN ID •
 
-    $default  reduce using rule 10 (factor)
+    $default  reduce using rule 2 (stm)
 
 
 State 15
 
-    6 exp: exp MINUS term •
-    8 term: term • TIMES factor
+    4 stm: BLOCK_BEGIN stmlist BLOCK_END •
 
-    TIMES  shift, and go to state 13
-
-    $default  reduce using rule 6 (exp)
+    $default  reduce using rule 4 (stm)
 
 
 State 16
 
-    5 exp: exp '+' term •
-    8 term: term • TIMES factor
+    3 stm: WHILE ID DO • stm
 
-    TIMES  shift, and go to state 13
+    ID           shift, and go to state 1
+    BLOCK_BEGIN  shift, and go to state 2
+    WHILE        shift, and go to state 3
+    IF           shift, and go to state 4
 
-    $default  reduce using rule 5 (exp)
+    stm  go to state 19
 
 
 State 17
 
-    8 term: term TIMES factor •
+    5 stm: IF ID THEN • stm
+    6    | IF ID THEN • stm ELSE stm
 
-    $default  reduce using rule 8 (term)
+    ID           shift, and go to state 1
+    BLOCK_BEGIN  shift, and go to state 2
+    WHILE        shift, and go to state 3
+    IF           shift, and go to state 4
+
+    stm  go to state 20
+
+
+State 18
+
+    8 stmlist: stmlist SEMICOLON stm •
+
+    $default  reduce using rule 8 (stmlist)
+
+
+State 19
+
+    3 stm: WHILE ID DO stm •
+
+    $default  reduce using rule 3 (stm)
+
+
+State 20
+
+    5 stm: IF ID THEN stm •
+    6    | IF ID THEN stm • ELSE stm
+
+    ELSE  shift, and go to state 21
+
+    ELSE      [reduce using rule 5 (stm)]
+    $default  reduce using rule 5 (stm)
+
+
+State 21
+
+    6 stm: IF ID THEN stm ELSE • stm
+
+    ID           shift, and go to state 1
+    BLOCK_BEGIN  shift, and go to state 2
+    WHILE        shift, and go to state 3
+    IF           shift, and go to state 4
+
+    stm  go to state 22
+
+
+State 22
+
+    6 stm: IF ID THEN stm ELSE stm •
+
+    $default  reduce using rule 6 (stm)

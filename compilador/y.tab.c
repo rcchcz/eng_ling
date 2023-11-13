@@ -69,32 +69,16 @@
 /* First part of user prologue.  */
 #line 1 "parser.y"
 
-  #include <stdio.h>
-  #include <stdlib.h>
-  #include <string.h>
+#include <stdio.h>
+#include <string>
 
-  typedef struct node
-  {
-    struct node *left;
-    struct node *right;
-    int tokcode;
-    char *token;
-  } node;
+int yylex(void);
+int yyerror(char *s);
+extern int yylineno;
+extern char * yytext;
 
-  /******************************* 
-    #define YYSTYPE struct node *
-  ********************************/
 
-  int yylex();
-  int yyerror(char *s);
-  extern int yylineno;
-  extern char * yytext;
-  
-  node *mknode(node *left, node *right, int tokcode, char *token);
-  void printtree(node *tree);
-  void generate(node *tree);
-
-#line 98 "y.tab.c"
+#line 82 "y.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -138,15 +122,60 @@ extern int yydebug;
     YYEOF = 0,                     /* "end of file"  */
     YYerror = 256,                 /* error  */
     YYUNDEF = 257,                 /* "invalid token"  */
-    NUMBER = 258,                  /* NUMBER  */
-    PLUS = 259,                    /* PLUS  */
-    MINUS = 260,                   /* MINUS  */
-    TIMES = 261,                   /* TIMES  */
-    DIVIDE = 262,                  /* DIVIDE  */
-    POWER = 263,                   /* POWER  */
-    LEFT_PARENTHESIS = 264,        /* LEFT_PARENTHESIS  */
-    RIGHT_PARENTHESIS = 265,       /* RIGHT_PARENTHESIS  */
-    END = 266                      /* END  */
+    ID = 258,                      /* ID  */
+    TYPE = 259,                    /* TYPE  */
+    LEN_STRING = 260,              /* LEN_STRING  */
+    ASSIGN = 261,                  /* ASSIGN  */
+    COMMENT = 262,                 /* COMMENT  */
+    FLOAT_VALUE = 263,             /* FLOAT_VALUE  */
+    INT_VALUE = 264,               /* INT_VALUE  */
+    STRING_VALUE = 265,            /* STRING_VALUE  */
+    TRUE_VALUE = 266,              /* TRUE_VALUE  */
+    FALSE_VALUE = 267,             /* FALSE_VALUE  */
+    COMMA = 268,                   /* COMMA  */
+    SEMICOLON = 269,               /* SEMICOLON  */
+    BLOCK_BEGIN = 270,             /* BLOCK_BEGIN  */
+    BLOCK_END = 271,               /* BLOCK_END  */
+    DEF = 272,                     /* DEF  */
+    ARRAY = 273,                   /* ARRAY  */
+    STRUCT = 274,                  /* STRUCT  */
+    TUPLE = 275,                   /* TUPLE  */
+    WHILE = 276,                   /* WHILE  */
+    FOR = 277,                     /* FOR  */
+    ITERATOR = 278,                /* ITERATOR  */
+    IF = 279,                      /* IF  */
+    ELSE = 280,                    /* ELSE  */
+    ELIF = 281,                    /* ELIF  */
+    THEN = 282,                    /* THEN  */
+    BREAK = 283,                   /* BREAK  */
+    RETURN = 284,                  /* RETURN  */
+    DO = 285,                      /* DO  */
+    BRACES_INITIATOR = 286,        /* BRACES_INITIATOR  */
+    BRACES_TERMINATOR = 287,       /* BRACES_TERMINATOR  */
+    BRACKETS_INITIATOR = 288,      /* BRACKETS_INITIATOR  */
+    BRACKETS_TERMINATOR = 289,     /* BRACKETS_TERMINATOR  */
+    PARENTHESES_INITIATOR = 290,   /* PARENTHESES_INITIATOR  */
+    PARENTHESES_TERMINATOR = 291,  /* PARENTHESES_TERMINATOR  */
+    IN = 292,                      /* IN  */
+    OUT = 293,                     /* OUT  */
+    OPEN = 294,                    /* OPEN  */
+    CLOSE = 295,                   /* CLOSE  */
+    EQUAL = 296,                   /* EQUAL  */
+    NOT_EQUAL = 297,               /* NOT_EQUAL  */
+    LEQ = 298,                     /* LEQ  */
+    GEQ = 299,                     /* GEQ  */
+    GREATER_THAN = 300,            /* GREATER_THAN  */
+    NOT = 301,                     /* NOT  */
+    AND = 302,                     /* AND  */
+    OR = 303,                      /* OR  */
+    PLUS_OPERATOR = 304,           /* PLUS_OPERATOR  */
+    MINUS_OPERATOR = 305,          /* MINUS_OPERATOR  */
+    MULTI_OPERATOR = 306,          /* MULTI_OPERATOR  */
+    DIVISION_OPERATOR = 307,       /* DIVISION_OPERATOR  */
+    MOD_OPERATOR = 308,            /* MOD_OPERATOR  */
+    POWER_OPERATOR = 309,          /* POWER_OPERATOR  */
+    CONCAT = 310,                  /* CONCAT  */
+    COPY_STRING = 311              /* COPY_STRING  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -155,27 +184,71 @@ extern int yydebug;
 #define YYEOF 0
 #define YYerror 256
 #define YYUNDEF 257
-#define NUMBER 258
-#define PLUS 259
-#define MINUS 260
-#define TIMES 261
-#define DIVIDE 262
-#define POWER 263
-#define LEFT_PARENTHESIS 264
-#define RIGHT_PARENTHESIS 265
-#define END 266
+#define ID 258
+#define TYPE 259
+#define LEN_STRING 260
+#define ASSIGN 261
+#define COMMENT 262
+#define FLOAT_VALUE 263
+#define INT_VALUE 264
+#define STRING_VALUE 265
+#define TRUE_VALUE 266
+#define FALSE_VALUE 267
+#define COMMA 268
+#define SEMICOLON 269
+#define BLOCK_BEGIN 270
+#define BLOCK_END 271
+#define DEF 272
+#define ARRAY 273
+#define STRUCT 274
+#define TUPLE 275
+#define WHILE 276
+#define FOR 277
+#define ITERATOR 278
+#define IF 279
+#define ELSE 280
+#define ELIF 281
+#define THEN 282
+#define BREAK 283
+#define RETURN 284
+#define DO 285
+#define BRACES_INITIATOR 286
+#define BRACES_TERMINATOR 287
+#define BRACKETS_INITIATOR 288
+#define BRACKETS_TERMINATOR 289
+#define PARENTHESES_INITIATOR 290
+#define PARENTHESES_TERMINATOR 291
+#define IN 292
+#define OUT 293
+#define OPEN 294
+#define CLOSE 295
+#define EQUAL 296
+#define NOT_EQUAL 297
+#define LEQ 298
+#define GEQ 299
+#define GREATER_THAN 300
+#define NOT 301
+#define AND 302
+#define OR 303
+#define PLUS_OPERATOR 304
+#define MINUS_OPERATOR 305
+#define MULTI_OPERATOR 306
+#define DIVISION_OPERATOR 307
+#define MOD_OPERATOR 308
+#define POWER_OPERATOR 309
+#define CONCAT 310
+#define COPY_STRING 311
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 28 "parser.y"
+#line 12 "parser.y"
 
-  int    iValue;    /* integer value */ 
-  struct node * npValue;  /* node pointer value */
- 
+	char * sValue;  /* string value */
+	
 
-#line 179 "y.tab.c"
+#line 252 "y.tab.c"
 
 };
 typedef union YYSTYPE YYSTYPE;
@@ -198,22 +271,64 @@ enum yysymbol_kind_t
   YYSYMBOL_YYEOF = 0,                      /* "end of file"  */
   YYSYMBOL_YYerror = 1,                    /* error  */
   YYSYMBOL_YYUNDEF = 2,                    /* "invalid token"  */
-  YYSYMBOL_NUMBER = 3,                     /* NUMBER  */
-  YYSYMBOL_PLUS = 4,                       /* PLUS  */
-  YYSYMBOL_MINUS = 5,                      /* MINUS  */
-  YYSYMBOL_TIMES = 6,                      /* TIMES  */
-  YYSYMBOL_DIVIDE = 7,                     /* DIVIDE  */
-  YYSYMBOL_POWER = 8,                      /* POWER  */
-  YYSYMBOL_LEFT_PARENTHESIS = 9,           /* LEFT_PARENTHESIS  */
-  YYSYMBOL_RIGHT_PARENTHESIS = 10,         /* RIGHT_PARENTHESIS  */
-  YYSYMBOL_END = 11,                       /* END  */
-  YYSYMBOL_12_ = 12,                       /* '+'  */
-  YYSYMBOL_YYACCEPT = 13,                  /* $accept  */
-  YYSYMBOL_lines = 14,                     /* lines  */
-  YYSYMBOL_line = 15,                      /* line  */
-  YYSYMBOL_exp = 16,                       /* exp  */
-  YYSYMBOL_term = 17,                      /* term  */
-  YYSYMBOL_factor = 18                     /* factor  */
+  YYSYMBOL_ID = 3,                         /* ID  */
+  YYSYMBOL_TYPE = 4,                       /* TYPE  */
+  YYSYMBOL_LEN_STRING = 5,                 /* LEN_STRING  */
+  YYSYMBOL_ASSIGN = 6,                     /* ASSIGN  */
+  YYSYMBOL_COMMENT = 7,                    /* COMMENT  */
+  YYSYMBOL_FLOAT_VALUE = 8,                /* FLOAT_VALUE  */
+  YYSYMBOL_INT_VALUE = 9,                  /* INT_VALUE  */
+  YYSYMBOL_STRING_VALUE = 10,              /* STRING_VALUE  */
+  YYSYMBOL_TRUE_VALUE = 11,                /* TRUE_VALUE  */
+  YYSYMBOL_FALSE_VALUE = 12,               /* FALSE_VALUE  */
+  YYSYMBOL_COMMA = 13,                     /* COMMA  */
+  YYSYMBOL_SEMICOLON = 14,                 /* SEMICOLON  */
+  YYSYMBOL_BLOCK_BEGIN = 15,               /* BLOCK_BEGIN  */
+  YYSYMBOL_BLOCK_END = 16,                 /* BLOCK_END  */
+  YYSYMBOL_DEF = 17,                       /* DEF  */
+  YYSYMBOL_ARRAY = 18,                     /* ARRAY  */
+  YYSYMBOL_STRUCT = 19,                    /* STRUCT  */
+  YYSYMBOL_TUPLE = 20,                     /* TUPLE  */
+  YYSYMBOL_WHILE = 21,                     /* WHILE  */
+  YYSYMBOL_FOR = 22,                       /* FOR  */
+  YYSYMBOL_ITERATOR = 23,                  /* ITERATOR  */
+  YYSYMBOL_IF = 24,                        /* IF  */
+  YYSYMBOL_ELSE = 25,                      /* ELSE  */
+  YYSYMBOL_ELIF = 26,                      /* ELIF  */
+  YYSYMBOL_THEN = 27,                      /* THEN  */
+  YYSYMBOL_BREAK = 28,                     /* BREAK  */
+  YYSYMBOL_RETURN = 29,                    /* RETURN  */
+  YYSYMBOL_DO = 30,                        /* DO  */
+  YYSYMBOL_BRACES_INITIATOR = 31,          /* BRACES_INITIATOR  */
+  YYSYMBOL_BRACES_TERMINATOR = 32,         /* BRACES_TERMINATOR  */
+  YYSYMBOL_BRACKETS_INITIATOR = 33,        /* BRACKETS_INITIATOR  */
+  YYSYMBOL_BRACKETS_TERMINATOR = 34,       /* BRACKETS_TERMINATOR  */
+  YYSYMBOL_PARENTHESES_INITIATOR = 35,     /* PARENTHESES_INITIATOR  */
+  YYSYMBOL_PARENTHESES_TERMINATOR = 36,    /* PARENTHESES_TERMINATOR  */
+  YYSYMBOL_IN = 37,                        /* IN  */
+  YYSYMBOL_OUT = 38,                       /* OUT  */
+  YYSYMBOL_OPEN = 39,                      /* OPEN  */
+  YYSYMBOL_CLOSE = 40,                     /* CLOSE  */
+  YYSYMBOL_EQUAL = 41,                     /* EQUAL  */
+  YYSYMBOL_NOT_EQUAL = 42,                 /* NOT_EQUAL  */
+  YYSYMBOL_LEQ = 43,                       /* LEQ  */
+  YYSYMBOL_GEQ = 44,                       /* GEQ  */
+  YYSYMBOL_GREATER_THAN = 45,              /* GREATER_THAN  */
+  YYSYMBOL_NOT = 46,                       /* NOT  */
+  YYSYMBOL_AND = 47,                       /* AND  */
+  YYSYMBOL_OR = 48,                        /* OR  */
+  YYSYMBOL_PLUS_OPERATOR = 49,             /* PLUS_OPERATOR  */
+  YYSYMBOL_MINUS_OPERATOR = 50,            /* MINUS_OPERATOR  */
+  YYSYMBOL_MULTI_OPERATOR = 51,            /* MULTI_OPERATOR  */
+  YYSYMBOL_DIVISION_OPERATOR = 52,         /* DIVISION_OPERATOR  */
+  YYSYMBOL_MOD_OPERATOR = 53,              /* MOD_OPERATOR  */
+  YYSYMBOL_POWER_OPERATOR = 54,            /* POWER_OPERATOR  */
+  YYSYMBOL_CONCAT = 55,                    /* CONCAT  */
+  YYSYMBOL_COPY_STRING = 56,               /* COPY_STRING  */
+  YYSYMBOL_YYACCEPT = 57,                  /* $accept  */
+  YYSYMBOL_prog = 58,                      /* prog  */
+  YYSYMBOL_stm = 59,                       /* stm  */
+  YYSYMBOL_stmlist = 60                    /* stmlist  */
 };
 typedef enum yysymbol_kind_t yysymbol_kind_t;
 
@@ -539,21 +654,21 @@ union yyalloc
 #endif /* !YYCOPY_NEEDED */
 
 /* YYFINAL -- State number of the termination state.  */
-#define YYFINAL  2
+#define YYFINAL  12
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   16
+#define YYLAST   21
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  13
+#define YYNTOKENS  57
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  6
+#define YYNNTS  4
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  11
+#define YYNRULES  9
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  18
+#define YYNSTATES  23
 
 /* YYMAXUTOK -- Last valid token kind.  */
-#define YYMAXUTOK   266
+#define YYMAXUTOK   311
 
 
 /* YYTRANSLATE(TOKEN-NUM) -- Symbol number corresponding to TOKEN-NUM
@@ -571,7 +686,7 @@ static const yytype_int8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,    12,     2,     2,     2,     2,     2,     2,
+       2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
@@ -593,15 +708,19 @@ static const yytype_int8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
-       5,     6,     7,     8,     9,    10,    11
+       5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
+      15,    16,    17,    18,    19,    20,    21,    22,    23,    24,
+      25,    26,    27,    28,    29,    30,    31,    32,    33,    34,
+      35,    36,    37,    38,    39,    40,    41,    42,    43,    44,
+      45,    46,    47,    48,    49,    50,    51,    52,    53,    54,
+      55,    56
 };
 
 #if YYDEBUG
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int8 yyrline[] =
 {
-       0,    49,    49,    50,    52,    59,    60,    61,    64,    65,
-      68,    71
+       0,    34,    34,    37,    38,    39,    40,    41,    44,    45
 };
 #endif
 
@@ -617,10 +736,17 @@ static const char *yysymbol_name (yysymbol_kind_t yysymbol) YY_ATTRIBUTE_UNUSED;
    First, the terminals, then, starting at YYNTOKENS, nonterminals.  */
 static const char *const yytname[] =
 {
-  "\"end of file\"", "error", "\"invalid token\"", "NUMBER", "PLUS",
-  "MINUS", "TIMES", "DIVIDE", "POWER", "LEFT_PARENTHESIS",
-  "RIGHT_PARENTHESIS", "END", "'+'", "$accept", "lines", "line", "exp",
-  "term", "factor", YY_NULLPTR
+  "\"end of file\"", "error", "\"invalid token\"", "ID", "TYPE",
+  "LEN_STRING", "ASSIGN", "COMMENT", "FLOAT_VALUE", "INT_VALUE",
+  "STRING_VALUE", "TRUE_VALUE", "FALSE_VALUE", "COMMA", "SEMICOLON",
+  "BLOCK_BEGIN", "BLOCK_END", "DEF", "ARRAY", "STRUCT", "TUPLE", "WHILE",
+  "FOR", "ITERATOR", "IF", "ELSE", "ELIF", "THEN", "BREAK", "RETURN", "DO",
+  "BRACES_INITIATOR", "BRACES_TERMINATOR", "BRACKETS_INITIATOR",
+  "BRACKETS_TERMINATOR", "PARENTHESES_INITIATOR", "PARENTHESES_TERMINATOR",
+  "IN", "OUT", "OPEN", "CLOSE", "EQUAL", "NOT_EQUAL", "LEQ", "GEQ",
+  "GREATER_THAN", "NOT", "AND", "OR", "PLUS_OPERATOR", "MINUS_OPERATOR",
+  "MULTI_OPERATOR", "DIVISION_OPERATOR", "MOD_OPERATOR", "POWER_OPERATOR",
+  "CONCAT", "COPY_STRING", "$accept", "prog", "stm", "stmlist", YY_NULLPTR
 };
 
 static const char *
@@ -630,7 +756,7 @@ yysymbol_name (yysymbol_kind_t yysymbol)
 }
 #endif
 
-#define YYPACT_NINF (-9)
+#define YYPACT_NINF (-17)
 
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
@@ -644,8 +770,9 @@ yysymbol_name (yysymbol_kind_t yysymbol)
    STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-      -9,     0,    -9,    -9,     7,    -9,    -4,    -1,    -9,     1,
-       7,    -9,     7,     7,    -9,    -1,    -1,    -9
+      -3,    -4,    -3,     0,     4,    10,   -17,    -1,     8,    -8,
+     -16,   -11,   -17,    -3,   -17,   -17,    -3,    -3,   -17,   -17,
+     -10,    -3,   -17
 };
 
 /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -653,20 +780,21 @@ static const yytype_int8 yypact[] =
    means the default is an error.  */
 static const yytype_int8 yydefact[] =
 {
-       2,     0,     1,    10,     0,     3,     0,     5,     8,     0,
-       0,     4,     0,     0,    11,     7,     6,     9
+       0,     0,     0,     0,     0,     0,     8,     2,     0,     0,
+       0,     0,     1,     0,     3,     5,     0,     0,     9,     4,
+       6,     0,     7
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-      -9,    -9,    -9,     8,    -8,     2
+     -17,   -17,   -12,    15
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-       0,     1,     5,     6,     7,     8
+       0,     5,     6,     7
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -674,36 +802,37 @@ static const yytype_int8 yydefgoto[] =
    number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_int8 yytable[] =
 {
-       2,    10,    15,     3,    16,    13,    10,    11,    12,     4,
-       3,    14,     9,    12,     0,    17,     4
+       1,    18,     8,    10,    19,    20,    13,    11,    15,    22,
+      12,    14,     2,    13,    16,    21,    17,     9,     3,     0,
+       0,     4
 };
 
 static const yytype_int8 yycheck[] =
 {
-       0,     5,    10,     3,    12,     6,     5,    11,    12,     9,
-       3,    10,     4,    12,    -1,    13,     9
+       3,    13,     6,     3,    16,    17,    14,     3,    16,    21,
+       0,     3,    15,    14,    30,    25,    27,     2,    21,    -1,
+      -1,    24
 };
 
 /* YYSTOS[STATE-NUM] -- The symbol kind of the accessing symbol of
    state STATE-NUM.  */
 static const yytype_int8 yystos[] =
 {
-       0,    14,     0,     3,     9,    15,    16,    17,    18,    16,
-       5,    11,    12,     6,    10,    17,    17,    18
+       0,     3,    15,    21,    24,    58,    59,    60,     6,    60,
+       3,     3,     0,    14,     3,    16,    30,    27,    59,    59,
+      59,    25,    59
 };
 
 /* YYR1[RULE-NUM] -- Symbol kind of the left-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr1[] =
 {
-       0,    13,    14,    14,    15,    16,    16,    16,    17,    17,
-      18,    18
+       0,    57,    58,    59,    59,    59,    59,    59,    60,    60
 };
 
 /* YYR2[RULE-NUM] -- Number of symbols on the right-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr2[] =
 {
-       0,     2,     0,     2,     2,     1,     3,     3,     1,     3,
-       1,     3
+       0,     2,     1,     3,     4,     3,     4,     6,     1,     3
 };
 
 
@@ -1166,62 +1295,56 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
-  case 4: /* line: exp END  */
-#line 52 "parser.y"
-                { 
-                  printtree((yyvsp[-1].npValue));
-				          printf("\n");
-				          generate((yyvsp[-1].npValue));
-                }
-#line 1177 "y.tab.c"
+  case 2: /* prog: stmlist  */
+#line 34 "parser.y"
+               {}
+#line 1302 "y.tab.c"
     break;
 
-  case 5: /* exp: term  */
-#line 59 "parser.y"
-                            { (yyval.npValue) = (yyvsp[0].npValue); }
-#line 1183 "y.tab.c"
+  case 3: /* stm: ID ASSIGN ID  */
+#line 37 "parser.y"
+                   {printf("%s <- %s \n",(yyvsp[-2].sValue), (yyvsp[0].sValue));}
+#line 1308 "y.tab.c"
     break;
 
-  case 6: /* exp: exp '+' term  */
-#line 60 "parser.y"
-                           { (yyval.npValue) = mknode((yyvsp[-2].npValue), (yyvsp[0].npValue), PLUS, "+"); }
-#line 1189 "y.tab.c"
+  case 4: /* stm: WHILE ID DO stm  */
+#line 38 "parser.y"
+                                                                {}
+#line 1314 "y.tab.c"
     break;
 
-  case 7: /* exp: exp MINUS term  */
-#line 61 "parser.y"
-                            { (yyval.npValue) = mknode((yyvsp[-2].npValue), (yyvsp[0].npValue), MINUS, "-"); }
-#line 1195 "y.tab.c"
+  case 5: /* stm: BLOCK_BEGIN stmlist BLOCK_END  */
+#line 39 "parser.y"
+                                                        {}
+#line 1320 "y.tab.c"
     break;
 
-  case 8: /* term: factor  */
-#line 64 "parser.y"
-                             { (yyval.npValue) = (yyvsp[0].npValue); }
-#line 1201 "y.tab.c"
+  case 6: /* stm: IF ID THEN stm  */
+#line 40 "parser.y"
+                                                                        {}
+#line 1326 "y.tab.c"
     break;
 
-  case 9: /* term: term TIMES factor  */
-#line 65 "parser.y"
-                             { (yyval.npValue) = mknode((yyvsp[-2].npValue), (yyvsp[0].npValue), TIMES, "*"); }
-#line 1207 "y.tab.c"
+  case 7: /* stm: IF ID THEN stm ELSE stm  */
+#line 41 "parser.y"
+                                                                {}
+#line 1332 "y.tab.c"
     break;
 
-  case 10: /* factor: NUMBER  */
-#line 68 "parser.y"
-                                                 { char *str = (char *) malloc(10);
-                                                   sprintf(str, "%d", (yyvsp[0].iValue));
-                                                   (yyval.npValue) = mknode( 0, 0, NUMBER, str); }
-#line 1215 "y.tab.c"
+  case 8: /* stmlist: stm  */
+#line 44 "parser.y"
+                                                                        {}
+#line 1338 "y.tab.c"
     break;
 
-  case 11: /* factor: LEFT_PARENTHESIS exp RIGHT_PARENTHESIS  */
-#line 71 "parser.y"
-                                                 { (yyval.npValue) = (yyvsp[-1].npValue); }
-#line 1221 "y.tab.c"
+  case 9: /* stmlist: stmlist SEMICOLON stm  */
+#line 45 "parser.y"
+                                                                        {}
+#line 1344 "y.tab.c"
     break;
 
 
-#line 1225 "y.tab.c"
+#line 1348 "y.tab.c"
 
       default: break;
     }
@@ -1414,95 +1537,14 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 73 "parser.y"
+#line 47 "parser.y"
 
 
-int main (void) {return yyparse();}
+int main (void) {
+	return yyparse ( );
+}
 
 int yyerror (char *msg) {
 	fprintf (stderr, "%d: %s at '%s'\n", yylineno, msg, yytext);
 	return 0;
-}
-
-node *mknode(node *left, node *right, int tokcode, char *token)
-{
-  /* malloc the node */
-  node *newnode = (node *) malloc(sizeof(node));
-  char *newstr = (char *) malloc(strlen(token)+1);
-  strcpy(newstr, token);
-  newnode->left = left;
-  newnode->right = right;
-  newnode->tokcode = tokcode;
-  newnode->token = newstr;
-  return(newnode);
-}
-
-void printtree(node *tree)
-{
-  if (tree == (node *) 0)
-    return;
-	
-  if (tree->left || tree->right)
-    printf("(");
-
-  printf(" %s ", tree->token);
-
-  if (tree->left)
-    printtree(tree->left);
-  if (tree->right)
-    printtree(tree->right);
-
-  if (tree->left || tree->right)
-    printf(")");
-}
-
-void generate(node *tree)
-{
-  int i;
-
-  /* generate the code for the left side */
-  if (tree->left)
-    generate(tree->left);
-  /* generate the code for the right side */
-  if (tree->right)
-    generate(tree->right);
-
-  /* generate code for this node */
-  
-  switch(tree->tokcode)
-  {
-  case 0:
-    /* we need no code for this node */
-    break;
-
-  case NUMBER:
-    /* push the number onto the stack */
-    printf("PUSH %s\n", tree->token);
-    break;
-
-  case PLUS:
-    printf("POP A\n");
-    printf("POP B\n");
-    printf("ADD A= A+B\n");
-    printf("PUSH A\n");
-    break;
-
-  case MINUS:
-    printf("POP A\n");
-    printf("POP B\n");
-    printf("SUB A= A-B\n");
-    printf("PUSH A\n");
-    break;
-
-  case TIMES:
-    printf("POP A\n");
-    printf("POP B\n");
-    printf("MULT A= A*B\n");
-    printf("PUSH A\n");
-    break;
-
-  default:
-    printf("error unkown AST code %d\n", tree->tokcode);
-  }
-
 }

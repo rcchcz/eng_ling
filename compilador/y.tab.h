@@ -54,15 +54,60 @@ extern int yydebug;
     YYEOF = 0,                     /* "end of file"  */
     YYerror = 256,                 /* error  */
     YYUNDEF = 257,                 /* "invalid token"  */
-    NUMBER = 258,                  /* NUMBER  */
-    PLUS = 259,                    /* PLUS  */
-    MINUS = 260,                   /* MINUS  */
-    TIMES = 261,                   /* TIMES  */
-    DIVIDE = 262,                  /* DIVIDE  */
-    POWER = 263,                   /* POWER  */
-    LEFT_PARENTHESIS = 264,        /* LEFT_PARENTHESIS  */
-    RIGHT_PARENTHESIS = 265,       /* RIGHT_PARENTHESIS  */
-    END = 266                      /* END  */
+    ID = 258,                      /* ID  */
+    TYPE = 259,                    /* TYPE  */
+    LEN_STRING = 260,              /* LEN_STRING  */
+    ASSIGN = 261,                  /* ASSIGN  */
+    COMMENT = 262,                 /* COMMENT  */
+    FLOAT_VALUE = 263,             /* FLOAT_VALUE  */
+    INT_VALUE = 264,               /* INT_VALUE  */
+    STRING_VALUE = 265,            /* STRING_VALUE  */
+    TRUE_VALUE = 266,              /* TRUE_VALUE  */
+    FALSE_VALUE = 267,             /* FALSE_VALUE  */
+    COMMA = 268,                   /* COMMA  */
+    SEMICOLON = 269,               /* SEMICOLON  */
+    BLOCK_BEGIN = 270,             /* BLOCK_BEGIN  */
+    BLOCK_END = 271,               /* BLOCK_END  */
+    DEF = 272,                     /* DEF  */
+    ARRAY = 273,                   /* ARRAY  */
+    STRUCT = 274,                  /* STRUCT  */
+    TUPLE = 275,                   /* TUPLE  */
+    WHILE = 276,                   /* WHILE  */
+    FOR = 277,                     /* FOR  */
+    ITERATOR = 278,                /* ITERATOR  */
+    IF = 279,                      /* IF  */
+    ELSE = 280,                    /* ELSE  */
+    ELIF = 281,                    /* ELIF  */
+    THEN = 282,                    /* THEN  */
+    BREAK = 283,                   /* BREAK  */
+    RETURN = 284,                  /* RETURN  */
+    DO = 285,                      /* DO  */
+    BRACES_INITIATOR = 286,        /* BRACES_INITIATOR  */
+    BRACES_TERMINATOR = 287,       /* BRACES_TERMINATOR  */
+    BRACKETS_INITIATOR = 288,      /* BRACKETS_INITIATOR  */
+    BRACKETS_TERMINATOR = 289,     /* BRACKETS_TERMINATOR  */
+    PARENTHESES_INITIATOR = 290,   /* PARENTHESES_INITIATOR  */
+    PARENTHESES_TERMINATOR = 291,  /* PARENTHESES_TERMINATOR  */
+    IN = 292,                      /* IN  */
+    OUT = 293,                     /* OUT  */
+    OPEN = 294,                    /* OPEN  */
+    CLOSE = 295,                   /* CLOSE  */
+    EQUAL = 296,                   /* EQUAL  */
+    NOT_EQUAL = 297,               /* NOT_EQUAL  */
+    LEQ = 298,                     /* LEQ  */
+    GEQ = 299,                     /* GEQ  */
+    GREATER_THAN = 300,            /* GREATER_THAN  */
+    NOT = 301,                     /* NOT  */
+    AND = 302,                     /* AND  */
+    OR = 303,                      /* OR  */
+    PLUS_OPERATOR = 304,           /* PLUS_OPERATOR  */
+    MINUS_OPERATOR = 305,          /* MINUS_OPERATOR  */
+    MULTI_OPERATOR = 306,          /* MULTI_OPERATOR  */
+    DIVISION_OPERATOR = 307,       /* DIVISION_OPERATOR  */
+    MOD_OPERATOR = 308,            /* MOD_OPERATOR  */
+    POWER_OPERATOR = 309,          /* POWER_OPERATOR  */
+    CONCAT = 310,                  /* CONCAT  */
+    COPY_STRING = 311              /* COPY_STRING  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -71,27 +116,71 @@ extern int yydebug;
 #define YYEOF 0
 #define YYerror 256
 #define YYUNDEF 257
-#define NUMBER 258
-#define PLUS 259
-#define MINUS 260
-#define TIMES 261
-#define DIVIDE 262
-#define POWER 263
-#define LEFT_PARENTHESIS 264
-#define RIGHT_PARENTHESIS 265
-#define END 266
+#define ID 258
+#define TYPE 259
+#define LEN_STRING 260
+#define ASSIGN 261
+#define COMMENT 262
+#define FLOAT_VALUE 263
+#define INT_VALUE 264
+#define STRING_VALUE 265
+#define TRUE_VALUE 266
+#define FALSE_VALUE 267
+#define COMMA 268
+#define SEMICOLON 269
+#define BLOCK_BEGIN 270
+#define BLOCK_END 271
+#define DEF 272
+#define ARRAY 273
+#define STRUCT 274
+#define TUPLE 275
+#define WHILE 276
+#define FOR 277
+#define ITERATOR 278
+#define IF 279
+#define ELSE 280
+#define ELIF 281
+#define THEN 282
+#define BREAK 283
+#define RETURN 284
+#define DO 285
+#define BRACES_INITIATOR 286
+#define BRACES_TERMINATOR 287
+#define BRACKETS_INITIATOR 288
+#define BRACKETS_TERMINATOR 289
+#define PARENTHESES_INITIATOR 290
+#define PARENTHESES_TERMINATOR 291
+#define IN 292
+#define OUT 293
+#define OPEN 294
+#define CLOSE 295
+#define EQUAL 296
+#define NOT_EQUAL 297
+#define LEQ 298
+#define GEQ 299
+#define GREATER_THAN 300
+#define NOT 301
+#define AND 302
+#define OR 303
+#define PLUS_OPERATOR 304
+#define MINUS_OPERATOR 305
+#define MULTI_OPERATOR 306
+#define DIVISION_OPERATOR 307
+#define MOD_OPERATOR 308
+#define POWER_OPERATOR 309
+#define CONCAT 310
+#define COPY_STRING 311
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 28 "parser.y"
+#line 12 "parser.y"
 
-  int    iValue;    /* integer value */ 
-  struct node * npValue;  /* node pointer value */
- 
+	char * sValue;  /* string value */
+	
 
-#line 95 "y.tab.h"
+#line 184 "y.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

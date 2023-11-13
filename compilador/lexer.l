@@ -48,6 +48,7 @@
 "elif"                  {return(ELIF);}
 "break"                 {return(BREAK);}
 "return"                {return(RETURN);}
+"len"                   {return(LEN_STRING);}
 ","                     {return(COMMA);}
 ";"                     {return(SEMICOLON);}
 "<="                    {return(LEQ);}
@@ -67,11 +68,10 @@
 "/"                     {return(DIVISION_OPERATOR);}
 "%"                     {return(MOD_OPERATOR);}
 "**"                    {return(POWER_OPERATOR);}
-"="                     {return(ASSIGNMENT);}
+"="                     {return(ASSIG);}
 [a-zA-Z][a-zA-Z0-9]*    {yylval.sValue = strdup(yytext); return ID;}
 ^\#[^\n]*               {;}
 "."                     {return(SEPARATOR);}
-"len"                   {return(LEN_STRING);}
 .                       {printf("Invalid character.\n");}
 
 %%
