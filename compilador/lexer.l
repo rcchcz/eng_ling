@@ -10,7 +10,8 @@
  */
 
 %{
-  #include <stdio.h>  
+  #include <stdio.h> 
+  #include "y.tab.h"
 %}
 
 %%
