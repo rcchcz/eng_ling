@@ -15,12 +15,12 @@
 
 %%
 
-[ \t\n]                 {;}
-[0-9]+.[0-9]+           {printf("FLOAT_VALUE(%s)\n",yytext);}
-[0-9]+                  {printf("INT_VALUE(%s)\n",yytext);}
-\"([^"]*)\"             {printf("STRING_VALUE(%s)\n",yytext);}
-"true"                  {printf("TRUE_VALUE\n");}
-"false"                 {printf("FALSE_VALUE\n");}
+[ \t\n]                 {}
+[0-9]+.[0-9]+           {yylval.sValue = strdup(yytext); return(VALUE);}
+[0-9]+                  {yylval.sValue = strdup(yytext); return(VALUE);}
+\"([^"]*)\"             {yylval.sValue = strdup(yytext); return(VALUE);}
+"true"                  {yylval.sValue = strdup(yytext); return(VALUE);}
+"false"                 {yylval.sValue = strdup(yytext); return(VALUE);}
 "void"                  {yylval.sValue = strdup(yytext); return(TYPE);}
 "bool"                  {yylval.sValue = strdup(yytext); return(TYPE);}
 "int"                   {yylval.sValue = strdup(yytext); return(TYPE);}
@@ -68,9 +68,9 @@
 "/"                     {return(DIVISION_OPERATOR);}
 "%"                     {return(MOD_OPERATOR);}
 "**"                    {return(POWER_OPERATOR);}
-"="                     {return(ASSIG);}
+"="                     {return(ASSIGN);}
 [a-zA-Z][a-zA-Z0-9]*    {yylval.sValue = strdup(yytext); return ID;}
-^\#[^\n]*               {;}
+^\#[^\n]*               {}
 "."                     {return(SEPARATOR);}
 .                       {printf("Invalid character.\n");}
 

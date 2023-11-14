@@ -818,33 +818,33 @@ case 1:
 /* rule 1 can match eol */
 YY_RULE_SETUP
 #line 18 "lexer.l"
-{;}
+{}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
 #line 19 "lexer.l"
-{printf("FLOAT_VALUE(%s)\n",yytext);}
+{yylval.sValue = strdup(yytext); return(VALUE);}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
 #line 20 "lexer.l"
-{printf("INT_VALUE(%s)\n",yytext);}
+{yylval.sValue = strdup(yytext); return(VALUE);}
 	YY_BREAK
 case 4:
 /* rule 4 can match eol */
 YY_RULE_SETUP
 #line 21 "lexer.l"
-{printf("STRING_VALUE(%s)\n",yytext);}
+{yylval.sValue = strdup(yytext); return(VALUE);}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
 #line 22 "lexer.l"
-{printf("TRUE_VALUE\n");}
+{yylval.sValue = strdup(yytext); return(VALUE);}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
 #line 23 "lexer.l"
-{printf("FALSE_VALUE\n");}
+{yylval.sValue = strdup(yytext); return(VALUE);}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
@@ -1084,7 +1084,7 @@ YY_RULE_SETUP
 case 54:
 YY_RULE_SETUP
 #line 71 "lexer.l"
-{return(ASSIGNMENT);}
+{return(ASSIGN);}
 	YY_BREAK
 case 55:
 YY_RULE_SETUP
@@ -1094,7 +1094,7 @@ YY_RULE_SETUP
 case 56:
 YY_RULE_SETUP
 #line 73 "lexer.l"
-{;}
+{}
 	YY_BREAK
 case 57:
 YY_RULE_SETUP

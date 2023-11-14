@@ -10,15 +10,14 @@ extern char * yytext;
 %}
 
 %union {
-	char * sValue;  /* string value */
-	};
+    char * sValue;  /* string value */
+};
 
-%token  <sValue> ID TYPE LEN_STRING
+%token  <sValue> ID TYPE VALUE LEN_STRING
 %token  ASSIGN COMMENT
-        FLOAT_VALUE INT_VALUE STRING_VALUE TRUE_VALUE FALSE_VALUE
-        COMMA SEMICOLON BLOCK_BEGIN BLOCK_END
+        COMMA SEMICOLON SEPARATOR
         DEF ARRAY STRUCT TUPLE
-        WHILE FOR ITERATOR IF ELSE ELIF THEN BREAK RETURN DO
+        WHILE FOR ITERATOR IF ELSE ELIF BREAK RETURN
         BRACES_INITIATOR BRACES_TERMINATOR BRACKETS_INITIATOR BRACKETS_TERMINATOR PARENTHESES_INITIATOR PARENTHESES_TERMINATOR
         IN OUT OPEN CLOSE
         EQUAL NOT_EQUAL LEQ GEQ GREATER_THAN
@@ -28,29 +27,85 @@ extern char * yytext;
 
 %start prog
 
-%type <sValue> stm
+%type <sValue> prog stmlist stm
 
+%right ASSIGN
+%left OR
+%left AND
+%left NOT
+%left ELSE
+%nonassoc EQUAL NOT_EQUAL LEQ GEQ GREATER_THAN
+%left PLUS_OPERATOR MINUS_OPERATOR
+%left MULTI_OPERATOR DIVISION_OPERATOR MOD_OPERATOR POWER_OPERATOR
+%nonassoc CONCAT
 %%
-prog : stmlist {} 
-	 ;
+prog    : stmlist                                                       {} 
+        ;
 
-stm : ID ASSIGN ID {printf("%s <- %s \n",$1, $3);}
-    | WHILE ID DO stm						{}
-	| BLOCK_BEGIN stmlist BLOCK_END			{}
-	| IF ID THEN stm 						{}
-	| IF ID THEN stm ELSE stm 				{}
-	;
-	
-stmlist : stm								{}
-		| stmlist SEMICOLON stm					{}
-	    ;
+stmlist : stm SEMICOLON                                                 {}
+        | stmlist SEMICOLON stm				                            {}
+        ;
+
+stm     : TYPE ID
+        | TYPE ID ASSIGN expr                                           {}
+        | ID ASSIGN expr                                                {}
+        | DEF ID PARENTHESES_INITIATOR paramlist PARENTHESES_TERMINATOR
+            BRACES_INITIATOR stmlist BRACES_TERMINATOR                  {}
+        | WHILE expr 
+            BRACES_INITIATOR stmlist BRACES_TERMINATOR                  {}
+        | FOR PARENTHESES_INITIATOR
+            TYPE ID ITERATOR
+            BRACKETS_INITIATOR VALUE COMMA VALUE BRACKETS_TERMINATOR
+            BRACES_INITIATOR stmlist BRACES_TERMINATOR                  {}
+        | FOR PARENTHESES_INITIATOR TYPE ID ITERATOR ID
+            BRACES_INITIATOR stmlist BRACES_TERMINATOR                  {}
+        | IF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR %prec ELSE {}
+        | IF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR
+            ELIF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR        {}
+        | IF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR
+            ELIF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR
+            ELSE BRACES_INITIATOR stmlist BRACES_TERMINATOR             {}
+        | IF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR ELSE stm   {}
+        | BREAK                                                         {}
+        | RETURN expr                                                   {}
+        ;
+
+
+paramlist   : 
+            | paramlist COMMA param
+            ;
+
+param   : TYPE ID
+        ;
+
+expr    : ID
+        | VALUE
+        | expr PLUS_OPERATOR expr
+        | expr MINUS_OPERATOR expr
+        | expr MULTI_OPERATOR expr
+        | expr DIVISION_OPERATOR expr
+        | expr MOD_OPERATOR expr
+        | expr POWER_OPERATOR expr
+        | expr CONCAT expr
+        | expr COPY_STRING expr
+        | expr EQUAL expr
+        | expr NOT_EQUAL expr
+        | expr LEQ expr
+        | expr GEQ expr
+        | expr GREATER_THAN expr
+        | NOT expr
+        | expr AND expr
+        | expr OR expr
+        | PARENTHESES_INITIATOR expr PARENTHESES_TERMINATOR
+        ;
+
 %%
 
 int main (void) {
-	return yyparse ( );
+  return yyparse ( );
 }
 
 int yyerror (char *msg) {
-	fprintf (stderr, "%d: %s at '%s'\n", yylineno, msg, yytext);
-	return 0;
+  fprintf (stderr, "%d: %s at '%s'\n", yylineno, msg, yytext);
+  return 0;
 }
