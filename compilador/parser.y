@@ -73,38 +73,39 @@ stm     : TYPE ids
         | OUT expr                                                      {}
         ;
 
-ids     : ID
-        | ID COMMA ids
+ids     : ID                                                            {}
+        | ID COMMA ids                                                  {}
+        ; 
 
-paramlist   : 
-            | paramlist COMMA param
+paramlist   :                                                           {}
+            | paramlist COMMA param                                     {}
             ;
 
-param   : TYPE ID
+param   : TYPE ID                                                       {}
         ;
 
-expr    : val
-        | expr PLUS_OPERATOR expr
-        | expr MINUS_OPERATOR expr
-        | expr MULTI_OPERATOR expr
-        | expr DIVISION_OPERATOR expr
-        | expr MOD_OPERATOR expr
-        | expr POWER_OPERATOR expr
-        | expr CONCAT expr
-        | expr EQUAL expr
-        | expr NOT_EQUAL expr
-        | expr LEQ expr
-        | expr GEQ expr
-        | expr LESS_THAN expr
-        | expr GREATER_THAN expr
-        | NOT expr
-        | expr AND expr
-        | expr OR expr
-        | PARENTHESES_INITIATOR expr PARENTHESES_TERMINATOR
+expr    : val                                                           {}
+        | expr PLUS_OPERATOR expr                                       {}
+        | expr MINUS_OPERATOR expr                                      {}
+        | expr MULTI_OPERATOR expr                                      {}
+        | expr DIVISION_OPERATOR expr                                   {}
+        | expr MOD_OPERATOR expr                                        {}
+        | expr POWER_OPERATOR expr                                      {}
+        | expr CONCAT expr                                              {}
+        | expr EQUAL expr                                               {}
+        | expr NOT_EQUAL expr                                           {}
+        | expr LEQ expr                                                 {}
+        | expr GEQ expr                                                 {}
+        | expr LESS_THAN expr                                           {}
+        | expr GREATER_THAN expr                                        {}
+        | NOT expr                                                      {}
+        | expr AND expr                                                 {}
+        | expr OR expr                                                  {}
+        | PARENTHESES_INITIATOR expr PARENTHESES_TERMINATOR             {}
         ;
 
-val : ID
-    | VALUE
+val : ID                                                                {}
+    | VALUE                                                             {}
     ;
 
 %%
