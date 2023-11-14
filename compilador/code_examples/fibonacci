@@ -8,7 +8,7 @@ def int fibonacci(int x) {
        return x;
   }
 
-  for (int i : (2, x + 1)) {
+  for (int i : [2, x + 1]) {
     antepNum = penNum;
     penNum = numAtual;
     numAtual = antepNum + penNum;

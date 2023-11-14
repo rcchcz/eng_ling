@@ -51,23 +51,18 @@ stm     : TYPE ids
         | ID ASSIGN expr                                                {}
 		| expr															{}
         | ID COPY_STRING expr                                           {}
-        | DEF ID PARENTHESES_INITIATOR paramlist PARENTHESES_TERMINATOR
+        | DEF TYPE ID PARENTHESES_INITIATOR paramlist PARENTHESES_TERMINATOR
             BRACES_INITIATOR stmlist BRACES_TERMINATOR                  {}
         | WHILE expr 
             BRACES_INITIATOR stmlist BRACES_TERMINATOR                  {}
-        | FOR PARENTHESES_INITIATOR
-            TYPE ID ITERATOR
-            BRACKETS_INITIATOR VALUE COMMA VALUE BRACKETS_TERMINATOR
-            BRACES_INITIATOR stmlist BRACES_TERMINATOR                  {}
-        | FOR PARENTHESES_INITIATOR TYPE ID ITERATOR ID
-            BRACES_INITIATOR stmlist BRACES_TERMINATOR                  {}
-        | IF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR %prec ELSE {}
-        | IF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR
-            ELIF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR        {}
-        | IF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR
-            ELIF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR
-            ELSE BRACES_INITIATOR stmlist BRACES_TERMINATOR             {}
-        | IF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR ELSE stm   {}
+        | FOR PARENTHESES_INITIATOR init PARENTHESES_TERMINATOR body    {}
+        | IF PARENTHESES_INITIATOR expr PARENTHESES_TERMINATOR body
+            ELIF PARENTHESES_INITIATOR expr PARENTHESES_TERMINATOR body                                              {}
+        | IF PARENTHESES_INITIATOR expr PARENTHESES_TERMINATOR body
+            ELIF PARENTHESES_INITIATOR expr PARENTHESES_TERMINATOR body
+            ELSE body                                                   {}
+        | IF PARENTHESES_INITIATOR expr PARENTHESES_TERMINATOR body
+            %prec ELSE body                                                   {}
         | BREAK                                                         {}
         | RETURN expr                                                   {}
         | IN PARENTHESES_INITIATOR ID PARENTHESES_TERMINATOR            {}
@@ -76,25 +71,41 @@ stm     : TYPE ids
         | TUPLE PARENTHESES_INITIATOR types PARENTHESES_TERMINATOR
             ID ASSIGN PARENTHESES_INITIATOR exprlist PARENTHESES_TERMINATOR {}
         | ARRAY BRACKETS_INITIATOR VALUE BRACKETS_TERMINATOR            {}
+        | OPEN PARENTHESES_INITIATOR val PARENTHESES_TERMINATOR         {}
+        | CLOSE PARENTHESES_INITIATOR val PARENTHESES_TERMINATOR        {}
+        ;
+
+body    : BRACES_INITIATOR stmlist BRACES_TERMINATOR                    {}
+
+init    : TYPE ID ITERATOR range                                        {}
+        ;
+
+range   : BRACKETS_INITIATOR expr COMMA expr BRACKETS_TERMINATOR        {}
+        | ID                                                            {}
         ;
 
 ids     : ID                                                            {}
-        | ID COMMA ids                                                  {}
-        ; 
+        | decl ids                                                      {}
+        ;
+
+decl    : ID COMMA
+        | ID ASSIGN expr COMMA
+        ;
 
 types   : TYPE                                                          {}
         | TYPE COMMA types                                              {}
         ;
 
-paramlist   :                                                           {}
-            | paramlist COMMA param                                     {}
+paramlist   : param                                                     {}
+            | param COMMA paramlist                                     {}
             ;
 
-param   : TYPE ID                                                       {}
+param   : 
+        | TYPE ID                                                       {}
         ;
 
-fieldlist   : field                                                     {}
-            | fieldlist SEMICOLON field                                 {}
+fieldlist   : field SEMICOLON                                           {}
+            | field SEMICOLON fieldlist                                 {}
             ;
 
 field   : TYPE ID                                                       {}
@@ -122,7 +133,12 @@ expr    : val                                                           {}
         | expr AND expr                                                 {}
         | expr OR expr                                                  {}
         | PARENTHESES_INITIATOR expr PARENTHESES_TERMINATOR             {}
+        | attrlist                                                      {}
         ;
+
+attrlist    : ID SEPARATOR ID                                           {}
+            | ID SEPARATOR attrlist                                     {}
+            ;
 
 val : ID                                                                {}
     | VALUE                                                             {}
