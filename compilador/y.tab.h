@@ -85,17 +85,18 @@ extern int yydebug;
     LEQ = 291,
     GEQ = 292,
     GREATER_THAN = 293,
-    NOT = 294,
-    AND = 295,
-    OR = 296,
-    PLUS_OPERATOR = 297,
-    MINUS_OPERATOR = 298,
-    MULTI_OPERATOR = 299,
-    DIVISION_OPERATOR = 300,
-    MOD_OPERATOR = 301,
-    POWER_OPERATOR = 302,
-    CONCAT = 303,
-    COPY_STRING = 304
+    LESS_THAN = 294,
+    NOT = 295,
+    AND = 296,
+    OR = 297,
+    PLUS_OPERATOR = 298,
+    MINUS_OPERATOR = 299,
+    MULTI_OPERATOR = 300,
+    DIVISION_OPERATOR = 301,
+    MOD_OPERATOR = 302,
+    POWER_OPERATOR = 303,
+    CONCAT = 304,
+    COPY_STRING = 305
   };
 #endif
 /* Tokens.  */
@@ -135,17 +136,18 @@ extern int yydebug;
 #define LEQ 291
 #define GEQ 292
 #define GREATER_THAN 293
-#define NOT 294
-#define AND 295
-#define OR 296
-#define PLUS_OPERATOR 297
-#define MINUS_OPERATOR 298
-#define MULTI_OPERATOR 299
-#define DIVISION_OPERATOR 300
-#define MOD_OPERATOR 301
-#define POWER_OPERATOR 302
-#define CONCAT 303
-#define COPY_STRING 304
+#define LESS_THAN 294
+#define NOT 295
+#define AND 296
+#define OR 297
+#define PLUS_OPERATOR 298
+#define MINUS_OPERATOR 299
+#define MULTI_OPERATOR 300
+#define DIVISION_OPERATOR 301
+#define MOD_OPERATOR 302
+#define POWER_OPERATOR 303
+#define CONCAT 304
+#define COPY_STRING 305
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
@@ -155,7 +157,7 @@ union YYSTYPE
 
     char * sValue;  /* string value */
 
-#line 159 "y.tab.h"
+#line 161 "y.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
