@@ -43,12 +43,13 @@ prog    : stmlist                                                       {}
         ;
 
 stmlist : stm SEMICOLON                                                 {}
-        | stmlist SEMICOLON stm				                            {}
+        | stm SEMICOLON stmlist				                            {}
         ;
 
 stm     : TYPE ids
         | TYPE ID ASSIGN expr                                           {}
         | ID ASSIGN expr                                                {}
+		| expr															{}
         | ID COPY_STRING expr                                           {}
         | DEF ID PARENTHESES_INITIATOR paramlist PARENTHESES_TERMINATOR
             BRACES_INITIATOR stmlist BRACES_TERMINATOR                  {}
@@ -85,7 +86,7 @@ param   : TYPE ID                                                       {}
         ;
 
 expr    : val                                                           {}
-        | expr PLUS_OPERATOR expr                                       {}
+		| expr PLUS_OPERATOR expr                                       {}
         | expr MINUS_OPERATOR expr                                      {}
         | expr MULTI_OPERATOR expr                                      {}
         | expr DIVISION_OPERATOR expr                                   {}
