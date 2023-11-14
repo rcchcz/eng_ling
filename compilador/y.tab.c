@@ -1521,146 +1521,188 @@ yyreduce:
 #line 1522 "y.tab.c"
     break;
 
+  case 26: /* types: TYPE  */
+#line 84 "parser.y"
+                                                                            {}
+#line 1528 "y.tab.c"
+    break;
+
+  case 27: /* types: TYPE COMMA types  */
+#line 85 "parser.y"
+                                                                            {}
+#line 1534 "y.tab.c"
+    break;
+
   case 28: /* paramlist: %empty  */
 #line 88 "parser.y"
                                                                             {}
-#line 1528 "y.tab.c"
+#line 1540 "y.tab.c"
     break;
 
   case 29: /* paramlist: paramlist COMMA param  */
 #line 89 "parser.y"
                                                                             {}
-#line 1534 "y.tab.c"
+#line 1546 "y.tab.c"
     break;
 
   case 30: /* param: TYPE ID  */
 #line 92 "parser.y"
                                                                             {}
-#line 1540 "y.tab.c"
+#line 1552 "y.tab.c"
+    break;
+
+  case 31: /* fieldlist: field  */
+#line 95 "parser.y"
+                                                                            {}
+#line 1558 "y.tab.c"
+    break;
+
+  case 32: /* fieldlist: fieldlist SEMICOLON field  */
+#line 96 "parser.y"
+                                                                            {}
+#line 1564 "y.tab.c"
+    break;
+
+  case 33: /* field: TYPE ID  */
+#line 99 "parser.y"
+                                                                            {}
+#line 1570 "y.tab.c"
+    break;
+
+  case 34: /* exprlist: expr  */
+#line 102 "parser.y"
+                                                                            {}
+#line 1576 "y.tab.c"
+    break;
+
+  case 35: /* exprlist: exprlist COMMA expr  */
+#line 103 "parser.y"
+                                                                            {}
+#line 1582 "y.tab.c"
     break;
 
   case 36: /* expr: val  */
 #line 106 "parser.y"
                                                                             {}
-#line 1546 "y.tab.c"
+#line 1588 "y.tab.c"
     break;
 
   case 37: /* expr: expr PLUS_OPERATOR expr  */
 #line 107 "parser.y"
                                                                             {}
-#line 1552 "y.tab.c"
+#line 1594 "y.tab.c"
     break;
 
   case 38: /* expr: expr MINUS_OPERATOR expr  */
 #line 108 "parser.y"
                                                                             {}
-#line 1558 "y.tab.c"
+#line 1600 "y.tab.c"
     break;
 
   case 39: /* expr: expr MULTI_OPERATOR expr  */
 #line 109 "parser.y"
                                                                             {}
-#line 1564 "y.tab.c"
+#line 1606 "y.tab.c"
     break;
 
   case 40: /* expr: expr DIVISION_OPERATOR expr  */
 #line 110 "parser.y"
                                                                             {}
-#line 1570 "y.tab.c"
+#line 1612 "y.tab.c"
     break;
 
   case 41: /* expr: expr MOD_OPERATOR expr  */
 #line 111 "parser.y"
                                                                             {}
-#line 1576 "y.tab.c"
+#line 1618 "y.tab.c"
     break;
 
   case 42: /* expr: expr POWER_OPERATOR expr  */
 #line 112 "parser.y"
                                                                             {}
-#line 1582 "y.tab.c"
+#line 1624 "y.tab.c"
     break;
 
   case 43: /* expr: expr CONCAT expr  */
 #line 113 "parser.y"
                                                                             {}
-#line 1588 "y.tab.c"
+#line 1630 "y.tab.c"
     break;
 
   case 44: /* expr: expr EQUAL expr  */
 #line 114 "parser.y"
                                                                             {}
-#line 1594 "y.tab.c"
+#line 1636 "y.tab.c"
     break;
 
   case 45: /* expr: expr NOT_EQUAL expr  */
 #line 115 "parser.y"
                                                                             {}
-#line 1600 "y.tab.c"
+#line 1642 "y.tab.c"
     break;
 
   case 46: /* expr: expr LEQ expr  */
 #line 116 "parser.y"
                                                                             {}
-#line 1606 "y.tab.c"
+#line 1648 "y.tab.c"
     break;
 
   case 47: /* expr: expr GEQ expr  */
 #line 117 "parser.y"
                                                                             {}
-#line 1612 "y.tab.c"
+#line 1654 "y.tab.c"
     break;
 
   case 48: /* expr: expr LESS_THAN expr  */
 #line 118 "parser.y"
                                                                             {}
-#line 1618 "y.tab.c"
+#line 1660 "y.tab.c"
     break;
 
   case 49: /* expr: expr GREATER_THAN expr  */
 #line 119 "parser.y"
                                                                             {}
-#line 1624 "y.tab.c"
+#line 1666 "y.tab.c"
     break;
 
   case 50: /* expr: NOT expr  */
 #line 120 "parser.y"
                                                                             {}
-#line 1630 "y.tab.c"
+#line 1672 "y.tab.c"
     break;
 
   case 51: /* expr: expr AND expr  */
 #line 121 "parser.y"
                                                                             {}
-#line 1636 "y.tab.c"
+#line 1678 "y.tab.c"
     break;
 
   case 52: /* expr: expr OR expr  */
 #line 122 "parser.y"
                                                                             {}
-#line 1642 "y.tab.c"
+#line 1684 "y.tab.c"
     break;
 
   case 53: /* expr: PARENTHESES_INITIATOR expr PARENTHESES_TERMINATOR  */
 #line 123 "parser.y"
                                                                             {}
-#line 1648 "y.tab.c"
+#line 1690 "y.tab.c"
     break;
 
   case 54: /* val: ID  */
 #line 126 "parser.y"
                                                                             {}
-#line 1654 "y.tab.c"
+#line 1696 "y.tab.c"
     break;
 
   case 55: /* val: VALUE  */
 #line 127 "parser.y"
                                                                             {}
-#line 1660 "y.tab.c"
+#line 1702 "y.tab.c"
     break;
 
 
-#line 1664 "y.tab.c"
+#line 1706 "y.tab.c"
 
       default: break;
     }

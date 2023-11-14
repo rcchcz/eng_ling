@@ -81,8 +81,8 @@ ids     : ID                                                                {}
         | ID COMMA ids                                                      {}
         ;
 
-types   : TYPE
-        | TYPE COMMA types
+types   : TYPE                                                              {}
+        | TYPE COMMA types                                                  {}
         ;
 
 paramlist   :                                                               {}
@@ -92,15 +92,15 @@ paramlist   :                                                               {}
 param   : TYPE ID                                                           {}
         ;
 
-fieldlist   : field
-            | fieldlist SEMICOLON field
+fieldlist   : field                                                         {}
+            | fieldlist SEMICOLON field                                     {}
             ;
 
-field   : TYPE ID
+field   : TYPE ID                                                           {}
         ;
 
-exprlist    : expr
-            | exprlist COMMA expr
+exprlist    : expr                                                          {}
+            | exprlist COMMA expr                                           {}
             ;
 
 expr    : val                                                               {}
