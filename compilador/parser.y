@@ -69,6 +69,8 @@ stm     : TYPE ids
         | IF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR ELSE stm   {}
         | BREAK                                                         {}
         | RETURN expr                                                   {}
+        | IN PARENTHESES_INITIATOR ID PARENTHESES_TERMINATOR            {}
+        | OUT expr                                                      {}
         ;
 
 ids     : ID
