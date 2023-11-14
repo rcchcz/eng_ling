@@ -39,40 +39,47 @@ extern char * yytext;
 %left MULTI_OPERATOR DIVISION_OPERATOR MOD_OPERATOR POWER_OPERATOR
 %nonassoc CONCAT
 %%
-prog    : stmlist                                                       {} 
+prog    : stmlist                                                           {}
         ;
 
-stmlist : stm SEMICOLON                                                 {}
-        | stmlist SEMICOLON stm				                            {}
+stmlist : stm SEMICOLON                                                     {}
+        | stmlist SEMICOLON stm				                                {}
         ;
 
 stm     : TYPE ids
-        | TYPE ID ASSIGN expr                                           {}
-        | ID ASSIGN expr                                                {}
-        | ID COPY_STRING expr                                           {}
+        | TYPE ID ASSIGN expr                                               {}
+        | ID ASSIGN expr                                                    {}
+        | ID COPY_STRING expr                                               {}
         | DEF ID PARENTHESES_INITIATOR paramlist PARENTHESES_TERMINATOR
-            BRACES_INITIATOR stmlist BRACES_TERMINATOR                  {}
+            BRACES_INITIATOR stmlist BRACES_TERMINATOR                      {}
         | WHILE expr 
-            BRACES_INITIATOR stmlist BRACES_TERMINATOR                  {}
+            BRACES_INITIATOR stmlist BRACES_TERMINATOR                      {}
         | FOR PARENTHESES_INITIATOR
             TYPE ID ITERATOR
             BRACKETS_INITIATOR VALUE COMMA VALUE BRACKETS_TERMINATOR
-            BRACES_INITIATOR stmlist BRACES_TERMINATOR                  {}
+            BRACES_INITIATOR stmlist BRACES_TERMINATOR                      {}
         | FOR PARENTHESES_INITIATOR TYPE ID ITERATOR ID
-            BRACES_INITIATOR stmlist BRACES_TERMINATOR                  {}
-        | IF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR %prec ELSE {}
+            BRACES_INITIATOR stmlist BRACES_TERMINATOR                      {}
+        | IF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR %prec ELSE     {}
         | IF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR
-            ELIF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR        {}
+            ELIF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR            {}
         | IF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR
             ELIF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR
-            ELSE BRACES_INITIATOR stmlist BRACES_TERMINATOR             {}
-        | IF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR ELSE stm   {}
-        | BREAK                                                         {}
-        | RETURN expr                                                   {}
+            ELSE BRACES_INITIATOR stmlist BRACES_TERMINATOR                 {}
+        | IF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR ELSE stm       {}
+        | BREAK                                                             {}
+        | RETURN expr                                                       {}
+        | STRUCT ID BRACES_INITIATOR fieldlist BRACES_TERMINATOR            {}
+        | TUPLE PARENTHESES_INITIATOR types PARENTHESES_TERMINATOR
+            ID ASSIGN PARENTHESES_INITIATOR exprlist PARENTHESES_TERMINATOR {}
+        | ARRAY BRACKETS_INITIATOR VALUE BRACKETS_TERMINATOR                {}
         ;
 
 ids     : ID
         | ID COMMA ids
+
+types   : TYPE
+        | TYPE COMMA types
 
 paramlist   : 
             | paramlist COMMA param
@@ -80,6 +87,17 @@ paramlist   :
 
 param   : TYPE ID
         ;
+
+fieldlist   : field
+            | fieldlist SEMICOLON field
+            ;
+
+field   : TYPE ID
+        ;
+
+exprlist    : expr
+            | exprlist COMMA expr
+            ;
 
 expr    : val
         | expr PLUS_OPERATOR expr
