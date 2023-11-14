@@ -46,9 +46,10 @@ stmlist : stm SEMICOLON                                                 {}
         | stmlist SEMICOLON stm				                            {}
         ;
 
-stm     : TYPE ID
+stm     : TYPE ids
         | TYPE ID ASSIGN expr                                           {}
         | ID ASSIGN expr                                                {}
+        | ID COPY_STRING expr                                           {}
         | DEF ID PARENTHESES_INITIATOR paramlist PARENTHESES_TERMINATOR
             BRACES_INITIATOR stmlist BRACES_TERMINATOR                  {}
         | WHILE expr 
@@ -70,6 +71,8 @@ stm     : TYPE ID
         | RETURN expr                                                   {}
         ;
 
+ids     : ID
+        | ID COMMA ids
 
 paramlist   : 
             | paramlist COMMA param
@@ -78,8 +81,7 @@ paramlist   :
 param   : TYPE ID
         ;
 
-expr    : ID
-        | VALUE
+expr    : val
         | expr PLUS_OPERATOR expr
         | expr MINUS_OPERATOR expr
         | expr MULTI_OPERATOR expr
@@ -87,7 +89,6 @@ expr    : ID
         | expr MOD_OPERATOR expr
         | expr POWER_OPERATOR expr
         | expr CONCAT expr
-        | expr COPY_STRING expr
         | expr EQUAL expr
         | expr NOT_EQUAL expr
         | expr LEQ expr
@@ -98,6 +99,10 @@ expr    : ID
         | expr OR expr
         | PARENTHESES_INITIATOR expr PARENTHESES_TERMINATOR
         ;
+
+val : ID
+    | VALUE
+    ;
 
 %%
 
