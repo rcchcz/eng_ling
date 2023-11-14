@@ -1,6 +1,6 @@
 %{
 #include <stdio.h>
-#include <string>
+#include <string.h>
 
 int yylex(void);
 int yyerror(char *s);

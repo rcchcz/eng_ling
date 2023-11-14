@@ -39,7 +39,7 @@ Grammar
    20 ids: ID
    21    | ID COMMA ids
 
-   22 paramlist: %empty
+   22 paramlist: ε
    23          | paramlist COMMA param
 
    24 param: TYPE ID
@@ -153,7 +153,7 @@ Nonterminals, with rules where they appear
 
 State 0
 
-    0 $accept: . prog $end
+    0 $accept: • prog $end
 
     ID      shift, and go to state 1
     TYPE    shift, and go to state 2
@@ -173,8 +173,8 @@ State 0
 
 State 1
 
-    6 stm: ID . ASSIGN expr
-    7    | ID . COPY_STRING expr
+    6 stm: ID • ASSIGN expr
+    7    | ID • COPY_STRING expr
 
     ASSIGN       shift, and go to state 14
     COPY_STRING  shift, and go to state 15
@@ -182,8 +182,8 @@ State 1
 
 State 2
 
-    4 stm: TYPE . ids
-    5    | TYPE . ID ASSIGN expr
+    4 stm: TYPE • ids
+    5    | TYPE • ID ASSIGN expr
 
     ID  shift, and go to state 16
 
@@ -192,14 +192,14 @@ State 2
 
 State 3
 
-    8 stm: DEF . ID PARENTHESES_INITIATOR paramlist PARENTHESES_TERMINATOR BRACES_INITIATOR stmlist BRACES_TERMINATOR
+    8 stm: DEF • ID PARENTHESES_INITIATOR paramlist PARENTHESES_TERMINATOR BRACES_INITIATOR stmlist BRACES_TERMINATOR
 
     ID  shift, and go to state 18
 
 
 State 4
 
-    9 stm: WHILE . expr BRACES_INITIATOR stmlist BRACES_TERMINATOR
+    9 stm: WHILE • expr BRACES_INITIATOR stmlist BRACES_TERMINATOR
 
     ID                     shift, and go to state 19
     VALUE                  shift, and go to state 20
@@ -212,18 +212,18 @@ State 4
 
 State 5
 
-   10 stm: FOR . PARENTHESES_INITIATOR TYPE ID ITERATOR BRACKETS_INITIATOR VALUE COMMA VALUE BRACKETS_TERMINATOR BRACES_INITIATOR stmlist BRACES_TERMINATOR
-   11    | FOR . PARENTHESES_INITIATOR TYPE ID ITERATOR ID BRACES_INITIATOR stmlist BRACES_TERMINATOR
+   10 stm: FOR • PARENTHESES_INITIATOR TYPE ID ITERATOR BRACKETS_INITIATOR VALUE COMMA VALUE BRACKETS_TERMINATOR BRACES_INITIATOR stmlist BRACES_TERMINATOR
+   11    | FOR • PARENTHESES_INITIATOR TYPE ID ITERATOR ID BRACES_INITIATOR stmlist BRACES_TERMINATOR
 
     PARENTHESES_INITIATOR  shift, and go to state 25
 
 
 State 6
 
-   12 stm: IF . expr BRACES_INITIATOR stmlist BRACES_TERMINATOR
-   13    | IF . expr BRACES_INITIATOR stmlist BRACES_TERMINATOR ELIF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR
-   14    | IF . expr BRACES_INITIATOR stmlist BRACES_TERMINATOR ELIF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR ELSE BRACES_INITIATOR stmlist BRACES_TERMINATOR
-   15    | IF . expr BRACES_INITIATOR stmlist BRACES_TERMINATOR ELSE stm
+   12 stm: IF • expr BRACES_INITIATOR stmlist BRACES_TERMINATOR
+   13    | IF • expr BRACES_INITIATOR stmlist BRACES_TERMINATOR ELIF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR
+   14    | IF • expr BRACES_INITIATOR stmlist BRACES_TERMINATOR ELIF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR ELSE BRACES_INITIATOR stmlist BRACES_TERMINATOR
+   15    | IF • expr BRACES_INITIATOR stmlist BRACES_TERMINATOR ELSE stm
 
     ID                     shift, and go to state 19
     VALUE                  shift, and go to state 20
@@ -236,14 +236,14 @@ State 6
 
 State 7
 
-   16 stm: BREAK .
+   16 stm: BREAK •
 
     $default  reduce using rule 16 (stm)
 
 
 State 8
 
-   17 stm: RETURN . expr
+   17 stm: RETURN • expr
 
     ID                     shift, and go to state 19
     VALUE                  shift, and go to state 20
@@ -256,14 +256,14 @@ State 8
 
 State 9
 
-   18 stm: IN . PARENTHESES_INITIATOR ID PARENTHESES_TERMINATOR
+   18 stm: IN • PARENTHESES_INITIATOR ID PARENTHESES_TERMINATOR
 
     PARENTHESES_INITIATOR  shift, and go to state 28
 
 
 State 10
 
-   19 stm: OUT . expr
+   19 stm: OUT • expr
 
     ID                     shift, and go to state 19
     VALUE                  shift, and go to state 20
@@ -276,15 +276,15 @@ State 10
 
 State 11
 
-    0 $accept: prog . $end
+    0 $accept: prog • $end
 
     $end  shift, and go to state 30
 
 
 State 12
 
-    1 prog: stmlist .
-    3 stmlist: stmlist . SEMICOLON stm
+    1 prog: stmlist •
+    3 stmlist: stmlist • SEMICOLON stm
 
     SEMICOLON  shift, and go to state 31
 
@@ -293,14 +293,14 @@ State 12
 
 State 13
 
-    2 stmlist: stm . SEMICOLON
+    2 stmlist: stm • SEMICOLON
 
     SEMICOLON  shift, and go to state 32
 
 
 State 14
 
-    6 stm: ID ASSIGN . expr
+    6 stm: ID ASSIGN • expr
 
     ID                     shift, and go to state 19
     VALUE                  shift, and go to state 20
@@ -313,7 +313,7 @@ State 14
 
 State 15
 
-    7 stm: ID COPY_STRING . expr
+    7 stm: ID COPY_STRING • expr
 
     ID                     shift, and go to state 19
     VALUE                  shift, and go to state 20
@@ -326,9 +326,9 @@ State 15
 
 State 16
 
-    5 stm: TYPE ID . ASSIGN expr
-   20 ids: ID .
-   21    | ID . COMMA ids
+    5 stm: TYPE ID • ASSIGN expr
+   20 ids: ID •
+   21    | ID • COMMA ids
 
     ASSIGN  shift, and go to state 35
     COMMA   shift, and go to state 36
@@ -338,35 +338,35 @@ State 16
 
 State 17
 
-    4 stm: TYPE ids .
+    4 stm: TYPE ids •
 
     $default  reduce using rule 4 (stm)
 
 
 State 18
 
-    8 stm: DEF ID . PARENTHESES_INITIATOR paramlist PARENTHESES_TERMINATOR BRACES_INITIATOR stmlist BRACES_TERMINATOR
+    8 stm: DEF ID • PARENTHESES_INITIATOR paramlist PARENTHESES_TERMINATOR BRACES_INITIATOR stmlist BRACES_TERMINATOR
 
     PARENTHESES_INITIATOR  shift, and go to state 37
 
 
 State 19
 
-   43 val: ID .
+   43 val: ID •
 
     $default  reduce using rule 43 (val)
 
 
 State 20
 
-   44 val: VALUE .
+   44 val: VALUE •
 
     $default  reduce using rule 44 (val)
 
 
 State 21
 
-   42 expr: PARENTHESES_INITIATOR . expr PARENTHESES_TERMINATOR
+   42 expr: PARENTHESES_INITIATOR • expr PARENTHESES_TERMINATOR
 
     ID                     shift, and go to state 19
     VALUE                  shift, and go to state 20
@@ -379,7 +379,7 @@ State 21
 
 State 22
 
-   39 expr: NOT . expr
+   39 expr: NOT • expr
 
     ID                     shift, and go to state 19
     VALUE                  shift, and go to state 20
@@ -392,22 +392,22 @@ State 22
 
 State 23
 
-    9 stm: WHILE expr . BRACES_INITIATOR stmlist BRACES_TERMINATOR
-   26 expr: expr . PLUS_OPERATOR expr
-   27     | expr . MINUS_OPERATOR expr
-   28     | expr . MULTI_OPERATOR expr
-   29     | expr . DIVISION_OPERATOR expr
-   30     | expr . MOD_OPERATOR expr
-   31     | expr . POWER_OPERATOR expr
-   32     | expr . CONCAT expr
-   33     | expr . EQUAL expr
-   34     | expr . NOT_EQUAL expr
-   35     | expr . LEQ expr
-   36     | expr . GEQ expr
-   37     | expr . LESS_THAN expr
-   38     | expr . GREATER_THAN expr
-   40     | expr . AND expr
-   41     | expr . OR expr
+    9 stm: WHILE expr • BRACES_INITIATOR stmlist BRACES_TERMINATOR
+   26 expr: expr • PLUS_OPERATOR expr
+   27     | expr • MINUS_OPERATOR expr
+   28     | expr • MULTI_OPERATOR expr
+   29     | expr • DIVISION_OPERATOR expr
+   30     | expr • MOD_OPERATOR expr
+   31     | expr • POWER_OPERATOR expr
+   32     | expr • CONCAT expr
+   33     | expr • EQUAL expr
+   34     | expr • NOT_EQUAL expr
+   35     | expr • LEQ expr
+   36     | expr • GEQ expr
+   37     | expr • LESS_THAN expr
+   38     | expr • GREATER_THAN expr
+   40     | expr • AND expr
+   41     | expr • OR expr
 
     BRACES_INITIATOR   shift, and go to state 40
     EQUAL              shift, and go to state 41
@@ -429,40 +429,40 @@ State 23
 
 State 24
 
-   25 expr: val .
+   25 expr: val •
 
     $default  reduce using rule 25 (expr)
 
 
 State 25
 
-   10 stm: FOR PARENTHESES_INITIATOR . TYPE ID ITERATOR BRACKETS_INITIATOR VALUE COMMA VALUE BRACKETS_TERMINATOR BRACES_INITIATOR stmlist BRACES_TERMINATOR
-   11    | FOR PARENTHESES_INITIATOR . TYPE ID ITERATOR ID BRACES_INITIATOR stmlist BRACES_TERMINATOR
+   10 stm: FOR PARENTHESES_INITIATOR • TYPE ID ITERATOR BRACKETS_INITIATOR VALUE COMMA VALUE BRACKETS_TERMINATOR BRACES_INITIATOR stmlist BRACES_TERMINATOR
+   11    | FOR PARENTHESES_INITIATOR • TYPE ID ITERATOR ID BRACES_INITIATOR stmlist BRACES_TERMINATOR
 
     TYPE  shift, and go to state 56
 
 
 State 26
 
-   12 stm: IF expr . BRACES_INITIATOR stmlist BRACES_TERMINATOR
-   13    | IF expr . BRACES_INITIATOR stmlist BRACES_TERMINATOR ELIF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR
-   14    | IF expr . BRACES_INITIATOR stmlist BRACES_TERMINATOR ELIF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR ELSE BRACES_INITIATOR stmlist BRACES_TERMINATOR
-   15    | IF expr . BRACES_INITIATOR stmlist BRACES_TERMINATOR ELSE stm
-   26 expr: expr . PLUS_OPERATOR expr
-   27     | expr . MINUS_OPERATOR expr
-   28     | expr . MULTI_OPERATOR expr
-   29     | expr . DIVISION_OPERATOR expr
-   30     | expr . MOD_OPERATOR expr
-   31     | expr . POWER_OPERATOR expr
-   32     | expr . CONCAT expr
-   33     | expr . EQUAL expr
-   34     | expr . NOT_EQUAL expr
-   35     | expr . LEQ expr
-   36     | expr . GEQ expr
-   37     | expr . LESS_THAN expr
-   38     | expr . GREATER_THAN expr
-   40     | expr . AND expr
-   41     | expr . OR expr
+   12 stm: IF expr • BRACES_INITIATOR stmlist BRACES_TERMINATOR
+   13    | IF expr • BRACES_INITIATOR stmlist BRACES_TERMINATOR ELIF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR
+   14    | IF expr • BRACES_INITIATOR stmlist BRACES_TERMINATOR ELIF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR ELSE BRACES_INITIATOR stmlist BRACES_TERMINATOR
+   15    | IF expr • BRACES_INITIATOR stmlist BRACES_TERMINATOR ELSE stm
+   26 expr: expr • PLUS_OPERATOR expr
+   27     | expr • MINUS_OPERATOR expr
+   28     | expr • MULTI_OPERATOR expr
+   29     | expr • DIVISION_OPERATOR expr
+   30     | expr • MOD_OPERATOR expr
+   31     | expr • POWER_OPERATOR expr
+   32     | expr • CONCAT expr
+   33     | expr • EQUAL expr
+   34     | expr • NOT_EQUAL expr
+   35     | expr • LEQ expr
+   36     | expr • GEQ expr
+   37     | expr • LESS_THAN expr
+   38     | expr • GREATER_THAN expr
+   40     | expr • AND expr
+   41     | expr • OR expr
 
     BRACES_INITIATOR   shift, and go to state 57
     EQUAL              shift, and go to state 41
@@ -484,22 +484,22 @@ State 26
 
 State 27
 
-   17 stm: RETURN expr .
-   26 expr: expr . PLUS_OPERATOR expr
-   27     | expr . MINUS_OPERATOR expr
-   28     | expr . MULTI_OPERATOR expr
-   29     | expr . DIVISION_OPERATOR expr
-   30     | expr . MOD_OPERATOR expr
-   31     | expr . POWER_OPERATOR expr
-   32     | expr . CONCAT expr
-   33     | expr . EQUAL expr
-   34     | expr . NOT_EQUAL expr
-   35     | expr . LEQ expr
-   36     | expr . GEQ expr
-   37     | expr . LESS_THAN expr
-   38     | expr . GREATER_THAN expr
-   40     | expr . AND expr
-   41     | expr . OR expr
+   17 stm: RETURN expr •
+   26 expr: expr • PLUS_OPERATOR expr
+   27     | expr • MINUS_OPERATOR expr
+   28     | expr • MULTI_OPERATOR expr
+   29     | expr • DIVISION_OPERATOR expr
+   30     | expr • MOD_OPERATOR expr
+   31     | expr • POWER_OPERATOR expr
+   32     | expr • CONCAT expr
+   33     | expr • EQUAL expr
+   34     | expr • NOT_EQUAL expr
+   35     | expr • LEQ expr
+   36     | expr • GEQ expr
+   37     | expr • LESS_THAN expr
+   38     | expr • GREATER_THAN expr
+   40     | expr • AND expr
+   41     | expr • OR expr
 
     EQUAL              shift, and go to state 41
     NOT_EQUAL          shift, and go to state 42
@@ -522,29 +522,29 @@ State 27
 
 State 28
 
-   18 stm: IN PARENTHESES_INITIATOR . ID PARENTHESES_TERMINATOR
+   18 stm: IN PARENTHESES_INITIATOR • ID PARENTHESES_TERMINATOR
 
     ID  shift, and go to state 58
 
 
 State 29
 
-   19 stm: OUT expr .
-   26 expr: expr . PLUS_OPERATOR expr
-   27     | expr . MINUS_OPERATOR expr
-   28     | expr . MULTI_OPERATOR expr
-   29     | expr . DIVISION_OPERATOR expr
-   30     | expr . MOD_OPERATOR expr
-   31     | expr . POWER_OPERATOR expr
-   32     | expr . CONCAT expr
-   33     | expr . EQUAL expr
-   34     | expr . NOT_EQUAL expr
-   35     | expr . LEQ expr
-   36     | expr . GEQ expr
-   37     | expr . LESS_THAN expr
-   38     | expr . GREATER_THAN expr
-   40     | expr . AND expr
-   41     | expr . OR expr
+   19 stm: OUT expr •
+   26 expr: expr • PLUS_OPERATOR expr
+   27     | expr • MINUS_OPERATOR expr
+   28     | expr • MULTI_OPERATOR expr
+   29     | expr • DIVISION_OPERATOR expr
+   30     | expr • MOD_OPERATOR expr
+   31     | expr • POWER_OPERATOR expr
+   32     | expr • CONCAT expr
+   33     | expr • EQUAL expr
+   34     | expr • NOT_EQUAL expr
+   35     | expr • LEQ expr
+   36     | expr • GEQ expr
+   37     | expr • LESS_THAN expr
+   38     | expr • GREATER_THAN expr
+   40     | expr • AND expr
+   41     | expr • OR expr
 
     EQUAL              shift, and go to state 41
     NOT_EQUAL          shift, and go to state 42
@@ -567,14 +567,14 @@ State 29
 
 State 30
 
-    0 $accept: prog $end .
+    0 $accept: prog $end •
 
     $default  accept
 
 
 State 31
 
-    3 stmlist: stmlist SEMICOLON . stm
+    3 stmlist: stmlist SEMICOLON • stm
 
     ID      shift, and go to state 1
     TYPE    shift, and go to state 2
@@ -592,29 +592,29 @@ State 31
 
 State 32
 
-    2 stmlist: stm SEMICOLON .
+    2 stmlist: stm SEMICOLON •
 
     $default  reduce using rule 2 (stmlist)
 
 
 State 33
 
-    6 stm: ID ASSIGN expr .
-   26 expr: expr . PLUS_OPERATOR expr
-   27     | expr . MINUS_OPERATOR expr
-   28     | expr . MULTI_OPERATOR expr
-   29     | expr . DIVISION_OPERATOR expr
-   30     | expr . MOD_OPERATOR expr
-   31     | expr . POWER_OPERATOR expr
-   32     | expr . CONCAT expr
-   33     | expr . EQUAL expr
-   34     | expr . NOT_EQUAL expr
-   35     | expr . LEQ expr
-   36     | expr . GEQ expr
-   37     | expr . LESS_THAN expr
-   38     | expr . GREATER_THAN expr
-   40     | expr . AND expr
-   41     | expr . OR expr
+    6 stm: ID ASSIGN expr •
+   26 expr: expr • PLUS_OPERATOR expr
+   27     | expr • MINUS_OPERATOR expr
+   28     | expr • MULTI_OPERATOR expr
+   29     | expr • DIVISION_OPERATOR expr
+   30     | expr • MOD_OPERATOR expr
+   31     | expr • POWER_OPERATOR expr
+   32     | expr • CONCAT expr
+   33     | expr • EQUAL expr
+   34     | expr • NOT_EQUAL expr
+   35     | expr • LEQ expr
+   36     | expr • GEQ expr
+   37     | expr • LESS_THAN expr
+   38     | expr • GREATER_THAN expr
+   40     | expr • AND expr
+   41     | expr • OR expr
 
     EQUAL              shift, and go to state 41
     NOT_EQUAL          shift, and go to state 42
@@ -637,22 +637,22 @@ State 33
 
 State 34
 
-    7 stm: ID COPY_STRING expr .
-   26 expr: expr . PLUS_OPERATOR expr
-   27     | expr . MINUS_OPERATOR expr
-   28     | expr . MULTI_OPERATOR expr
-   29     | expr . DIVISION_OPERATOR expr
-   30     | expr . MOD_OPERATOR expr
-   31     | expr . POWER_OPERATOR expr
-   32     | expr . CONCAT expr
-   33     | expr . EQUAL expr
-   34     | expr . NOT_EQUAL expr
-   35     | expr . LEQ expr
-   36     | expr . GEQ expr
-   37     | expr . LESS_THAN expr
-   38     | expr . GREATER_THAN expr
-   40     | expr . AND expr
-   41     | expr . OR expr
+    7 stm: ID COPY_STRING expr •
+   26 expr: expr • PLUS_OPERATOR expr
+   27     | expr • MINUS_OPERATOR expr
+   28     | expr • MULTI_OPERATOR expr
+   29     | expr • DIVISION_OPERATOR expr
+   30     | expr • MOD_OPERATOR expr
+   31     | expr • POWER_OPERATOR expr
+   32     | expr • CONCAT expr
+   33     | expr • EQUAL expr
+   34     | expr • NOT_EQUAL expr
+   35     | expr • LEQ expr
+   36     | expr • GEQ expr
+   37     | expr • LESS_THAN expr
+   38     | expr • GREATER_THAN expr
+   40     | expr • AND expr
+   41     | expr • OR expr
 
     EQUAL              shift, and go to state 41
     NOT_EQUAL          shift, and go to state 42
@@ -675,7 +675,7 @@ State 34
 
 State 35
 
-    5 stm: TYPE ID ASSIGN . expr
+    5 stm: TYPE ID ASSIGN • expr
 
     ID                     shift, and go to state 19
     VALUE                  shift, and go to state 20
@@ -688,7 +688,7 @@ State 35
 
 State 36
 
-   21 ids: ID COMMA . ids
+   21 ids: ID COMMA • ids
 
     ID  shift, and go to state 61
 
@@ -697,7 +697,7 @@ State 36
 
 State 37
 
-    8 stm: DEF ID PARENTHESES_INITIATOR . paramlist PARENTHESES_TERMINATOR BRACES_INITIATOR stmlist BRACES_TERMINATOR
+    8 stm: DEF ID PARENTHESES_INITIATOR • paramlist PARENTHESES_TERMINATOR BRACES_INITIATOR stmlist BRACES_TERMINATOR
 
     $default  reduce using rule 22 (paramlist)
 
@@ -706,22 +706,22 @@ State 37
 
 State 38
 
-   26 expr: expr . PLUS_OPERATOR expr
-   27     | expr . MINUS_OPERATOR expr
-   28     | expr . MULTI_OPERATOR expr
-   29     | expr . DIVISION_OPERATOR expr
-   30     | expr . MOD_OPERATOR expr
-   31     | expr . POWER_OPERATOR expr
-   32     | expr . CONCAT expr
-   33     | expr . EQUAL expr
-   34     | expr . NOT_EQUAL expr
-   35     | expr . LEQ expr
-   36     | expr . GEQ expr
-   37     | expr . LESS_THAN expr
-   38     | expr . GREATER_THAN expr
-   40     | expr . AND expr
-   41     | expr . OR expr
-   42     | PARENTHESES_INITIATOR expr . PARENTHESES_TERMINATOR
+   26 expr: expr • PLUS_OPERATOR expr
+   27     | expr • MINUS_OPERATOR expr
+   28     | expr • MULTI_OPERATOR expr
+   29     | expr • DIVISION_OPERATOR expr
+   30     | expr • MOD_OPERATOR expr
+   31     | expr • POWER_OPERATOR expr
+   32     | expr • CONCAT expr
+   33     | expr • EQUAL expr
+   34     | expr • NOT_EQUAL expr
+   35     | expr • LEQ expr
+   36     | expr • GEQ expr
+   37     | expr • LESS_THAN expr
+   38     | expr • GREATER_THAN expr
+   40     | expr • AND expr
+   41     | expr • OR expr
+   42     | PARENTHESES_INITIATOR expr • PARENTHESES_TERMINATOR
 
     PARENTHESES_TERMINATOR  shift, and go to state 64
     EQUAL                   shift, and go to state 41
@@ -743,22 +743,22 @@ State 38
 
 State 39
 
-   26 expr: expr . PLUS_OPERATOR expr
-   27     | expr . MINUS_OPERATOR expr
-   28     | expr . MULTI_OPERATOR expr
-   29     | expr . DIVISION_OPERATOR expr
-   30     | expr . MOD_OPERATOR expr
-   31     | expr . POWER_OPERATOR expr
-   32     | expr . CONCAT expr
-   33     | expr . EQUAL expr
-   34     | expr . NOT_EQUAL expr
-   35     | expr . LEQ expr
-   36     | expr . GEQ expr
-   37     | expr . LESS_THAN expr
-   38     | expr . GREATER_THAN expr
-   39     | NOT expr .
-   40     | expr . AND expr
-   41     | expr . OR expr
+   26 expr: expr • PLUS_OPERATOR expr
+   27     | expr • MINUS_OPERATOR expr
+   28     | expr • MULTI_OPERATOR expr
+   29     | expr • DIVISION_OPERATOR expr
+   30     | expr • MOD_OPERATOR expr
+   31     | expr • POWER_OPERATOR expr
+   32     | expr • CONCAT expr
+   33     | expr • EQUAL expr
+   34     | expr • NOT_EQUAL expr
+   35     | expr • LEQ expr
+   36     | expr • GEQ expr
+   37     | expr • LESS_THAN expr
+   38     | expr • GREATER_THAN expr
+   39     | NOT expr •
+   40     | expr • AND expr
+   41     | expr • OR expr
 
     EQUAL              shift, and go to state 41
     NOT_EQUAL          shift, and go to state 42
@@ -779,7 +779,7 @@ State 39
 
 State 40
 
-    9 stm: WHILE expr BRACES_INITIATOR . stmlist BRACES_TERMINATOR
+    9 stm: WHILE expr BRACES_INITIATOR • stmlist BRACES_TERMINATOR
 
     ID      shift, and go to state 1
     TYPE    shift, and go to state 2
@@ -798,7 +798,7 @@ State 40
 
 State 41
 
-   33 expr: expr EQUAL . expr
+   33 expr: expr EQUAL • expr
 
     ID                     shift, and go to state 19
     VALUE                  shift, and go to state 20
@@ -811,7 +811,7 @@ State 41
 
 State 42
 
-   34 expr: expr NOT_EQUAL . expr
+   34 expr: expr NOT_EQUAL • expr
 
     ID                     shift, and go to state 19
     VALUE                  shift, and go to state 20
@@ -824,7 +824,7 @@ State 42
 
 State 43
 
-   35 expr: expr LEQ . expr
+   35 expr: expr LEQ • expr
 
     ID                     shift, and go to state 19
     VALUE                  shift, and go to state 20
@@ -837,7 +837,7 @@ State 43
 
 State 44
 
-   36 expr: expr GEQ . expr
+   36 expr: expr GEQ • expr
 
     ID                     shift, and go to state 19
     VALUE                  shift, and go to state 20
@@ -850,7 +850,7 @@ State 44
 
 State 45
 
-   38 expr: expr GREATER_THAN . expr
+   38 expr: expr GREATER_THAN • expr
 
     ID                     shift, and go to state 19
     VALUE                  shift, and go to state 20
@@ -863,7 +863,7 @@ State 45
 
 State 46
 
-   37 expr: expr LESS_THAN . expr
+   37 expr: expr LESS_THAN • expr
 
     ID                     shift, and go to state 19
     VALUE                  shift, and go to state 20
@@ -876,7 +876,7 @@ State 46
 
 State 47
 
-   40 expr: expr AND . expr
+   40 expr: expr AND • expr
 
     ID                     shift, and go to state 19
     VALUE                  shift, and go to state 20
@@ -889,7 +889,7 @@ State 47
 
 State 48
 
-   41 expr: expr OR . expr
+   41 expr: expr OR • expr
 
     ID                     shift, and go to state 19
     VALUE                  shift, and go to state 20
@@ -902,7 +902,7 @@ State 48
 
 State 49
 
-   26 expr: expr PLUS_OPERATOR . expr
+   26 expr: expr PLUS_OPERATOR • expr
 
     ID                     shift, and go to state 19
     VALUE                  shift, and go to state 20
@@ -915,7 +915,7 @@ State 49
 
 State 50
 
-   27 expr: expr MINUS_OPERATOR . expr
+   27 expr: expr MINUS_OPERATOR • expr
 
     ID                     shift, and go to state 19
     VALUE                  shift, and go to state 20
@@ -928,7 +928,7 @@ State 50
 
 State 51
 
-   28 expr: expr MULTI_OPERATOR . expr
+   28 expr: expr MULTI_OPERATOR • expr
 
     ID                     shift, and go to state 19
     VALUE                  shift, and go to state 20
@@ -941,7 +941,7 @@ State 51
 
 State 52
 
-   29 expr: expr DIVISION_OPERATOR . expr
+   29 expr: expr DIVISION_OPERATOR • expr
 
     ID                     shift, and go to state 19
     VALUE                  shift, and go to state 20
@@ -954,7 +954,7 @@ State 52
 
 State 53
 
-   30 expr: expr MOD_OPERATOR . expr
+   30 expr: expr MOD_OPERATOR • expr
 
     ID                     shift, and go to state 19
     VALUE                  shift, and go to state 20
@@ -967,7 +967,7 @@ State 53
 
 State 54
 
-   31 expr: expr POWER_OPERATOR . expr
+   31 expr: expr POWER_OPERATOR • expr
 
     ID                     shift, and go to state 19
     VALUE                  shift, and go to state 20
@@ -980,7 +980,7 @@ State 54
 
 State 55
 
-   32 expr: expr CONCAT . expr
+   32 expr: expr CONCAT • expr
 
     ID                     shift, and go to state 19
     VALUE                  shift, and go to state 20
@@ -993,18 +993,18 @@ State 55
 
 State 56
 
-   10 stm: FOR PARENTHESES_INITIATOR TYPE . ID ITERATOR BRACKETS_INITIATOR VALUE COMMA VALUE BRACKETS_TERMINATOR BRACES_INITIATOR stmlist BRACES_TERMINATOR
-   11    | FOR PARENTHESES_INITIATOR TYPE . ID ITERATOR ID BRACES_INITIATOR stmlist BRACES_TERMINATOR
+   10 stm: FOR PARENTHESES_INITIATOR TYPE • ID ITERATOR BRACKETS_INITIATOR VALUE COMMA VALUE BRACKETS_TERMINATOR BRACES_INITIATOR stmlist BRACES_TERMINATOR
+   11    | FOR PARENTHESES_INITIATOR TYPE • ID ITERATOR ID BRACES_INITIATOR stmlist BRACES_TERMINATOR
 
     ID  shift, and go to state 81
 
 
 State 57
 
-   12 stm: IF expr BRACES_INITIATOR . stmlist BRACES_TERMINATOR
-   13    | IF expr BRACES_INITIATOR . stmlist BRACES_TERMINATOR ELIF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR
-   14    | IF expr BRACES_INITIATOR . stmlist BRACES_TERMINATOR ELIF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR ELSE BRACES_INITIATOR stmlist BRACES_TERMINATOR
-   15    | IF expr BRACES_INITIATOR . stmlist BRACES_TERMINATOR ELSE stm
+   12 stm: IF expr BRACES_INITIATOR • stmlist BRACES_TERMINATOR
+   13    | IF expr BRACES_INITIATOR • stmlist BRACES_TERMINATOR ELIF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR
+   14    | IF expr BRACES_INITIATOR • stmlist BRACES_TERMINATOR ELIF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR ELSE BRACES_INITIATOR stmlist BRACES_TERMINATOR
+   15    | IF expr BRACES_INITIATOR • stmlist BRACES_TERMINATOR ELSE stm
 
     ID      shift, and go to state 1
     TYPE    shift, and go to state 2
@@ -1023,36 +1023,36 @@ State 57
 
 State 58
 
-   18 stm: IN PARENTHESES_INITIATOR ID . PARENTHESES_TERMINATOR
+   18 stm: IN PARENTHESES_INITIATOR ID • PARENTHESES_TERMINATOR
 
     PARENTHESES_TERMINATOR  shift, and go to state 83
 
 
 State 59
 
-    3 stmlist: stmlist SEMICOLON stm .
+    3 stmlist: stmlist SEMICOLON stm •
 
     $default  reduce using rule 3 (stmlist)
 
 
 State 60
 
-    5 stm: TYPE ID ASSIGN expr .
-   26 expr: expr . PLUS_OPERATOR expr
-   27     | expr . MINUS_OPERATOR expr
-   28     | expr . MULTI_OPERATOR expr
-   29     | expr . DIVISION_OPERATOR expr
-   30     | expr . MOD_OPERATOR expr
-   31     | expr . POWER_OPERATOR expr
-   32     | expr . CONCAT expr
-   33     | expr . EQUAL expr
-   34     | expr . NOT_EQUAL expr
-   35     | expr . LEQ expr
-   36     | expr . GEQ expr
-   37     | expr . LESS_THAN expr
-   38     | expr . GREATER_THAN expr
-   40     | expr . AND expr
-   41     | expr . OR expr
+    5 stm: TYPE ID ASSIGN expr •
+   26 expr: expr • PLUS_OPERATOR expr
+   27     | expr • MINUS_OPERATOR expr
+   28     | expr • MULTI_OPERATOR expr
+   29     | expr • DIVISION_OPERATOR expr
+   30     | expr • MOD_OPERATOR expr
+   31     | expr • POWER_OPERATOR expr
+   32     | expr • CONCAT expr
+   33     | expr • EQUAL expr
+   34     | expr • NOT_EQUAL expr
+   35     | expr • LEQ expr
+   36     | expr • GEQ expr
+   37     | expr • LESS_THAN expr
+   38     | expr • GREATER_THAN expr
+   40     | expr • AND expr
+   41     | expr • OR expr
 
     EQUAL              shift, and go to state 41
     NOT_EQUAL          shift, and go to state 42
@@ -1075,8 +1075,8 @@ State 60
 
 State 61
 
-   20 ids: ID .
-   21    | ID . COMMA ids
+   20 ids: ID •
+   21    | ID • COMMA ids
 
     COMMA  shift, and go to state 36
 
@@ -1085,15 +1085,15 @@ State 61
 
 State 62
 
-   21 ids: ID COMMA ids .
+   21 ids: ID COMMA ids •
 
     $default  reduce using rule 21 (ids)
 
 
 State 63
 
-    8 stm: DEF ID PARENTHESES_INITIATOR paramlist . PARENTHESES_TERMINATOR BRACES_INITIATOR stmlist BRACES_TERMINATOR
-   23 paramlist: paramlist . COMMA param
+    8 stm: DEF ID PARENTHESES_INITIATOR paramlist • PARENTHESES_TERMINATOR BRACES_INITIATOR stmlist BRACES_TERMINATOR
+   23 paramlist: paramlist • COMMA param
 
     COMMA                   shift, and go to state 84
     PARENTHESES_TERMINATOR  shift, and go to state 85
@@ -1101,15 +1101,15 @@ State 63
 
 State 64
 
-   42 expr: PARENTHESES_INITIATOR expr PARENTHESES_TERMINATOR .
+   42 expr: PARENTHESES_INITIATOR expr PARENTHESES_TERMINATOR •
 
     $default  reduce using rule 42 (expr)
 
 
 State 65
 
-    3 stmlist: stmlist . SEMICOLON stm
-    9 stm: WHILE expr BRACES_INITIATOR stmlist . BRACES_TERMINATOR
+    3 stmlist: stmlist • SEMICOLON stm
+    9 stm: WHILE expr BRACES_INITIATOR stmlist • BRACES_TERMINATOR
 
     SEMICOLON          shift, and go to state 31
     BRACES_TERMINATOR  shift, and go to state 86
@@ -1117,22 +1117,22 @@ State 65
 
 State 66
 
-   26 expr: expr . PLUS_OPERATOR expr
-   27     | expr . MINUS_OPERATOR expr
-   28     | expr . MULTI_OPERATOR expr
-   29     | expr . DIVISION_OPERATOR expr
-   30     | expr . MOD_OPERATOR expr
-   31     | expr . POWER_OPERATOR expr
-   32     | expr . CONCAT expr
-   33     | expr . EQUAL expr
-   33     | expr EQUAL expr .
-   34     | expr . NOT_EQUAL expr
-   35     | expr . LEQ expr
-   36     | expr . GEQ expr
-   37     | expr . LESS_THAN expr
-   38     | expr . GREATER_THAN expr
-   40     | expr . AND expr
-   41     | expr . OR expr
+   26 expr: expr • PLUS_OPERATOR expr
+   27     | expr • MINUS_OPERATOR expr
+   28     | expr • MULTI_OPERATOR expr
+   29     | expr • DIVISION_OPERATOR expr
+   30     | expr • MOD_OPERATOR expr
+   31     | expr • POWER_OPERATOR expr
+   32     | expr • CONCAT expr
+   33     | expr • EQUAL expr
+   33     | expr EQUAL expr •
+   34     | expr • NOT_EQUAL expr
+   35     | expr • LEQ expr
+   36     | expr • GEQ expr
+   37     | expr • LESS_THAN expr
+   38     | expr • GREATER_THAN expr
+   40     | expr • AND expr
+   41     | expr • OR expr
 
     PLUS_OPERATOR      shift, and go to state 49
     MINUS_OPERATOR     shift, and go to state 50
@@ -1154,22 +1154,22 @@ State 66
 
 State 67
 
-   26 expr: expr . PLUS_OPERATOR expr
-   27     | expr . MINUS_OPERATOR expr
-   28     | expr . MULTI_OPERATOR expr
-   29     | expr . DIVISION_OPERATOR expr
-   30     | expr . MOD_OPERATOR expr
-   31     | expr . POWER_OPERATOR expr
-   32     | expr . CONCAT expr
-   33     | expr . EQUAL expr
-   34     | expr . NOT_EQUAL expr
-   34     | expr NOT_EQUAL expr .
-   35     | expr . LEQ expr
-   36     | expr . GEQ expr
-   37     | expr . LESS_THAN expr
-   38     | expr . GREATER_THAN expr
-   40     | expr . AND expr
-   41     | expr . OR expr
+   26 expr: expr • PLUS_OPERATOR expr
+   27     | expr • MINUS_OPERATOR expr
+   28     | expr • MULTI_OPERATOR expr
+   29     | expr • DIVISION_OPERATOR expr
+   30     | expr • MOD_OPERATOR expr
+   31     | expr • POWER_OPERATOR expr
+   32     | expr • CONCAT expr
+   33     | expr • EQUAL expr
+   34     | expr • NOT_EQUAL expr
+   34     | expr NOT_EQUAL expr •
+   35     | expr • LEQ expr
+   36     | expr • GEQ expr
+   37     | expr • LESS_THAN expr
+   38     | expr • GREATER_THAN expr
+   40     | expr • AND expr
+   41     | expr • OR expr
 
     PLUS_OPERATOR      shift, and go to state 49
     MINUS_OPERATOR     shift, and go to state 50
@@ -1191,22 +1191,22 @@ State 67
 
 State 68
 
-   26 expr: expr . PLUS_OPERATOR expr
-   27     | expr . MINUS_OPERATOR expr
-   28     | expr . MULTI_OPERATOR expr
-   29     | expr . DIVISION_OPERATOR expr
-   30     | expr . MOD_OPERATOR expr
-   31     | expr . POWER_OPERATOR expr
-   32     | expr . CONCAT expr
-   33     | expr . EQUAL expr
-   34     | expr . NOT_EQUAL expr
-   35     | expr . LEQ expr
-   35     | expr LEQ expr .
-   36     | expr . GEQ expr
-   37     | expr . LESS_THAN expr
-   38     | expr . GREATER_THAN expr
-   40     | expr . AND expr
-   41     | expr . OR expr
+   26 expr: expr • PLUS_OPERATOR expr
+   27     | expr • MINUS_OPERATOR expr
+   28     | expr • MULTI_OPERATOR expr
+   29     | expr • DIVISION_OPERATOR expr
+   30     | expr • MOD_OPERATOR expr
+   31     | expr • POWER_OPERATOR expr
+   32     | expr • CONCAT expr
+   33     | expr • EQUAL expr
+   34     | expr • NOT_EQUAL expr
+   35     | expr • LEQ expr
+   35     | expr LEQ expr •
+   36     | expr • GEQ expr
+   37     | expr • LESS_THAN expr
+   38     | expr • GREATER_THAN expr
+   40     | expr • AND expr
+   41     | expr • OR expr
 
     PLUS_OPERATOR      shift, and go to state 49
     MINUS_OPERATOR     shift, and go to state 50
@@ -1228,22 +1228,22 @@ State 68
 
 State 69
 
-   26 expr: expr . PLUS_OPERATOR expr
-   27     | expr . MINUS_OPERATOR expr
-   28     | expr . MULTI_OPERATOR expr
-   29     | expr . DIVISION_OPERATOR expr
-   30     | expr . MOD_OPERATOR expr
-   31     | expr . POWER_OPERATOR expr
-   32     | expr . CONCAT expr
-   33     | expr . EQUAL expr
-   34     | expr . NOT_EQUAL expr
-   35     | expr . LEQ expr
-   36     | expr . GEQ expr
-   36     | expr GEQ expr .
-   37     | expr . LESS_THAN expr
-   38     | expr . GREATER_THAN expr
-   40     | expr . AND expr
-   41     | expr . OR expr
+   26 expr: expr • PLUS_OPERATOR expr
+   27     | expr • MINUS_OPERATOR expr
+   28     | expr • MULTI_OPERATOR expr
+   29     | expr • DIVISION_OPERATOR expr
+   30     | expr • MOD_OPERATOR expr
+   31     | expr • POWER_OPERATOR expr
+   32     | expr • CONCAT expr
+   33     | expr • EQUAL expr
+   34     | expr • NOT_EQUAL expr
+   35     | expr • LEQ expr
+   36     | expr • GEQ expr
+   36     | expr GEQ expr •
+   37     | expr • LESS_THAN expr
+   38     | expr • GREATER_THAN expr
+   40     | expr • AND expr
+   41     | expr • OR expr
 
     PLUS_OPERATOR      shift, and go to state 49
     MINUS_OPERATOR     shift, and go to state 50
@@ -1265,22 +1265,22 @@ State 69
 
 State 70
 
-   26 expr: expr . PLUS_OPERATOR expr
-   27     | expr . MINUS_OPERATOR expr
-   28     | expr . MULTI_OPERATOR expr
-   29     | expr . DIVISION_OPERATOR expr
-   30     | expr . MOD_OPERATOR expr
-   31     | expr . POWER_OPERATOR expr
-   32     | expr . CONCAT expr
-   33     | expr . EQUAL expr
-   34     | expr . NOT_EQUAL expr
-   35     | expr . LEQ expr
-   36     | expr . GEQ expr
-   37     | expr . LESS_THAN expr
-   38     | expr . GREATER_THAN expr
-   38     | expr GREATER_THAN expr .
-   40     | expr . AND expr
-   41     | expr . OR expr
+   26 expr: expr • PLUS_OPERATOR expr
+   27     | expr • MINUS_OPERATOR expr
+   28     | expr • MULTI_OPERATOR expr
+   29     | expr • DIVISION_OPERATOR expr
+   30     | expr • MOD_OPERATOR expr
+   31     | expr • POWER_OPERATOR expr
+   32     | expr • CONCAT expr
+   33     | expr • EQUAL expr
+   34     | expr • NOT_EQUAL expr
+   35     | expr • LEQ expr
+   36     | expr • GEQ expr
+   37     | expr • LESS_THAN expr
+   38     | expr • GREATER_THAN expr
+   38     | expr GREATER_THAN expr •
+   40     | expr • AND expr
+   41     | expr • OR expr
 
     PLUS_OPERATOR      shift, and go to state 49
     MINUS_OPERATOR     shift, and go to state 50
@@ -1302,22 +1302,22 @@ State 70
 
 State 71
 
-   26 expr: expr . PLUS_OPERATOR expr
-   27     | expr . MINUS_OPERATOR expr
-   28     | expr . MULTI_OPERATOR expr
-   29     | expr . DIVISION_OPERATOR expr
-   30     | expr . MOD_OPERATOR expr
-   31     | expr . POWER_OPERATOR expr
-   32     | expr . CONCAT expr
-   33     | expr . EQUAL expr
-   34     | expr . NOT_EQUAL expr
-   35     | expr . LEQ expr
-   36     | expr . GEQ expr
-   37     | expr . LESS_THAN expr
-   37     | expr LESS_THAN expr .
-   38     | expr . GREATER_THAN expr
-   40     | expr . AND expr
-   41     | expr . OR expr
+   26 expr: expr • PLUS_OPERATOR expr
+   27     | expr • MINUS_OPERATOR expr
+   28     | expr • MULTI_OPERATOR expr
+   29     | expr • DIVISION_OPERATOR expr
+   30     | expr • MOD_OPERATOR expr
+   31     | expr • POWER_OPERATOR expr
+   32     | expr • CONCAT expr
+   33     | expr • EQUAL expr
+   34     | expr • NOT_EQUAL expr
+   35     | expr • LEQ expr
+   36     | expr • GEQ expr
+   37     | expr • LESS_THAN expr
+   37     | expr LESS_THAN expr •
+   38     | expr • GREATER_THAN expr
+   40     | expr • AND expr
+   41     | expr • OR expr
 
     PLUS_OPERATOR      shift, and go to state 49
     MINUS_OPERATOR     shift, and go to state 50
@@ -1339,22 +1339,22 @@ State 71
 
 State 72
 
-   26 expr: expr . PLUS_OPERATOR expr
-   27     | expr . MINUS_OPERATOR expr
-   28     | expr . MULTI_OPERATOR expr
-   29     | expr . DIVISION_OPERATOR expr
-   30     | expr . MOD_OPERATOR expr
-   31     | expr . POWER_OPERATOR expr
-   32     | expr . CONCAT expr
-   33     | expr . EQUAL expr
-   34     | expr . NOT_EQUAL expr
-   35     | expr . LEQ expr
-   36     | expr . GEQ expr
-   37     | expr . LESS_THAN expr
-   38     | expr . GREATER_THAN expr
-   40     | expr . AND expr
-   40     | expr AND expr .
-   41     | expr . OR expr
+   26 expr: expr • PLUS_OPERATOR expr
+   27     | expr • MINUS_OPERATOR expr
+   28     | expr • MULTI_OPERATOR expr
+   29     | expr • DIVISION_OPERATOR expr
+   30     | expr • MOD_OPERATOR expr
+   31     | expr • POWER_OPERATOR expr
+   32     | expr • CONCAT expr
+   33     | expr • EQUAL expr
+   34     | expr • NOT_EQUAL expr
+   35     | expr • LEQ expr
+   36     | expr • GEQ expr
+   37     | expr • LESS_THAN expr
+   38     | expr • GREATER_THAN expr
+   40     | expr • AND expr
+   40     | expr AND expr •
+   41     | expr • OR expr
 
     EQUAL              shift, and go to state 41
     NOT_EQUAL          shift, and go to state 42
@@ -1375,22 +1375,22 @@ State 72
 
 State 73
 
-   26 expr: expr . PLUS_OPERATOR expr
-   27     | expr . MINUS_OPERATOR expr
-   28     | expr . MULTI_OPERATOR expr
-   29     | expr . DIVISION_OPERATOR expr
-   30     | expr . MOD_OPERATOR expr
-   31     | expr . POWER_OPERATOR expr
-   32     | expr . CONCAT expr
-   33     | expr . EQUAL expr
-   34     | expr . NOT_EQUAL expr
-   35     | expr . LEQ expr
-   36     | expr . GEQ expr
-   37     | expr . LESS_THAN expr
-   38     | expr . GREATER_THAN expr
-   40     | expr . AND expr
-   41     | expr . OR expr
-   41     | expr OR expr .
+   26 expr: expr • PLUS_OPERATOR expr
+   27     | expr • MINUS_OPERATOR expr
+   28     | expr • MULTI_OPERATOR expr
+   29     | expr • DIVISION_OPERATOR expr
+   30     | expr • MOD_OPERATOR expr
+   31     | expr • POWER_OPERATOR expr
+   32     | expr • CONCAT expr
+   33     | expr • EQUAL expr
+   34     | expr • NOT_EQUAL expr
+   35     | expr • LEQ expr
+   36     | expr • GEQ expr
+   37     | expr • LESS_THAN expr
+   38     | expr • GREATER_THAN expr
+   40     | expr • AND expr
+   41     | expr • OR expr
+   41     | expr OR expr •
 
     EQUAL              shift, and go to state 41
     NOT_EQUAL          shift, and go to state 42
@@ -1412,22 +1412,22 @@ State 73
 
 State 74
 
-   26 expr: expr . PLUS_OPERATOR expr
-   26     | expr PLUS_OPERATOR expr .
-   27     | expr . MINUS_OPERATOR expr
-   28     | expr . MULTI_OPERATOR expr
-   29     | expr . DIVISION_OPERATOR expr
-   30     | expr . MOD_OPERATOR expr
-   31     | expr . POWER_OPERATOR expr
-   32     | expr . CONCAT expr
-   33     | expr . EQUAL expr
-   34     | expr . NOT_EQUAL expr
-   35     | expr . LEQ expr
-   36     | expr . GEQ expr
-   37     | expr . LESS_THAN expr
-   38     | expr . GREATER_THAN expr
-   40     | expr . AND expr
-   41     | expr . OR expr
+   26 expr: expr • PLUS_OPERATOR expr
+   26     | expr PLUS_OPERATOR expr •
+   27     | expr • MINUS_OPERATOR expr
+   28     | expr • MULTI_OPERATOR expr
+   29     | expr • DIVISION_OPERATOR expr
+   30     | expr • MOD_OPERATOR expr
+   31     | expr • POWER_OPERATOR expr
+   32     | expr • CONCAT expr
+   33     | expr • EQUAL expr
+   34     | expr • NOT_EQUAL expr
+   35     | expr • LEQ expr
+   36     | expr • GEQ expr
+   37     | expr • LESS_THAN expr
+   38     | expr • GREATER_THAN expr
+   40     | expr • AND expr
+   41     | expr • OR expr
 
     MULTI_OPERATOR     shift, and go to state 51
     DIVISION_OPERATOR  shift, and go to state 52
@@ -1440,22 +1440,22 @@ State 74
 
 State 75
 
-   26 expr: expr . PLUS_OPERATOR expr
-   27     | expr . MINUS_OPERATOR expr
-   27     | expr MINUS_OPERATOR expr .
-   28     | expr . MULTI_OPERATOR expr
-   29     | expr . DIVISION_OPERATOR expr
-   30     | expr . MOD_OPERATOR expr
-   31     | expr . POWER_OPERATOR expr
-   32     | expr . CONCAT expr
-   33     | expr . EQUAL expr
-   34     | expr . NOT_EQUAL expr
-   35     | expr . LEQ expr
-   36     | expr . GEQ expr
-   37     | expr . LESS_THAN expr
-   38     | expr . GREATER_THAN expr
-   40     | expr . AND expr
-   41     | expr . OR expr
+   26 expr: expr • PLUS_OPERATOR expr
+   27     | expr • MINUS_OPERATOR expr
+   27     | expr MINUS_OPERATOR expr •
+   28     | expr • MULTI_OPERATOR expr
+   29     | expr • DIVISION_OPERATOR expr
+   30     | expr • MOD_OPERATOR expr
+   31     | expr • POWER_OPERATOR expr
+   32     | expr • CONCAT expr
+   33     | expr • EQUAL expr
+   34     | expr • NOT_EQUAL expr
+   35     | expr • LEQ expr
+   36     | expr • GEQ expr
+   37     | expr • LESS_THAN expr
+   38     | expr • GREATER_THAN expr
+   40     | expr • AND expr
+   41     | expr • OR expr
 
     MULTI_OPERATOR     shift, and go to state 51
     DIVISION_OPERATOR  shift, and go to state 52
@@ -1468,22 +1468,22 @@ State 75
 
 State 76
 
-   26 expr: expr . PLUS_OPERATOR expr
-   27     | expr . MINUS_OPERATOR expr
-   28     | expr . MULTI_OPERATOR expr
-   28     | expr MULTI_OPERATOR expr .
-   29     | expr . DIVISION_OPERATOR expr
-   30     | expr . MOD_OPERATOR expr
-   31     | expr . POWER_OPERATOR expr
-   32     | expr . CONCAT expr
-   33     | expr . EQUAL expr
-   34     | expr . NOT_EQUAL expr
-   35     | expr . LEQ expr
-   36     | expr . GEQ expr
-   37     | expr . LESS_THAN expr
-   38     | expr . GREATER_THAN expr
-   40     | expr . AND expr
-   41     | expr . OR expr
+   26 expr: expr • PLUS_OPERATOR expr
+   27     | expr • MINUS_OPERATOR expr
+   28     | expr • MULTI_OPERATOR expr
+   28     | expr MULTI_OPERATOR expr •
+   29     | expr • DIVISION_OPERATOR expr
+   30     | expr • MOD_OPERATOR expr
+   31     | expr • POWER_OPERATOR expr
+   32     | expr • CONCAT expr
+   33     | expr • EQUAL expr
+   34     | expr • NOT_EQUAL expr
+   35     | expr • LEQ expr
+   36     | expr • GEQ expr
+   37     | expr • LESS_THAN expr
+   38     | expr • GREATER_THAN expr
+   40     | expr • AND expr
+   41     | expr • OR expr
 
     CONCAT  shift, and go to state 55
 
@@ -1492,22 +1492,22 @@ State 76
 
 State 77
 
-   26 expr: expr . PLUS_OPERATOR expr
-   27     | expr . MINUS_OPERATOR expr
-   28     | expr . MULTI_OPERATOR expr
-   29     | expr . DIVISION_OPERATOR expr
-   29     | expr DIVISION_OPERATOR expr .
-   30     | expr . MOD_OPERATOR expr
-   31     | expr . POWER_OPERATOR expr
-   32     | expr . CONCAT expr
-   33     | expr . EQUAL expr
-   34     | expr . NOT_EQUAL expr
-   35     | expr . LEQ expr
-   36     | expr . GEQ expr
-   37     | expr . LESS_THAN expr
-   38     | expr . GREATER_THAN expr
-   40     | expr . AND expr
-   41     | expr . OR expr
+   26 expr: expr • PLUS_OPERATOR expr
+   27     | expr • MINUS_OPERATOR expr
+   28     | expr • MULTI_OPERATOR expr
+   29     | expr • DIVISION_OPERATOR expr
+   29     | expr DIVISION_OPERATOR expr •
+   30     | expr • MOD_OPERATOR expr
+   31     | expr • POWER_OPERATOR expr
+   32     | expr • CONCAT expr
+   33     | expr • EQUAL expr
+   34     | expr • NOT_EQUAL expr
+   35     | expr • LEQ expr
+   36     | expr • GEQ expr
+   37     | expr • LESS_THAN expr
+   38     | expr • GREATER_THAN expr
+   40     | expr • AND expr
+   41     | expr • OR expr
 
     CONCAT  shift, and go to state 55
 
@@ -1516,22 +1516,22 @@ State 77
 
 State 78
 
-   26 expr: expr . PLUS_OPERATOR expr
-   27     | expr . MINUS_OPERATOR expr
-   28     | expr . MULTI_OPERATOR expr
-   29     | expr . DIVISION_OPERATOR expr
-   30     | expr . MOD_OPERATOR expr
-   30     | expr MOD_OPERATOR expr .
-   31     | expr . POWER_OPERATOR expr
-   32     | expr . CONCAT expr
-   33     | expr . EQUAL expr
-   34     | expr . NOT_EQUAL expr
-   35     | expr . LEQ expr
-   36     | expr . GEQ expr
-   37     | expr . LESS_THAN expr
-   38     | expr . GREATER_THAN expr
-   40     | expr . AND expr
-   41     | expr . OR expr
+   26 expr: expr • PLUS_OPERATOR expr
+   27     | expr • MINUS_OPERATOR expr
+   28     | expr • MULTI_OPERATOR expr
+   29     | expr • DIVISION_OPERATOR expr
+   30     | expr • MOD_OPERATOR expr
+   30     | expr MOD_OPERATOR expr •
+   31     | expr • POWER_OPERATOR expr
+   32     | expr • CONCAT expr
+   33     | expr • EQUAL expr
+   34     | expr • NOT_EQUAL expr
+   35     | expr • LEQ expr
+   36     | expr • GEQ expr
+   37     | expr • LESS_THAN expr
+   38     | expr • GREATER_THAN expr
+   40     | expr • AND expr
+   41     | expr • OR expr
 
     CONCAT  shift, and go to state 55
 
@@ -1540,22 +1540,22 @@ State 78
 
 State 79
 
-   26 expr: expr . PLUS_OPERATOR expr
-   27     | expr . MINUS_OPERATOR expr
-   28     | expr . MULTI_OPERATOR expr
-   29     | expr . DIVISION_OPERATOR expr
-   30     | expr . MOD_OPERATOR expr
-   31     | expr . POWER_OPERATOR expr
-   31     | expr POWER_OPERATOR expr .
-   32     | expr . CONCAT expr
-   33     | expr . EQUAL expr
-   34     | expr . NOT_EQUAL expr
-   35     | expr . LEQ expr
-   36     | expr . GEQ expr
-   37     | expr . LESS_THAN expr
-   38     | expr . GREATER_THAN expr
-   40     | expr . AND expr
-   41     | expr . OR expr
+   26 expr: expr • PLUS_OPERATOR expr
+   27     | expr • MINUS_OPERATOR expr
+   28     | expr • MULTI_OPERATOR expr
+   29     | expr • DIVISION_OPERATOR expr
+   30     | expr • MOD_OPERATOR expr
+   31     | expr • POWER_OPERATOR expr
+   31     | expr POWER_OPERATOR expr •
+   32     | expr • CONCAT expr
+   33     | expr • EQUAL expr
+   34     | expr • NOT_EQUAL expr
+   35     | expr • LEQ expr
+   36     | expr • GEQ expr
+   37     | expr • LESS_THAN expr
+   38     | expr • GREATER_THAN expr
+   40     | expr • AND expr
+   41     | expr • OR expr
 
     CONCAT  shift, and go to state 55
 
@@ -1564,22 +1564,22 @@ State 79
 
 State 80
 
-   26 expr: expr . PLUS_OPERATOR expr
-   27     | expr . MINUS_OPERATOR expr
-   28     | expr . MULTI_OPERATOR expr
-   29     | expr . DIVISION_OPERATOR expr
-   30     | expr . MOD_OPERATOR expr
-   31     | expr . POWER_OPERATOR expr
-   32     | expr . CONCAT expr
-   32     | expr CONCAT expr .
-   33     | expr . EQUAL expr
-   34     | expr . NOT_EQUAL expr
-   35     | expr . LEQ expr
-   36     | expr . GEQ expr
-   37     | expr . LESS_THAN expr
-   38     | expr . GREATER_THAN expr
-   40     | expr . AND expr
-   41     | expr . OR expr
+   26 expr: expr • PLUS_OPERATOR expr
+   27     | expr • MINUS_OPERATOR expr
+   28     | expr • MULTI_OPERATOR expr
+   29     | expr • DIVISION_OPERATOR expr
+   30     | expr • MOD_OPERATOR expr
+   31     | expr • POWER_OPERATOR expr
+   32     | expr • CONCAT expr
+   32     | expr CONCAT expr •
+   33     | expr • EQUAL expr
+   34     | expr • NOT_EQUAL expr
+   35     | expr • LEQ expr
+   36     | expr • GEQ expr
+   37     | expr • LESS_THAN expr
+   38     | expr • GREATER_THAN expr
+   40     | expr • AND expr
+   41     | expr • OR expr
 
     CONCAT  error (nonassociative)
 
@@ -1588,19 +1588,19 @@ State 80
 
 State 81
 
-   10 stm: FOR PARENTHESES_INITIATOR TYPE ID . ITERATOR BRACKETS_INITIATOR VALUE COMMA VALUE BRACKETS_TERMINATOR BRACES_INITIATOR stmlist BRACES_TERMINATOR
-   11    | FOR PARENTHESES_INITIATOR TYPE ID . ITERATOR ID BRACES_INITIATOR stmlist BRACES_TERMINATOR
+   10 stm: FOR PARENTHESES_INITIATOR TYPE ID • ITERATOR BRACKETS_INITIATOR VALUE COMMA VALUE BRACKETS_TERMINATOR BRACES_INITIATOR stmlist BRACES_TERMINATOR
+   11    | FOR PARENTHESES_INITIATOR TYPE ID • ITERATOR ID BRACES_INITIATOR stmlist BRACES_TERMINATOR
 
     ITERATOR  shift, and go to state 87
 
 
 State 82
 
-    3 stmlist: stmlist . SEMICOLON stm
-   12 stm: IF expr BRACES_INITIATOR stmlist . BRACES_TERMINATOR
-   13    | IF expr BRACES_INITIATOR stmlist . BRACES_TERMINATOR ELIF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR
-   14    | IF expr BRACES_INITIATOR stmlist . BRACES_TERMINATOR ELIF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR ELSE BRACES_INITIATOR stmlist BRACES_TERMINATOR
-   15    | IF expr BRACES_INITIATOR stmlist . BRACES_TERMINATOR ELSE stm
+    3 stmlist: stmlist • SEMICOLON stm
+   12 stm: IF expr BRACES_INITIATOR stmlist • BRACES_TERMINATOR
+   13    | IF expr BRACES_INITIATOR stmlist • BRACES_TERMINATOR ELIF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR
+   14    | IF expr BRACES_INITIATOR stmlist • BRACES_TERMINATOR ELIF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR ELSE BRACES_INITIATOR stmlist BRACES_TERMINATOR
+   15    | IF expr BRACES_INITIATOR stmlist • BRACES_TERMINATOR ELSE stm
 
     SEMICOLON          shift, and go to state 31
     BRACES_TERMINATOR  shift, and go to state 88
@@ -1608,14 +1608,14 @@ State 82
 
 State 83
 
-   18 stm: IN PARENTHESES_INITIATOR ID PARENTHESES_TERMINATOR .
+   18 stm: IN PARENTHESES_INITIATOR ID PARENTHESES_TERMINATOR •
 
     $default  reduce using rule 18 (stm)
 
 
 State 84
 
-   23 paramlist: paramlist COMMA . param
+   23 paramlist: paramlist COMMA • param
 
     TYPE  shift, and go to state 89
 
@@ -1624,22 +1624,22 @@ State 84
 
 State 85
 
-    8 stm: DEF ID PARENTHESES_INITIATOR paramlist PARENTHESES_TERMINATOR . BRACES_INITIATOR stmlist BRACES_TERMINATOR
+    8 stm: DEF ID PARENTHESES_INITIATOR paramlist PARENTHESES_TERMINATOR • BRACES_INITIATOR stmlist BRACES_TERMINATOR
 
     BRACES_INITIATOR  shift, and go to state 91
 
 
 State 86
 
-    9 stm: WHILE expr BRACES_INITIATOR stmlist BRACES_TERMINATOR .
+    9 stm: WHILE expr BRACES_INITIATOR stmlist BRACES_TERMINATOR •
 
     $default  reduce using rule 9 (stm)
 
 
 State 87
 
-   10 stm: FOR PARENTHESES_INITIATOR TYPE ID ITERATOR . BRACKETS_INITIATOR VALUE COMMA VALUE BRACKETS_TERMINATOR BRACES_INITIATOR stmlist BRACES_TERMINATOR
-   11    | FOR PARENTHESES_INITIATOR TYPE ID ITERATOR . ID BRACES_INITIATOR stmlist BRACES_TERMINATOR
+   10 stm: FOR PARENTHESES_INITIATOR TYPE ID ITERATOR • BRACKETS_INITIATOR VALUE COMMA VALUE BRACKETS_TERMINATOR BRACES_INITIATOR stmlist BRACES_TERMINATOR
+   11    | FOR PARENTHESES_INITIATOR TYPE ID ITERATOR • ID BRACES_INITIATOR stmlist BRACES_TERMINATOR
 
     ID                  shift, and go to state 92
     BRACKETS_INITIATOR  shift, and go to state 93
@@ -1647,10 +1647,10 @@ State 87
 
 State 88
 
-   12 stm: IF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR .
-   13    | IF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR . ELIF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR
-   14    | IF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR . ELIF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR ELSE BRACES_INITIATOR stmlist BRACES_TERMINATOR
-   15    | IF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR . ELSE stm
+   12 stm: IF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR •
+   13    | IF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR • ELIF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR
+   14    | IF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR • ELIF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR ELSE BRACES_INITIATOR stmlist BRACES_TERMINATOR
+   15    | IF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR • ELSE stm
 
     ELSE  shift, and go to state 94
     ELIF  shift, and go to state 95
@@ -1660,21 +1660,21 @@ State 88
 
 State 89
 
-   24 param: TYPE . ID
+   24 param: TYPE • ID
 
     ID  shift, and go to state 96
 
 
 State 90
 
-   23 paramlist: paramlist COMMA param .
+   23 paramlist: paramlist COMMA param •
 
     $default  reduce using rule 23 (paramlist)
 
 
 State 91
 
-    8 stm: DEF ID PARENTHESES_INITIATOR paramlist PARENTHESES_TERMINATOR BRACES_INITIATOR . stmlist BRACES_TERMINATOR
+    8 stm: DEF ID PARENTHESES_INITIATOR paramlist PARENTHESES_TERMINATOR BRACES_INITIATOR • stmlist BRACES_TERMINATOR
 
     ID      shift, and go to state 1
     TYPE    shift, and go to state 2
@@ -1693,21 +1693,21 @@ State 91
 
 State 92
 
-   11 stm: FOR PARENTHESES_INITIATOR TYPE ID ITERATOR ID . BRACES_INITIATOR stmlist BRACES_TERMINATOR
+   11 stm: FOR PARENTHESES_INITIATOR TYPE ID ITERATOR ID • BRACES_INITIATOR stmlist BRACES_TERMINATOR
 
     BRACES_INITIATOR  shift, and go to state 98
 
 
 State 93
 
-   10 stm: FOR PARENTHESES_INITIATOR TYPE ID ITERATOR BRACKETS_INITIATOR . VALUE COMMA VALUE BRACKETS_TERMINATOR BRACES_INITIATOR stmlist BRACES_TERMINATOR
+   10 stm: FOR PARENTHESES_INITIATOR TYPE ID ITERATOR BRACKETS_INITIATOR • VALUE COMMA VALUE BRACKETS_TERMINATOR BRACES_INITIATOR stmlist BRACES_TERMINATOR
 
     VALUE  shift, and go to state 99
 
 
 State 94
 
-   15 stm: IF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR ELSE . stm
+   15 stm: IF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR ELSE • stm
 
     ID      shift, and go to state 1
     TYPE    shift, and go to state 2
@@ -1725,8 +1725,8 @@ State 94
 
 State 95
 
-   13 stm: IF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR ELIF . expr BRACES_INITIATOR stmlist BRACES_TERMINATOR
-   14    | IF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR ELIF . expr BRACES_INITIATOR stmlist BRACES_TERMINATOR ELSE BRACES_INITIATOR stmlist BRACES_TERMINATOR
+   13 stm: IF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR ELIF • expr BRACES_INITIATOR stmlist BRACES_TERMINATOR
+   14    | IF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR ELIF • expr BRACES_INITIATOR stmlist BRACES_TERMINATOR ELSE BRACES_INITIATOR stmlist BRACES_TERMINATOR
 
     ID                     shift, and go to state 19
     VALUE                  shift, and go to state 20
@@ -1739,15 +1739,15 @@ State 95
 
 State 96
 
-   24 param: TYPE ID .
+   24 param: TYPE ID •
 
     $default  reduce using rule 24 (param)
 
 
 State 97
 
-    3 stmlist: stmlist . SEMICOLON stm
-    8 stm: DEF ID PARENTHESES_INITIATOR paramlist PARENTHESES_TERMINATOR BRACES_INITIATOR stmlist . BRACES_TERMINATOR
+    3 stmlist: stmlist • SEMICOLON stm
+    8 stm: DEF ID PARENTHESES_INITIATOR paramlist PARENTHESES_TERMINATOR BRACES_INITIATOR stmlist • BRACES_TERMINATOR
 
     SEMICOLON          shift, and go to state 31
     BRACES_TERMINATOR  shift, and go to state 102
@@ -1755,7 +1755,7 @@ State 97
 
 State 98
 
-   11 stm: FOR PARENTHESES_INITIATOR TYPE ID ITERATOR ID BRACES_INITIATOR . stmlist BRACES_TERMINATOR
+   11 stm: FOR PARENTHESES_INITIATOR TYPE ID ITERATOR ID BRACES_INITIATOR • stmlist BRACES_TERMINATOR
 
     ID      shift, and go to state 1
     TYPE    shift, and go to state 2
@@ -1774,37 +1774,37 @@ State 98
 
 State 99
 
-   10 stm: FOR PARENTHESES_INITIATOR TYPE ID ITERATOR BRACKETS_INITIATOR VALUE . COMMA VALUE BRACKETS_TERMINATOR BRACES_INITIATOR stmlist BRACES_TERMINATOR
+   10 stm: FOR PARENTHESES_INITIATOR TYPE ID ITERATOR BRACKETS_INITIATOR VALUE • COMMA VALUE BRACKETS_TERMINATOR BRACES_INITIATOR stmlist BRACES_TERMINATOR
 
     COMMA  shift, and go to state 104
 
 
 State 100
 
-   15 stm: IF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR ELSE stm .
+   15 stm: IF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR ELSE stm •
 
     $default  reduce using rule 15 (stm)
 
 
 State 101
 
-   13 stm: IF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR ELIF expr . BRACES_INITIATOR stmlist BRACES_TERMINATOR
-   14    | IF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR ELIF expr . BRACES_INITIATOR stmlist BRACES_TERMINATOR ELSE BRACES_INITIATOR stmlist BRACES_TERMINATOR
-   26 expr: expr . PLUS_OPERATOR expr
-   27     | expr . MINUS_OPERATOR expr
-   28     | expr . MULTI_OPERATOR expr
-   29     | expr . DIVISION_OPERATOR expr
-   30     | expr . MOD_OPERATOR expr
-   31     | expr . POWER_OPERATOR expr
-   32     | expr . CONCAT expr
-   33     | expr . EQUAL expr
-   34     | expr . NOT_EQUAL expr
-   35     | expr . LEQ expr
-   36     | expr . GEQ expr
-   37     | expr . LESS_THAN expr
-   38     | expr . GREATER_THAN expr
-   40     | expr . AND expr
-   41     | expr . OR expr
+   13 stm: IF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR ELIF expr • BRACES_INITIATOR stmlist BRACES_TERMINATOR
+   14    | IF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR ELIF expr • BRACES_INITIATOR stmlist BRACES_TERMINATOR ELSE BRACES_INITIATOR stmlist BRACES_TERMINATOR
+   26 expr: expr • PLUS_OPERATOR expr
+   27     | expr • MINUS_OPERATOR expr
+   28     | expr • MULTI_OPERATOR expr
+   29     | expr • DIVISION_OPERATOR expr
+   30     | expr • MOD_OPERATOR expr
+   31     | expr • POWER_OPERATOR expr
+   32     | expr • CONCAT expr
+   33     | expr • EQUAL expr
+   34     | expr • NOT_EQUAL expr
+   35     | expr • LEQ expr
+   36     | expr • GEQ expr
+   37     | expr • LESS_THAN expr
+   38     | expr • GREATER_THAN expr
+   40     | expr • AND expr
+   41     | expr • OR expr
 
     BRACES_INITIATOR   shift, and go to state 105
     EQUAL              shift, and go to state 41
@@ -1826,15 +1826,15 @@ State 101
 
 State 102
 
-    8 stm: DEF ID PARENTHESES_INITIATOR paramlist PARENTHESES_TERMINATOR BRACES_INITIATOR stmlist BRACES_TERMINATOR .
+    8 stm: DEF ID PARENTHESES_INITIATOR paramlist PARENTHESES_TERMINATOR BRACES_INITIATOR stmlist BRACES_TERMINATOR •
 
     $default  reduce using rule 8 (stm)
 
 
 State 103
 
-    3 stmlist: stmlist . SEMICOLON stm
-   11 stm: FOR PARENTHESES_INITIATOR TYPE ID ITERATOR ID BRACES_INITIATOR stmlist . BRACES_TERMINATOR
+    3 stmlist: stmlist • SEMICOLON stm
+   11 stm: FOR PARENTHESES_INITIATOR TYPE ID ITERATOR ID BRACES_INITIATOR stmlist • BRACES_TERMINATOR
 
     SEMICOLON          shift, and go to state 31
     BRACES_TERMINATOR  shift, and go to state 106
@@ -1842,15 +1842,15 @@ State 103
 
 State 104
 
-   10 stm: FOR PARENTHESES_INITIATOR TYPE ID ITERATOR BRACKETS_INITIATOR VALUE COMMA . VALUE BRACKETS_TERMINATOR BRACES_INITIATOR stmlist BRACES_TERMINATOR
+   10 stm: FOR PARENTHESES_INITIATOR TYPE ID ITERATOR BRACKETS_INITIATOR VALUE COMMA • VALUE BRACKETS_TERMINATOR BRACES_INITIATOR stmlist BRACES_TERMINATOR
 
     VALUE  shift, and go to state 107
 
 
 State 105
 
-   13 stm: IF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR ELIF expr BRACES_INITIATOR . stmlist BRACES_TERMINATOR
-   14    | IF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR ELIF expr BRACES_INITIATOR . stmlist BRACES_TERMINATOR ELSE BRACES_INITIATOR stmlist BRACES_TERMINATOR
+   13 stm: IF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR ELIF expr BRACES_INITIATOR • stmlist BRACES_TERMINATOR
+   14    | IF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR ELIF expr BRACES_INITIATOR • stmlist BRACES_TERMINATOR ELSE BRACES_INITIATOR stmlist BRACES_TERMINATOR
 
     ID      shift, and go to state 1
     TYPE    shift, and go to state 2
@@ -1869,23 +1869,23 @@ State 105
 
 State 106
 
-   11 stm: FOR PARENTHESES_INITIATOR TYPE ID ITERATOR ID BRACES_INITIATOR stmlist BRACES_TERMINATOR .
+   11 stm: FOR PARENTHESES_INITIATOR TYPE ID ITERATOR ID BRACES_INITIATOR stmlist BRACES_TERMINATOR •
 
     $default  reduce using rule 11 (stm)
 
 
 State 107
 
-   10 stm: FOR PARENTHESES_INITIATOR TYPE ID ITERATOR BRACKETS_INITIATOR VALUE COMMA VALUE . BRACKETS_TERMINATOR BRACES_INITIATOR stmlist BRACES_TERMINATOR
+   10 stm: FOR PARENTHESES_INITIATOR TYPE ID ITERATOR BRACKETS_INITIATOR VALUE COMMA VALUE • BRACKETS_TERMINATOR BRACES_INITIATOR stmlist BRACES_TERMINATOR
 
     BRACKETS_TERMINATOR  shift, and go to state 109
 
 
 State 108
 
-    3 stmlist: stmlist . SEMICOLON stm
-   13 stm: IF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR ELIF expr BRACES_INITIATOR stmlist . BRACES_TERMINATOR
-   14    | IF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR ELIF expr BRACES_INITIATOR stmlist . BRACES_TERMINATOR ELSE BRACES_INITIATOR stmlist BRACES_TERMINATOR
+    3 stmlist: stmlist • SEMICOLON stm
+   13 stm: IF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR ELIF expr BRACES_INITIATOR stmlist • BRACES_TERMINATOR
+   14    | IF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR ELIF expr BRACES_INITIATOR stmlist • BRACES_TERMINATOR ELSE BRACES_INITIATOR stmlist BRACES_TERMINATOR
 
     SEMICOLON          shift, and go to state 31
     BRACES_TERMINATOR  shift, and go to state 110
@@ -1893,15 +1893,15 @@ State 108
 
 State 109
 
-   10 stm: FOR PARENTHESES_INITIATOR TYPE ID ITERATOR BRACKETS_INITIATOR VALUE COMMA VALUE BRACKETS_TERMINATOR . BRACES_INITIATOR stmlist BRACES_TERMINATOR
+   10 stm: FOR PARENTHESES_INITIATOR TYPE ID ITERATOR BRACKETS_INITIATOR VALUE COMMA VALUE BRACKETS_TERMINATOR • BRACES_INITIATOR stmlist BRACES_TERMINATOR
 
     BRACES_INITIATOR  shift, and go to state 111
 
 
 State 110
 
-   13 stm: IF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR ELIF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR .
-   14    | IF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR ELIF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR . ELSE BRACES_INITIATOR stmlist BRACES_TERMINATOR
+   13 stm: IF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR ELIF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR •
+   14    | IF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR ELIF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR • ELSE BRACES_INITIATOR stmlist BRACES_TERMINATOR
 
     ELSE  shift, and go to state 112
 
@@ -1910,7 +1910,7 @@ State 110
 
 State 111
 
-   10 stm: FOR PARENTHESES_INITIATOR TYPE ID ITERATOR BRACKETS_INITIATOR VALUE COMMA VALUE BRACKETS_TERMINATOR BRACES_INITIATOR . stmlist BRACES_TERMINATOR
+   10 stm: FOR PARENTHESES_INITIATOR TYPE ID ITERATOR BRACKETS_INITIATOR VALUE COMMA VALUE BRACKETS_TERMINATOR BRACES_INITIATOR • stmlist BRACES_TERMINATOR
 
     ID      shift, and go to state 1
     TYPE    shift, and go to state 2
@@ -1929,15 +1929,15 @@ State 111
 
 State 112
 
-   14 stm: IF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR ELIF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR ELSE . BRACES_INITIATOR stmlist BRACES_TERMINATOR
+   14 stm: IF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR ELIF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR ELSE • BRACES_INITIATOR stmlist BRACES_TERMINATOR
 
     BRACES_INITIATOR  shift, and go to state 114
 
 
 State 113
 
-    3 stmlist: stmlist . SEMICOLON stm
-   10 stm: FOR PARENTHESES_INITIATOR TYPE ID ITERATOR BRACKETS_INITIATOR VALUE COMMA VALUE BRACKETS_TERMINATOR BRACES_INITIATOR stmlist . BRACES_TERMINATOR
+    3 stmlist: stmlist • SEMICOLON stm
+   10 stm: FOR PARENTHESES_INITIATOR TYPE ID ITERATOR BRACKETS_INITIATOR VALUE COMMA VALUE BRACKETS_TERMINATOR BRACES_INITIATOR stmlist • BRACES_TERMINATOR
 
     SEMICOLON          shift, and go to state 31
     BRACES_TERMINATOR  shift, and go to state 115
@@ -1945,7 +1945,7 @@ State 113
 
 State 114
 
-   14 stm: IF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR ELIF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR ELSE BRACES_INITIATOR . stmlist BRACES_TERMINATOR
+   14 stm: IF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR ELIF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR ELSE BRACES_INITIATOR • stmlist BRACES_TERMINATOR
 
     ID      shift, and go to state 1
     TYPE    shift, and go to state 2
@@ -1964,15 +1964,15 @@ State 114
 
 State 115
 
-   10 stm: FOR PARENTHESES_INITIATOR TYPE ID ITERATOR BRACKETS_INITIATOR VALUE COMMA VALUE BRACKETS_TERMINATOR BRACES_INITIATOR stmlist BRACES_TERMINATOR .
+   10 stm: FOR PARENTHESES_INITIATOR TYPE ID ITERATOR BRACKETS_INITIATOR VALUE COMMA VALUE BRACKETS_TERMINATOR BRACES_INITIATOR stmlist BRACES_TERMINATOR •
 
     $default  reduce using rule 10 (stm)
 
 
 State 116
 
-    3 stmlist: stmlist . SEMICOLON stm
-   14 stm: IF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR ELIF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR ELSE BRACES_INITIATOR stmlist . BRACES_TERMINATOR
+    3 stmlist: stmlist • SEMICOLON stm
+   14 stm: IF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR ELIF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR ELSE BRACES_INITIATOR stmlist • BRACES_TERMINATOR
 
     SEMICOLON          shift, and go to state 31
     BRACES_TERMINATOR  shift, and go to state 117
@@ -1980,6 +1980,6 @@ State 116
 
 State 117
 
-   14 stm: IF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR ELIF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR ELSE BRACES_INITIATOR stmlist BRACES_TERMINATOR .
+   14 stm: IF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR ELIF expr BRACES_INITIATOR stmlist BRACES_TERMINATOR ELSE BRACES_INITIATOR stmlist BRACES_TERMINATOR •
 
     $default  reduce using rule 14 (stm)
