@@ -72,11 +72,19 @@ stm     : TYPE ids
         | RETURN expr                                                   {}
         | IN PARENTHESES_INITIATOR ID PARENTHESES_TERMINATOR            {}
         | OUT expr                                                      {}
+        | STRUCT ID BRACES_INITIATOR fieldlist BRACES_TERMINATOR        {}
+        | TUPLE PARENTHESES_INITIATOR types PARENTHESES_TERMINATOR
+            ID ASSIGN PARENTHESES_INITIATOR exprlist PARENTHESES_TERMINATOR {}
+        | ARRAY BRACKETS_INITIATOR VALUE BRACKETS_TERMINATOR            {}
         ;
 
 ids     : ID                                                            {}
         | ID COMMA ids                                                  {}
         ; 
+
+types   : TYPE                                                          {}
+        | TYPE COMMA types                                              {}
+        ;
 
 paramlist   :                                                           {}
             | paramlist COMMA param                                     {}
@@ -84,6 +92,17 @@ paramlist   :                                                           {}
 
 param   : TYPE ID                                                       {}
         ;
+
+fieldlist   : field                                                     {}
+            | fieldlist SEMICOLON field                                 {}
+            ;
+
+field   : TYPE ID                                                       {}
+        ;
+
+exprlist    : expr                                                      {}
+            | exprlist COMMA expr                                       {}
+            ;
 
 expr    : val                                                           {}
 		| expr PLUS_OPERATOR expr                                       {}
