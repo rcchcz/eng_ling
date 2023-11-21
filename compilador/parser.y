@@ -74,8 +74,10 @@ stm     : TYPE ids
         | STRUCT ID BRACES_INITIATOR fieldlist BRACES_TERMINATOR            {}
         | TUPLE PARENTHESES_INITIATOR types PARENTHESES_TERMINATOR
             ID ASSIGN PARENTHESES_INITIATOR exprlist PARENTHESES_TERMINATOR {}
-        | ARRAY BRACKETS_INITIATOR VALUE BRACKETS_TERMINATOR                {}
-        ;
+        | ARRAY LESS_THAN TYPE GREATER_THAN ID
+            BRACKETS_INITIATOR VALUE BRACKETS_TERMINATOR                    {}
+        | ARRAY LESS_THAN TYPE GREATER_THAN ID ASSIGN
+            BRACKETS_INITIATOR values BRACKETS_TERMINATOR                   {}
 
 ids     : ID                                                                {}
         | ID COMMA ids                                                      {}
@@ -83,6 +85,10 @@ ids     : ID                                                                {}
 
 types   : TYPE                                                              {}
         | TYPE COMMA types                                                  {}
+        ;
+
+values  : VALUE                                                             {}
+        | VALUE COMMA values                                                {}
         ;
 
 paramlist   :                                                               {}
