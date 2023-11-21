@@ -1,50 +1,74 @@
-# eng_ling
+# compiler name goes here
 
-## Comentário
-`# exemplo de comentário`
+## Comment
+`# this line will be understood as a comment`
 
-## Nomenclatura de variáveis
-- Case sensitive
-- Definição de nomes
-  - É permitido letras, dígitos e underscore.
-  - Deve iniciar com letra.
-  - Não é permitido caracteres especiais e espaços em branco. 
-- Snake case
-- Tudo maiúsculo para constantes
+There is no notation for multiline comments, each line must be commented individually with '#'.
 
-## Operadores
-soma: **\+** <br> 
-subtração: **\-** <br>
-multiplicação: **\*** <br>
-divisão: **/**  <br>
-resto: **%** <br>
-concatenação: **++** <br>
+## Variable naming
+- The compiler is case sensitive
+- Only letters, digits and underscore are allowed
+- Must start with a letter or underscore
+- Good practices (recommended, but not mandatory)
+  - Snake case pattern
+  - All capital for constants
 
+## Expressions
+### Evaluation order
+This language evaluates expressions from left to right.
 
-## Dados primitivos
+## Short circuit
+- `false && A` returns `false` (the value of A is not calculated)
+- `true || A` returns `true` (the value of A is not calculated)
+
+### [TO DO] Accepted forms of expression
+
+## Arithmetic expressions 
+### Operators
+- Sum: `+` 
+- Subtraction: `-`
+- Multiplication: `*`
+- Division: `/`
+- Modulo: `%`
+<!-- Concatenation: `++`-->
+
+### Operators precedence
+- `/`, `*`, `%`
+- `+`, `-`
+
+It is possible to change the order of precedence by assigning higher priority using parentheses.
+
+## Primitive data types
 - bool
 - int
 - float
 - string
 
-## Expressões
-### Aritméticas
-- Precedência de operadores
-  - Parênteses
-  - Multiplicação, divisão, módulo
-  - Soma, subtração
+## Boolean expressions 
+### Operators
+- Not: `!`
+- And: `&&`
+- Or: `||`
 
-### Relacionais
-- Operadores: >, <, >=, <=, !=, ==
-- Sempre binário e infixo
+### Operators precedence
+- `!`
+- `&&`
+- `||`
 
-### Booleanas
-- Precedência de operadores
-  - !
-  - &&
-  - ||
+## Relational expressions
+### Operators
+- Equal to: `==`
+- Not equal to: `!=`
+- Greater than: `>`
+- Less than: `<`
+- Greater than or equal to: `>=`
+- Lesser than or equal to: `<=`
 
-## Dados definidos pelo usuário
+### Operators precedence
+All relational operators have the same precedence. To calculate the result of the expression, the order in which they appear is considered.
+
+
+## User-defined data
 ### Structs
 <u>lexema:</u> str <br>
 <u>definição:</u> struct nome {
@@ -77,9 +101,6 @@ TODO: documentar uso
 | Escopo        | ?                  |
 | Tempo de vida | ?                  |
 
-## Curto-circuito
-- falso && qualquer coisa resulta em falso
-- verdadeiro || qualquer coisa resulta em verdadeiro
 
 # BNF
 ````bash
