@@ -23,6 +23,8 @@ This language evaluates expressions from left to right.
 
 ### [TO DO] Accepted forms of expression
 
+<!-- Concatenation: `++`-->
+
 ## Arithmetic expressions 
 ### Operators
 - Sum: `+` 
@@ -30,9 +32,10 @@ This language evaluates expressions from left to right.
 - Multiplication: `*`
 - Division: `/`
 - Modulo: `%`
-<!-- Concatenation: `++`-->
+- Power: `**`
 
 ### Operators precedence
+- `**`
 - `/`, `*`, `%`
 - `+`, `-`
 
@@ -67,7 +70,7 @@ It is possible to change the order of precedence by assigning higher priority us
 ### Operators precedence
 All relational operators have the same precedence. To calculate the result of the expression, the order in which they appear is considered.
 
-
+<!-- --------------------------- -->
 ## User-defined data
 ### Structs
 <u>lexema:</u> str <br>
