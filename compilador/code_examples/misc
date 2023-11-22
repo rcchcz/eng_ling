@@ -1,0 +1,9 @@
+# Função teste para argumentos
+def void swap(arr<int> vetor, Person personvar, int i) {
+    out("hello, world!2");
+};
+
+# Função teste para len de string
+def void testelen() {
+    len("hello, world!2");
+};

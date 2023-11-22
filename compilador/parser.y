@@ -206,7 +206,7 @@ open        : OPEN PARENTHESES_INITIATOR val PARENTHESES_TERMINATOR             
 close       : CLOSE PARENTHESES_INITIATOR val PARENTHESES_TERMINATOR            {}
             ;
 
-len         : LEN_STRING PARENTHESES_INITIATOR VALUE PARENTHESES_TERMINATOR    {printf("len(%s) \n", $3);}
+len         : LEN_STRING PARENTHESES_INITIATOR VALUE PARENTHESES_TERMINATOR    {printf("len(%s) -> %zu \n", $3,  strlen($3)-2);}
             ;           
 
 %%
