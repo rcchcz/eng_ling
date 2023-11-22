@@ -23,7 +23,8 @@ This language evaluates expressions from left to right.
 
 ### [TO DO] Accepted forms of expression
 
-<!-- Concatenation: `++`-->
+### Strings
+It is possible to concatenate two strings using the `++` operator.
 
 ## Arithmetic expressions 
 ### Operators
