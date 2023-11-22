@@ -11,7 +11,7 @@ string name = "Frank", empty = "";
 bool result;
 # result = false
 result = name == empty;
-out("String comparison result: " + result);
+out("String comparison result: " ++ result);
 
 # Concatenating strings
 string first_name = "Frank", last_name = "Steve", full_name;
