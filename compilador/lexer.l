@@ -70,7 +70,7 @@
 "%"                     {return(MOD_OPERATOR);}
 "**"                    {return(POWER_OPERATOR);}
 "="                     {return(ASSIGN);}
-[a-zA-Z][a-zA-Z0-9]*    {yylval.sValue = strdup(yytext); return ID;}
+[a-zA-Z_][a-zA-Z0-9_]*  {yylval.sValue = strdup(yytext); return ID;}
 ^\#[^\n]*               {}
 "."                     {return(SEPARATOR);}
 .                       {printf("Invalid character.\n");}
