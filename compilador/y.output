@@ -16,146 +16,174 @@ Grammar
     4 stm: decl
     5    | assignment
     6    | expr
-    7    | ID COPY_STRING expr
+    7    | str_copy
     8    | funcdef
-    9    | WHILE expr body
-   10    | FOR PARENTHESES_INITIATOR init PARENTHESES_TERMINATOR body
+    9    | while
+   10    | for
    11    | if
-   12    | BREAK
-   13    | RETURN expr
-   14    | IN PARENTHESES_INITIATOR ID PARENTHESES_TERMINATOR
-   15    | OUT expr
-   16    | STRUCT ID BRACES_INITIATOR fieldlist BRACES_TERMINATOR
-   17    | TUPLE PARENTHESES_INITIATOR types PARENTHESES_TERMINATOR ID ASSIGN PARENTHESES_INITIATOR exprlist PARENTHESES_TERMINATOR
-   18    | ARRAY BRACKETS_INITIATOR VALUE BRACKETS_TERMINATOR
-   19    | OPEN PARENTHESES_INITIATOR val PARENTHESES_TERMINATOR
-   20    | CLOSE PARENTHESES_INITIATOR val PARENTHESES_TERMINATOR
+   12    | break
+   13    | return
+   14    | in
+   15    | out
+   16    | open
+   17    | close
 
-   21 funcdef: DEF field PARENTHESES_INITIATOR paramlist PARENTHESES_TERMINATOR body
+   18 funcdef: DEF field PARENTHESES_INITIATOR paramlist PARENTHESES_TERMINATOR body
 
-   22 if: IF expr body if_opt
+   19 return: RETURN expr
 
-   23 if_opt: elif_opt else_opt
+   20 break: BREAK
 
-   24 elif_opt: %empty
-   25         | expr body
+   21 while: WHILE expr body
 
-   26 else_opt: %empty
-   27         | body
+   22 for: FOR PARENTHESES_INITIATOR init PARENTHESES_TERMINATOR body
 
-   28 body: BRACES_INITIATOR stmlist BRACES_TERMINATOR
+   23 if: IF expr body if_opt
 
-   29 init: TYPE ID ITERATOR range
+   24 if_opt: elif_opt else_opt
 
-   30 range: BRACKETS_INITIATOR expr COMMA expr BRACKETS_TERMINATOR
-   31      | ID
+   25 elif_opt: %empty
+   26         | expr body
 
-   32 decl: TYPE idlist
+   27 else_opt: %empty
+   28         | body
 
-   33 idlist: decl_elem
-   34       | decl_elem COMMA idlist
+   29 body: BRACES_INITIATOR stmlist BRACES_TERMINATOR
 
-   35 decl_elem: ID
-   36          | assignment
+   30 in: IN PARENTHESES_INITIATOR ID PARENTHESES_TERMINATOR
 
-   37 assignment: ID ASSIGN expr
+   31 out: OUT expr
 
-   38 types: TYPE
-   39      | TYPE COMMA types
+   32 str_copy: ID COPY_STRING expr
 
-   40 paramlist: param
-   41          | param COMMA paramlist
+   33 init: TYPE ID ITERATOR range
 
-   42 param: %empty
-   43      | field
+   34 range: BRACKETS_INITIATOR expr COMMA expr BRACKETS_TERMINATOR
+   35      | ID
 
-   44 fieldlist: field SEMICOLON
-   45          | field SEMICOLON fieldlist
+   36 decl: TYPE idlist
+   37     | struct_decl
+   38     | tuple_decl
+   39     | array_decl
 
-   46 field: TYPE ID
+   40 idlist: decl_elem
+   41       | decl_elem COMMA idlist
 
-   47 exprlist: expr
-   48         | exprlist COMMA expr
+   42 decl_elem: ID
+   43          | assignment
 
-   49 expr: val
-   50     | expr PLUS_OPERATOR expr
-   51     | expr MINUS_OPERATOR expr
-   52     | expr MULTI_OPERATOR expr
-   53     | expr DIVISION_OPERATOR expr
-   54     | expr MOD_OPERATOR expr
-   55     | expr POWER_OPERATOR expr
-   56     | expr CONCAT expr
-   57     | expr EQUAL expr
-   58     | expr NOT_EQUAL expr
-   59     | expr LEQ expr
-   60     | expr GEQ expr
-   61     | expr LESS_THAN expr
-   62     | expr GREATER_THAN expr
-   63     | NOT expr
-   64     | expr AND expr
-   65     | expr OR expr
-   66     | PARENTHESES_INITIATOR expr PARENTHESES_TERMINATOR
-   67     | attrlist
+   44 assignment: ID ASSIGN expr
 
-   68 attrlist: ID SEPARATOR ID
-   69         | ID SEPARATOR attrlist
+   45 struct_decl: STRUCT ID BRACES_INITIATOR fieldlist BRACES_TERMINATOR
 
-   70 val: ID
-   71    | VALUE
+   46 tuple_decl: TUPLE PARENTHESES_INITIATOR types PARENTHESES_TERMINATOR ID ASSIGN PARENTHESES_INITIATOR exprlist PARENTHESES_TERMINATOR
+
+   47 array_decl: ARRAY LESS_THAN TYPE GREATER_THAN ID BRACKETS_INITIATOR VALUE BRACKETS_TERMINATOR
+   48           | ARRAY LESS_THAN TYPE GREATER_THAN ID ASSIGN BRACKETS_INITIATOR values BRACKETS_TERMINATOR
+
+   49 types: TYPE
+   50      | TYPE COMMA types
+
+   51 values: VALUE
+   52       | VALUE COMMA values
+
+   53 paramlist: param
+   54          | param COMMA paramlist
+
+   55 param: %empty
+   56      | field
+
+   57 fieldlist: field SEMICOLON
+   58          | field SEMICOLON fieldlist
+
+   59 field: TYPE ID
+
+   60 exprlist: expr
+   61         | exprlist COMMA expr
+
+   62 expr: val
+   63     | expr PLUS_OPERATOR expr
+   64     | expr MINUS_OPERATOR expr
+   65     | expr MULTI_OPERATOR expr
+   66     | expr DIVISION_OPERATOR expr
+   67     | expr MOD_OPERATOR expr
+   68     | expr POWER_OPERATOR expr
+   69     | expr CONCAT expr
+   70     | expr EQUAL expr
+   71     | expr NOT_EQUAL expr
+   72     | expr LEQ expr
+   73     | expr GEQ expr
+   74     | expr LESS_THAN expr
+   75     | expr GREATER_THAN expr
+   76     | NOT expr
+   77     | expr AND expr
+   78     | expr OR expr
+   79     | PARENTHESES_INITIATOR expr PARENTHESES_TERMINATOR
+   80     | attrlist
+
+   81 attrlist: ID SEPARATOR ID
+   82         | ID SEPARATOR attrlist
+
+   83 val: ID
+   84    | VALUE
+
+   85 open: OPEN PARENTHESES_INITIATOR val PARENTHESES_TERMINATOR
+
+   86 close: CLOSE PARENTHESES_INITIATOR val PARENTHESES_TERMINATOR
 
 
 Terminals, with rules where they appear
 
     $end (0) 0
     error (256)
-    ID <sValue> (258) 7 14 16 17 29 31 35 37 46 68 69 70
-    TYPE <sValue> (259) 29 32 38 39 46
-    VALUE <sValue> (260) 18 71
+    ID <sValue> (258) 30 32 33 35 42 44 45 46 47 48 59 81 82 83
+    TYPE <sValue> (259) 33 36 47 48 49 50 59
+    VALUE <sValue> (260) 47 51 52 84
     LEN_STRING <sValue> (261)
-    ASSIGN (262) 17 37
+    ASSIGN (262) 44 46 48
     COMMENT (263)
-    COMMA (264) 30 34 39 41 48
-    SEMICOLON (265) 2 3 44 45
-    SEPARATOR (266) 68 69
-    DEF (267) 21
-    ARRAY (268) 18
-    STRUCT (269) 16
-    TUPLE (270) 17
-    WHILE (271) 9
-    FOR (272) 10
-    ITERATOR (273) 29
-    IF (274) 22
+    COMMA (264) 34 41 50 52 54 61
+    SEMICOLON (265) 2 3 57 58
+    SEPARATOR (266) 81 82
+    DEF (267) 18
+    ARRAY (268) 47 48
+    STRUCT (269) 45
+    TUPLE (270) 46
+    WHILE (271) 21
+    FOR (272) 22
+    ITERATOR (273) 33
+    IF (274) 23
     ELSE (275)
     ELIF (276)
-    BREAK (277) 12
-    RETURN (278) 13
-    BRACES_INITIATOR (279) 16 28
-    BRACES_TERMINATOR (280) 16 28
-    BRACKETS_INITIATOR (281) 18 30
-    BRACKETS_TERMINATOR (282) 18 30
-    PARENTHESES_INITIATOR (283) 10 14 17 19 20 21 66
-    PARENTHESES_TERMINATOR (284) 10 14 17 19 20 21 66
-    IN (285) 14
-    OUT (286) 15
-    OPEN (287) 19
-    CLOSE (288) 20
-    EQUAL (289) 57
-    NOT_EQUAL (290) 58
-    LEQ (291) 59
-    GEQ (292) 60
-    GREATER_THAN (293) 62
-    LESS_THAN (294) 61
-    NOT (295) 63
-    AND (296) 64
-    OR (297) 65
-    PLUS_OPERATOR (298) 50
-    MINUS_OPERATOR (299) 51
-    MULTI_OPERATOR (300) 52
-    DIVISION_OPERATOR (301) 53
-    MOD_OPERATOR (302) 54
-    POWER_OPERATOR (303) 55
-    CONCAT (304) 56
-    COPY_STRING (305) 7
+    BREAK (277) 20
+    RETURN (278) 19
+    BRACES_INITIATOR (279) 29 45
+    BRACES_TERMINATOR (280) 29 45
+    BRACKETS_INITIATOR (281) 34 47 48
+    BRACKETS_TERMINATOR (282) 34 47 48
+    PARENTHESES_INITIATOR (283) 18 22 30 46 79 85 86
+    PARENTHESES_TERMINATOR (284) 18 22 30 46 79 85 86
+    IN (285) 30
+    OUT (286) 31
+    OPEN (287) 85
+    CLOSE (288) 86
+    EQUAL (289) 70
+    NOT_EQUAL (290) 71
+    LEQ (291) 72
+    GEQ (292) 73
+    GREATER_THAN (293) 47 48 75
+    LESS_THAN (294) 47 48 74
+    NOT (295) 76
+    AND (296) 77
+    OR (297) 78
+    PLUS_OPERATOR (298) 63
+    MINUS_OPERATOR (299) 64
+    MULTI_OPERATOR (300) 65
+    DIVISION_OPERATOR (301) 66
+    MOD_OPERATOR (302) 67
+    POWER_OPERATOR (303) 68
+    CONCAT (304) 69
+    COPY_STRING (305) 32
 
 
 Nonterminals, with rules where they appear
@@ -167,73 +195,112 @@ Nonterminals, with rules where they appear
         on right: 0
     stmlist <sValue> (53)
         on left: 2 3
-        on right: 1 3 28
+        on right: 1 3 29
     stm <sValue> (54)
-        on left: 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20
+        on left: 4 5 6 7 8 9 10 11 12 13 14 15 16 17
         on right: 2 3
     funcdef (55)
-        on left: 21
+        on left: 18
         on right: 8
-    if (56)
+    return (56)
+        on left: 19
+        on right: 13
+    break (57)
+        on left: 20
+        on right: 12
+    while (58)
+        on left: 21
+        on right: 9
+    for (59)
         on left: 22
-        on right: 11
-    if_opt (57)
-        on left: 23
-        on right: 22
-    elif_opt (58)
-        on left: 24 25
-        on right: 23
-    else_opt (59)
-        on left: 26 27
-        on right: 23
-    body (60)
-        on left: 28
-        on right: 9 10 21 22 25 27
-    init (61)
-        on left: 29
         on right: 10
-    range (62)
-        on left: 30 31
-        on right: 29
-    decl (63)
+    if (60)
+        on left: 23
+        on right: 11
+    if_opt (61)
+        on left: 24
+        on right: 23
+    elif_opt (62)
+        on left: 25 26
+        on right: 24
+    else_opt (63)
+        on left: 27 28
+        on right: 24
+    body (64)
+        on left: 29
+        on right: 18 21 22 23 26 28
+    in (65)
+        on left: 30
+        on right: 14
+    out (66)
+        on left: 31
+        on right: 15
+    str_copy (67)
         on left: 32
+        on right: 7
+    init (68)
+        on left: 33
+        on right: 22
+    range (69)
+        on left: 34 35
+        on right: 33
+    decl (70)
+        on left: 36 37 38 39
         on right: 4
-    idlist (64)
-        on left: 33 34
-        on right: 32 34
-    decl_elem (65)
-        on left: 35 36
-        on right: 33 34
-    assignment (66)
-        on left: 37
-        on right: 5 36
-    types (67)
-        on left: 38 39
-        on right: 17 39
-    paramlist (68)
+    idlist (71)
         on left: 40 41
-        on right: 21 41
-    param (69)
+        on right: 36 41
+    decl_elem (72)
         on left: 42 43
         on right: 40 41
-    fieldlist (70)
-        on left: 44 45
-        on right: 16 45
-    field (71)
+    assignment (73)
+        on left: 44
+        on right: 5 43
+    struct_decl (74)
+        on left: 45
+        on right: 37
+    tuple_decl (75)
         on left: 46
-        on right: 21 43 44 45
-    exprlist (72)
+        on right: 38
+    array_decl (76)
         on left: 47 48
-        on right: 17 48
-    expr (73)
-        on left: 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67
-        on right: 6 7 9 13 15 22 25 30 37 47 48 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66
-    attrlist (74)
-        on left: 68 69
-        on right: 67 69
-    val (75)
-        on left: 70 71
-        on right: 19 20 49
+        on right: 39
+    types (77)
+        on left: 49 50
+        on right: 46 50
+    values (78)
+        on left: 51 52
+        on right: 48 52
+    paramlist (79)
+        on left: 53 54
+        on right: 18 54
+    param (80)
+        on left: 55 56
+        on right: 53 54
+    fieldlist (81)
+        on left: 57 58
+        on right: 45 58
+    field (82)
+        on left: 59
+        on right: 18 56 57 58
+    exprlist (83)
+        on left: 60 61
+        on right: 46 61
+    expr (84)
+        on left: 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80
+        on right: 6 19 21 23 26 31 32 34 44 60 61 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79
+    attrlist (85)
+        on left: 81 82
+        on right: 80 82
+    val (86)
+        on left: 83 84
+        on right: 62 85 86
+    open (87)
+        on left: 85
+        on right: 16
+    close (88)
+        on left: 86
+        on right: 17
 
 
 State 0
@@ -259,205 +326,218 @@ State 0
     CLOSE                  shift, and go to state 17
     NOT                    shift, and go to state 18
 
-    prog        go to state 19
-    stmlist     go to state 20
-    stm         go to state 21
-    funcdef     go to state 22
-    if          go to state 23
-    decl        go to state 24
-    assignment  go to state 25
-    expr        go to state 26
-    attrlist    go to state 27
-    val         go to state 28
+    prog         go to state 19
+    stmlist      go to state 20
+    stm          go to state 21
+    funcdef      go to state 22
+    return       go to state 23
+    break        go to state 24
+    while        go to state 25
+    for          go to state 26
+    if           go to state 27
+    in           go to state 28
+    out          go to state 29
+    str_copy     go to state 30
+    decl         go to state 31
+    assignment   go to state 32
+    struct_decl  go to state 33
+    tuple_decl   go to state 34
+    array_decl   go to state 35
+    expr         go to state 36
+    attrlist     go to state 37
+    val          go to state 38
+    open         go to state 39
+    close        go to state 40
 
 
 State 1
 
-    7 stm: ID . COPY_STRING expr
-   37 assignment: ID . ASSIGN expr
-   68 attrlist: ID . SEPARATOR ID
-   69         | ID . SEPARATOR attrlist
-   70 val: ID .
+   32 str_copy: ID . COPY_STRING expr
+   44 assignment: ID . ASSIGN expr
+   81 attrlist: ID . SEPARATOR ID
+   82         | ID . SEPARATOR attrlist
+   83 val: ID .
 
-    ASSIGN       shift, and go to state 29
-    SEPARATOR    shift, and go to state 30
-    COPY_STRING  shift, and go to state 31
+    ASSIGN       shift, and go to state 41
+    SEPARATOR    shift, and go to state 42
+    COPY_STRING  shift, and go to state 43
 
-    $default  reduce using rule 70 (val)
+    $default  reduce using rule 83 (val)
 
 
 State 2
 
-   32 decl: TYPE . idlist
+   36 decl: TYPE . idlist
 
-    ID  shift, and go to state 32
+    ID  shift, and go to state 44
 
-    idlist      go to state 33
-    decl_elem   go to state 34
-    assignment  go to state 35
+    idlist      go to state 45
+    decl_elem   go to state 46
+    assignment  go to state 47
 
 
 State 3
 
-   71 val: VALUE .
+   84 val: VALUE .
 
-    $default  reduce using rule 71 (val)
+    $default  reduce using rule 84 (val)
 
 
 State 4
 
-   21 funcdef: DEF . field PARENTHESES_INITIATOR paramlist PARENTHESES_TERMINATOR body
+   18 funcdef: DEF . field PARENTHESES_INITIATOR paramlist PARENTHESES_TERMINATOR body
 
-    TYPE  shift, and go to state 36
+    TYPE  shift, and go to state 48
 
-    field  go to state 37
+    field  go to state 49
 
 
 State 5
 
-   18 stm: ARRAY . BRACKETS_INITIATOR VALUE BRACKETS_TERMINATOR
+   47 array_decl: ARRAY . LESS_THAN TYPE GREATER_THAN ID BRACKETS_INITIATOR VALUE BRACKETS_TERMINATOR
+   48           | ARRAY . LESS_THAN TYPE GREATER_THAN ID ASSIGN BRACKETS_INITIATOR values BRACKETS_TERMINATOR
 
-    BRACKETS_INITIATOR  shift, and go to state 38
+    LESS_THAN  shift, and go to state 50
 
 
 State 6
 
-   16 stm: STRUCT . ID BRACES_INITIATOR fieldlist BRACES_TERMINATOR
+   45 struct_decl: STRUCT . ID BRACES_INITIATOR fieldlist BRACES_TERMINATOR
 
-    ID  shift, and go to state 39
+    ID  shift, and go to state 51
 
 
 State 7
 
-   17 stm: TUPLE . PARENTHESES_INITIATOR types PARENTHESES_TERMINATOR ID ASSIGN PARENTHESES_INITIATOR exprlist PARENTHESES_TERMINATOR
+   46 tuple_decl: TUPLE . PARENTHESES_INITIATOR types PARENTHESES_TERMINATOR ID ASSIGN PARENTHESES_INITIATOR exprlist PARENTHESES_TERMINATOR
 
-    PARENTHESES_INITIATOR  shift, and go to state 40
+    PARENTHESES_INITIATOR  shift, and go to state 52
 
 
 State 8
 
-    9 stm: WHILE . expr body
+   21 while: WHILE . expr body
 
-    ID                     shift, and go to state 41
+    ID                     shift, and go to state 53
     VALUE                  shift, and go to state 3
     PARENTHESES_INITIATOR  shift, and go to state 13
     NOT                    shift, and go to state 18
 
-    expr      go to state 42
-    attrlist  go to state 27
-    val       go to state 28
+    expr      go to state 54
+    attrlist  go to state 37
+    val       go to state 38
 
 
 State 9
 
-   10 stm: FOR . PARENTHESES_INITIATOR init PARENTHESES_TERMINATOR body
+   22 for: FOR . PARENTHESES_INITIATOR init PARENTHESES_TERMINATOR body
 
-    PARENTHESES_INITIATOR  shift, and go to state 43
+    PARENTHESES_INITIATOR  shift, and go to state 55
 
 
 State 10
 
-   22 if: IF . expr body if_opt
+   23 if: IF . expr body if_opt
 
-    ID                     shift, and go to state 41
+    ID                     shift, and go to state 53
     VALUE                  shift, and go to state 3
     PARENTHESES_INITIATOR  shift, and go to state 13
     NOT                    shift, and go to state 18
 
-    expr      go to state 44
-    attrlist  go to state 27
-    val       go to state 28
+    expr      go to state 56
+    attrlist  go to state 37
+    val       go to state 38
 
 
 State 11
 
-   12 stm: BREAK .
+   20 break: BREAK .
 
-    $default  reduce using rule 12 (stm)
+    $default  reduce using rule 20 (break)
 
 
 State 12
 
-   13 stm: RETURN . expr
+   19 return: RETURN . expr
 
-    ID                     shift, and go to state 41
+    ID                     shift, and go to state 53
     VALUE                  shift, and go to state 3
     PARENTHESES_INITIATOR  shift, and go to state 13
     NOT                    shift, and go to state 18
 
-    expr      go to state 45
-    attrlist  go to state 27
-    val       go to state 28
+    expr      go to state 57
+    attrlist  go to state 37
+    val       go to state 38
 
 
 State 13
 
-   66 expr: PARENTHESES_INITIATOR . expr PARENTHESES_TERMINATOR
+   79 expr: PARENTHESES_INITIATOR . expr PARENTHESES_TERMINATOR
 
-    ID                     shift, and go to state 41
+    ID                     shift, and go to state 53
     VALUE                  shift, and go to state 3
     PARENTHESES_INITIATOR  shift, and go to state 13
     NOT                    shift, and go to state 18
 
-    expr      go to state 46
-    attrlist  go to state 27
-    val       go to state 28
+    expr      go to state 58
+    attrlist  go to state 37
+    val       go to state 38
 
 
 State 14
 
-   14 stm: IN . PARENTHESES_INITIATOR ID PARENTHESES_TERMINATOR
+   30 in: IN . PARENTHESES_INITIATOR ID PARENTHESES_TERMINATOR
 
-    PARENTHESES_INITIATOR  shift, and go to state 47
+    PARENTHESES_INITIATOR  shift, and go to state 59
 
 
 State 15
 
-   15 stm: OUT . expr
+   31 out: OUT . expr
 
-    ID                     shift, and go to state 41
+    ID                     shift, and go to state 53
     VALUE                  shift, and go to state 3
     PARENTHESES_INITIATOR  shift, and go to state 13
     NOT                    shift, and go to state 18
 
-    expr      go to state 48
-    attrlist  go to state 27
-    val       go to state 28
+    expr      go to state 60
+    attrlist  go to state 37
+    val       go to state 38
 
 
 State 16
 
-   19 stm: OPEN . PARENTHESES_INITIATOR val PARENTHESES_TERMINATOR
+   85 open: OPEN . PARENTHESES_INITIATOR val PARENTHESES_TERMINATOR
 
-    PARENTHESES_INITIATOR  shift, and go to state 49
+    PARENTHESES_INITIATOR  shift, and go to state 61
 
 
 State 17
 
-   20 stm: CLOSE . PARENTHESES_INITIATOR val PARENTHESES_TERMINATOR
+   86 close: CLOSE . PARENTHESES_INITIATOR val PARENTHESES_TERMINATOR
 
-    PARENTHESES_INITIATOR  shift, and go to state 50
+    PARENTHESES_INITIATOR  shift, and go to state 62
 
 
 State 18
 
-   63 expr: NOT . expr
+   76 expr: NOT . expr
 
-    ID                     shift, and go to state 41
+    ID                     shift, and go to state 53
     VALUE                  shift, and go to state 3
     PARENTHESES_INITIATOR  shift, and go to state 13
     NOT                    shift, and go to state 18
 
-    expr      go to state 51
-    attrlist  go to state 27
-    val       go to state 28
+    expr      go to state 63
+    attrlist  go to state 37
+    val       go to state 38
 
 
 State 19
 
     0 $accept: prog . $end
 
-    $end  shift, and go to state 52
+    $end  shift, and go to state 64
 
 
 State 20
@@ -472,7 +552,7 @@ State 21
     2 stmlist: stm . SEMICOLON
     3        | stm . SEMICOLON stmlist
 
-    SEMICOLON  shift, and go to state 53
+    SEMICOLON  shift, and go to state 65
 
 
 State 22
@@ -484,468 +564,553 @@ State 22
 
 State 23
 
+   13 stm: return .
+
+    $default  reduce using rule 13 (stm)
+
+
+State 24
+
+   12 stm: break .
+
+    $default  reduce using rule 12 (stm)
+
+
+State 25
+
+    9 stm: while .
+
+    $default  reduce using rule 9 (stm)
+
+
+State 26
+
+   10 stm: for .
+
+    $default  reduce using rule 10 (stm)
+
+
+State 27
+
    11 stm: if .
 
     $default  reduce using rule 11 (stm)
 
 
-State 24
+State 28
+
+   14 stm: in .
+
+    $default  reduce using rule 14 (stm)
+
+
+State 29
+
+   15 stm: out .
+
+    $default  reduce using rule 15 (stm)
+
+
+State 30
+
+    7 stm: str_copy .
+
+    $default  reduce using rule 7 (stm)
+
+
+State 31
 
     4 stm: decl .
 
     $default  reduce using rule 4 (stm)
 
 
-State 25
+State 32
 
     5 stm: assignment .
 
     $default  reduce using rule 5 (stm)
 
 
-State 26
-
-    6 stm: expr .
-   50 expr: expr . PLUS_OPERATOR expr
-   51     | expr . MINUS_OPERATOR expr
-   52     | expr . MULTI_OPERATOR expr
-   53     | expr . DIVISION_OPERATOR expr
-   54     | expr . MOD_OPERATOR expr
-   55     | expr . POWER_OPERATOR expr
-   56     | expr . CONCAT expr
-   57     | expr . EQUAL expr
-   58     | expr . NOT_EQUAL expr
-   59     | expr . LEQ expr
-   60     | expr . GEQ expr
-   61     | expr . LESS_THAN expr
-   62     | expr . GREATER_THAN expr
-   64     | expr . AND expr
-   65     | expr . OR expr
-
-    EQUAL              shift, and go to state 54
-    NOT_EQUAL          shift, and go to state 55
-    LEQ                shift, and go to state 56
-    GEQ                shift, and go to state 57
-    GREATER_THAN       shift, and go to state 58
-    LESS_THAN          shift, and go to state 59
-    AND                shift, and go to state 60
-    OR                 shift, and go to state 61
-    PLUS_OPERATOR      shift, and go to state 62
-    MINUS_OPERATOR     shift, and go to state 63
-    MULTI_OPERATOR     shift, and go to state 64
-    DIVISION_OPERATOR  shift, and go to state 65
-    MOD_OPERATOR       shift, and go to state 66
-    POWER_OPERATOR     shift, and go to state 67
-    CONCAT             shift, and go to state 68
-
-    $default  reduce using rule 6 (stm)
-
-
-State 27
-
-   67 expr: attrlist .
-
-    $default  reduce using rule 67 (expr)
-
-
-State 28
-
-   49 expr: val .
-
-    $default  reduce using rule 49 (expr)
-
-
-State 29
-
-   37 assignment: ID ASSIGN . expr
-
-    ID                     shift, and go to state 41
-    VALUE                  shift, and go to state 3
-    PARENTHESES_INITIATOR  shift, and go to state 13
-    NOT                    shift, and go to state 18
-
-    expr      go to state 69
-    attrlist  go to state 27
-    val       go to state 28
-
-
-State 30
-
-   68 attrlist: ID SEPARATOR . ID
-   69         | ID SEPARATOR . attrlist
-
-    ID  shift, and go to state 70
-
-    attrlist  go to state 71
-
-
-State 31
-
-    7 stm: ID COPY_STRING . expr
-
-    ID                     shift, and go to state 41
-    VALUE                  shift, and go to state 3
-    PARENTHESES_INITIATOR  shift, and go to state 13
-    NOT                    shift, and go to state 18
-
-    expr      go to state 72
-    attrlist  go to state 27
-    val       go to state 28
-
-
-State 32
-
-   35 decl_elem: ID .
-   37 assignment: ID . ASSIGN expr
-
-    ASSIGN  shift, and go to state 29
-
-    $default  reduce using rule 35 (decl_elem)
-
-
 State 33
 
-   32 decl: TYPE idlist .
+   37 decl: struct_decl .
 
-    $default  reduce using rule 32 (decl)
+    $default  reduce using rule 37 (decl)
 
 
 State 34
 
-   33 idlist: decl_elem .
-   34       | decl_elem . COMMA idlist
+   38 decl: tuple_decl .
 
-    COMMA  shift, and go to state 73
-
-    $default  reduce using rule 33 (idlist)
+    $default  reduce using rule 38 (decl)
 
 
 State 35
 
-   36 decl_elem: assignment .
+   39 decl: array_decl .
 
-    $default  reduce using rule 36 (decl_elem)
+    $default  reduce using rule 39 (decl)
 
 
 State 36
 
-   46 field: TYPE . ID
+    6 stm: expr .
+   63 expr: expr . PLUS_OPERATOR expr
+   64     | expr . MINUS_OPERATOR expr
+   65     | expr . MULTI_OPERATOR expr
+   66     | expr . DIVISION_OPERATOR expr
+   67     | expr . MOD_OPERATOR expr
+   68     | expr . POWER_OPERATOR expr
+   69     | expr . CONCAT expr
+   70     | expr . EQUAL expr
+   71     | expr . NOT_EQUAL expr
+   72     | expr . LEQ expr
+   73     | expr . GEQ expr
+   74     | expr . LESS_THAN expr
+   75     | expr . GREATER_THAN expr
+   77     | expr . AND expr
+   78     | expr . OR expr
 
-    ID  shift, and go to state 74
+    EQUAL              shift, and go to state 66
+    NOT_EQUAL          shift, and go to state 67
+    LEQ                shift, and go to state 68
+    GEQ                shift, and go to state 69
+    GREATER_THAN       shift, and go to state 70
+    LESS_THAN          shift, and go to state 71
+    AND                shift, and go to state 72
+    OR                 shift, and go to state 73
+    PLUS_OPERATOR      shift, and go to state 74
+    MINUS_OPERATOR     shift, and go to state 75
+    MULTI_OPERATOR     shift, and go to state 76
+    DIVISION_OPERATOR  shift, and go to state 77
+    MOD_OPERATOR       shift, and go to state 78
+    POWER_OPERATOR     shift, and go to state 79
+    CONCAT             shift, and go to state 80
+
+    $default  reduce using rule 6 (stm)
 
 
 State 37
 
-   21 funcdef: DEF field . PARENTHESES_INITIATOR paramlist PARENTHESES_TERMINATOR body
+   80 expr: attrlist .
 
-    PARENTHESES_INITIATOR  shift, and go to state 75
+    $default  reduce using rule 80 (expr)
 
 
 State 38
 
-   18 stm: ARRAY BRACKETS_INITIATOR . VALUE BRACKETS_TERMINATOR
+   62 expr: val .
 
-    VALUE  shift, and go to state 76
+    $default  reduce using rule 62 (expr)
 
 
 State 39
 
-   16 stm: STRUCT ID . BRACES_INITIATOR fieldlist BRACES_TERMINATOR
+   16 stm: open .
 
-    BRACES_INITIATOR  shift, and go to state 77
+    $default  reduce using rule 16 (stm)
 
 
 State 40
 
-   17 stm: TUPLE PARENTHESES_INITIATOR . types PARENTHESES_TERMINATOR ID ASSIGN PARENTHESES_INITIATOR exprlist PARENTHESES_TERMINATOR
+   17 stm: close .
 
-    TYPE  shift, and go to state 78
-
-    types  go to state 79
+    $default  reduce using rule 17 (stm)
 
 
 State 41
 
-   68 attrlist: ID . SEPARATOR ID
-   69         | ID . SEPARATOR attrlist
-   70 val: ID .
+   44 assignment: ID ASSIGN . expr
 
-    SEPARATOR  shift, and go to state 30
+    ID                     shift, and go to state 53
+    VALUE                  shift, and go to state 3
+    PARENTHESES_INITIATOR  shift, and go to state 13
+    NOT                    shift, and go to state 18
 
-    $default  reduce using rule 70 (val)
+    expr      go to state 81
+    attrlist  go to state 37
+    val       go to state 38
 
 
 State 42
 
-    9 stm: WHILE expr . body
-   50 expr: expr . PLUS_OPERATOR expr
-   51     | expr . MINUS_OPERATOR expr
-   52     | expr . MULTI_OPERATOR expr
-   53     | expr . DIVISION_OPERATOR expr
-   54     | expr . MOD_OPERATOR expr
-   55     | expr . POWER_OPERATOR expr
-   56     | expr . CONCAT expr
-   57     | expr . EQUAL expr
-   58     | expr . NOT_EQUAL expr
-   59     | expr . LEQ expr
-   60     | expr . GEQ expr
-   61     | expr . LESS_THAN expr
-   62     | expr . GREATER_THAN expr
-   64     | expr . AND expr
-   65     | expr . OR expr
+   81 attrlist: ID SEPARATOR . ID
+   82         | ID SEPARATOR . attrlist
 
-    BRACES_INITIATOR   shift, and go to state 80
-    EQUAL              shift, and go to state 54
-    NOT_EQUAL          shift, and go to state 55
-    LEQ                shift, and go to state 56
-    GEQ                shift, and go to state 57
-    GREATER_THAN       shift, and go to state 58
-    LESS_THAN          shift, and go to state 59
-    AND                shift, and go to state 60
-    OR                 shift, and go to state 61
-    PLUS_OPERATOR      shift, and go to state 62
-    MINUS_OPERATOR     shift, and go to state 63
-    MULTI_OPERATOR     shift, and go to state 64
-    DIVISION_OPERATOR  shift, and go to state 65
-    MOD_OPERATOR       shift, and go to state 66
-    POWER_OPERATOR     shift, and go to state 67
-    CONCAT             shift, and go to state 68
+    ID  shift, and go to state 82
 
-    body  go to state 81
+    attrlist  go to state 83
 
 
 State 43
 
-   10 stm: FOR PARENTHESES_INITIATOR . init PARENTHESES_TERMINATOR body
+   32 str_copy: ID COPY_STRING . expr
 
-    TYPE  shift, and go to state 82
+    ID                     shift, and go to state 53
+    VALUE                  shift, and go to state 3
+    PARENTHESES_INITIATOR  shift, and go to state 13
+    NOT                    shift, and go to state 18
 
-    init  go to state 83
+    expr      go to state 84
+    attrlist  go to state 37
+    val       go to state 38
 
 
 State 44
 
-   22 if: IF expr . body if_opt
-   50 expr: expr . PLUS_OPERATOR expr
-   51     | expr . MINUS_OPERATOR expr
-   52     | expr . MULTI_OPERATOR expr
-   53     | expr . DIVISION_OPERATOR expr
-   54     | expr . MOD_OPERATOR expr
-   55     | expr . POWER_OPERATOR expr
-   56     | expr . CONCAT expr
-   57     | expr . EQUAL expr
-   58     | expr . NOT_EQUAL expr
-   59     | expr . LEQ expr
-   60     | expr . GEQ expr
-   61     | expr . LESS_THAN expr
-   62     | expr . GREATER_THAN expr
-   64     | expr . AND expr
-   65     | expr . OR expr
+   42 decl_elem: ID .
+   44 assignment: ID . ASSIGN expr
 
-    BRACES_INITIATOR   shift, and go to state 80
-    EQUAL              shift, and go to state 54
-    NOT_EQUAL          shift, and go to state 55
-    LEQ                shift, and go to state 56
-    GEQ                shift, and go to state 57
-    GREATER_THAN       shift, and go to state 58
-    LESS_THAN          shift, and go to state 59
-    AND                shift, and go to state 60
-    OR                 shift, and go to state 61
-    PLUS_OPERATOR      shift, and go to state 62
-    MINUS_OPERATOR     shift, and go to state 63
-    MULTI_OPERATOR     shift, and go to state 64
-    DIVISION_OPERATOR  shift, and go to state 65
-    MOD_OPERATOR       shift, and go to state 66
-    POWER_OPERATOR     shift, and go to state 67
-    CONCAT             shift, and go to state 68
+    ASSIGN  shift, and go to state 41
 
-    body  go to state 84
+    $default  reduce using rule 42 (decl_elem)
 
 
 State 45
 
-   13 stm: RETURN expr .
-   50 expr: expr . PLUS_OPERATOR expr
-   51     | expr . MINUS_OPERATOR expr
-   52     | expr . MULTI_OPERATOR expr
-   53     | expr . DIVISION_OPERATOR expr
-   54     | expr . MOD_OPERATOR expr
-   55     | expr . POWER_OPERATOR expr
-   56     | expr . CONCAT expr
-   57     | expr . EQUAL expr
-   58     | expr . NOT_EQUAL expr
-   59     | expr . LEQ expr
-   60     | expr . GEQ expr
-   61     | expr . LESS_THAN expr
-   62     | expr . GREATER_THAN expr
-   64     | expr . AND expr
-   65     | expr . OR expr
+   36 decl: TYPE idlist .
 
-    EQUAL              shift, and go to state 54
-    NOT_EQUAL          shift, and go to state 55
-    LEQ                shift, and go to state 56
-    GEQ                shift, and go to state 57
-    GREATER_THAN       shift, and go to state 58
-    LESS_THAN          shift, and go to state 59
-    AND                shift, and go to state 60
-    OR                 shift, and go to state 61
-    PLUS_OPERATOR      shift, and go to state 62
-    MINUS_OPERATOR     shift, and go to state 63
-    MULTI_OPERATOR     shift, and go to state 64
-    DIVISION_OPERATOR  shift, and go to state 65
-    MOD_OPERATOR       shift, and go to state 66
-    POWER_OPERATOR     shift, and go to state 67
-    CONCAT             shift, and go to state 68
-
-    $default  reduce using rule 13 (stm)
+    $default  reduce using rule 36 (decl)
 
 
 State 46
 
-   50 expr: expr . PLUS_OPERATOR expr
-   51     | expr . MINUS_OPERATOR expr
-   52     | expr . MULTI_OPERATOR expr
-   53     | expr . DIVISION_OPERATOR expr
-   54     | expr . MOD_OPERATOR expr
-   55     | expr . POWER_OPERATOR expr
-   56     | expr . CONCAT expr
-   57     | expr . EQUAL expr
-   58     | expr . NOT_EQUAL expr
-   59     | expr . LEQ expr
-   60     | expr . GEQ expr
-   61     | expr . LESS_THAN expr
-   62     | expr . GREATER_THAN expr
-   64     | expr . AND expr
-   65     | expr . OR expr
-   66     | PARENTHESES_INITIATOR expr . PARENTHESES_TERMINATOR
+   40 idlist: decl_elem .
+   41       | decl_elem . COMMA idlist
 
-    PARENTHESES_TERMINATOR  shift, and go to state 85
-    EQUAL                   shift, and go to state 54
-    NOT_EQUAL               shift, and go to state 55
-    LEQ                     shift, and go to state 56
-    GEQ                     shift, and go to state 57
-    GREATER_THAN            shift, and go to state 58
-    LESS_THAN               shift, and go to state 59
-    AND                     shift, and go to state 60
-    OR                      shift, and go to state 61
-    PLUS_OPERATOR           shift, and go to state 62
-    MINUS_OPERATOR          shift, and go to state 63
-    MULTI_OPERATOR          shift, and go to state 64
-    DIVISION_OPERATOR       shift, and go to state 65
-    MOD_OPERATOR            shift, and go to state 66
-    POWER_OPERATOR          shift, and go to state 67
-    CONCAT                  shift, and go to state 68
+    COMMA  shift, and go to state 85
+
+    $default  reduce using rule 40 (idlist)
 
 
 State 47
 
-   14 stm: IN PARENTHESES_INITIATOR . ID PARENTHESES_TERMINATOR
+   43 decl_elem: assignment .
 
-    ID  shift, and go to state 86
+    $default  reduce using rule 43 (decl_elem)
 
 
 State 48
 
-   15 stm: OUT expr .
-   50 expr: expr . PLUS_OPERATOR expr
-   51     | expr . MINUS_OPERATOR expr
-   52     | expr . MULTI_OPERATOR expr
-   53     | expr . DIVISION_OPERATOR expr
-   54     | expr . MOD_OPERATOR expr
-   55     | expr . POWER_OPERATOR expr
-   56     | expr . CONCAT expr
-   57     | expr . EQUAL expr
-   58     | expr . NOT_EQUAL expr
-   59     | expr . LEQ expr
-   60     | expr . GEQ expr
-   61     | expr . LESS_THAN expr
-   62     | expr . GREATER_THAN expr
-   64     | expr . AND expr
-   65     | expr . OR expr
+   59 field: TYPE . ID
 
-    EQUAL              shift, and go to state 54
-    NOT_EQUAL          shift, and go to state 55
-    LEQ                shift, and go to state 56
-    GEQ                shift, and go to state 57
-    GREATER_THAN       shift, and go to state 58
-    LESS_THAN          shift, and go to state 59
-    AND                shift, and go to state 60
-    OR                 shift, and go to state 61
-    PLUS_OPERATOR      shift, and go to state 62
-    MINUS_OPERATOR     shift, and go to state 63
-    MULTI_OPERATOR     shift, and go to state 64
-    DIVISION_OPERATOR  shift, and go to state 65
-    MOD_OPERATOR       shift, and go to state 66
-    POWER_OPERATOR     shift, and go to state 67
-    CONCAT             shift, and go to state 68
-
-    $default  reduce using rule 15 (stm)
+    ID  shift, and go to state 86
 
 
 State 49
 
-   19 stm: OPEN PARENTHESES_INITIATOR . val PARENTHESES_TERMINATOR
+   18 funcdef: DEF field . PARENTHESES_INITIATOR paramlist PARENTHESES_TERMINATOR body
 
-    ID     shift, and go to state 87
-    VALUE  shift, and go to state 3
-
-    val  go to state 88
+    PARENTHESES_INITIATOR  shift, and go to state 87
 
 
 State 50
 
-   20 stm: CLOSE PARENTHESES_INITIATOR . val PARENTHESES_TERMINATOR
+   47 array_decl: ARRAY LESS_THAN . TYPE GREATER_THAN ID BRACKETS_INITIATOR VALUE BRACKETS_TERMINATOR
+   48           | ARRAY LESS_THAN . TYPE GREATER_THAN ID ASSIGN BRACKETS_INITIATOR values BRACKETS_TERMINATOR
 
-    ID     shift, and go to state 87
-    VALUE  shift, and go to state 3
-
-    val  go to state 89
+    TYPE  shift, and go to state 88
 
 
 State 51
 
-   50 expr: expr . PLUS_OPERATOR expr
-   51     | expr . MINUS_OPERATOR expr
-   52     | expr . MULTI_OPERATOR expr
-   53     | expr . DIVISION_OPERATOR expr
-   54     | expr . MOD_OPERATOR expr
-   55     | expr . POWER_OPERATOR expr
-   56     | expr . CONCAT expr
-   57     | expr . EQUAL expr
-   58     | expr . NOT_EQUAL expr
-   59     | expr . LEQ expr
-   60     | expr . GEQ expr
-   61     | expr . LESS_THAN expr
-   62     | expr . GREATER_THAN expr
-   63     | NOT expr .
-   64     | expr . AND expr
-   65     | expr . OR expr
+   45 struct_decl: STRUCT ID . BRACES_INITIATOR fieldlist BRACES_TERMINATOR
 
-    EQUAL              shift, and go to state 54
-    NOT_EQUAL          shift, and go to state 55
-    LEQ                shift, and go to state 56
-    GEQ                shift, and go to state 57
-    GREATER_THAN       shift, and go to state 58
-    LESS_THAN          shift, and go to state 59
-    PLUS_OPERATOR      shift, and go to state 62
-    MINUS_OPERATOR     shift, and go to state 63
-    MULTI_OPERATOR     shift, and go to state 64
-    DIVISION_OPERATOR  shift, and go to state 65
-    MOD_OPERATOR       shift, and go to state 66
-    POWER_OPERATOR     shift, and go to state 67
-    CONCAT             shift, and go to state 68
-
-    $default  reduce using rule 63 (expr)
+    BRACES_INITIATOR  shift, and go to state 89
 
 
 State 52
+
+   46 tuple_decl: TUPLE PARENTHESES_INITIATOR . types PARENTHESES_TERMINATOR ID ASSIGN PARENTHESES_INITIATOR exprlist PARENTHESES_TERMINATOR
+
+    TYPE  shift, and go to state 90
+
+    types  go to state 91
+
+
+State 53
+
+   81 attrlist: ID . SEPARATOR ID
+   82         | ID . SEPARATOR attrlist
+   83 val: ID .
+
+    SEPARATOR  shift, and go to state 42
+
+    $default  reduce using rule 83 (val)
+
+
+State 54
+
+   21 while: WHILE expr . body
+   63 expr: expr . PLUS_OPERATOR expr
+   64     | expr . MINUS_OPERATOR expr
+   65     | expr . MULTI_OPERATOR expr
+   66     | expr . DIVISION_OPERATOR expr
+   67     | expr . MOD_OPERATOR expr
+   68     | expr . POWER_OPERATOR expr
+   69     | expr . CONCAT expr
+   70     | expr . EQUAL expr
+   71     | expr . NOT_EQUAL expr
+   72     | expr . LEQ expr
+   73     | expr . GEQ expr
+   74     | expr . LESS_THAN expr
+   75     | expr . GREATER_THAN expr
+   77     | expr . AND expr
+   78     | expr . OR expr
+
+    BRACES_INITIATOR   shift, and go to state 92
+    EQUAL              shift, and go to state 66
+    NOT_EQUAL          shift, and go to state 67
+    LEQ                shift, and go to state 68
+    GEQ                shift, and go to state 69
+    GREATER_THAN       shift, and go to state 70
+    LESS_THAN          shift, and go to state 71
+    AND                shift, and go to state 72
+    OR                 shift, and go to state 73
+    PLUS_OPERATOR      shift, and go to state 74
+    MINUS_OPERATOR     shift, and go to state 75
+    MULTI_OPERATOR     shift, and go to state 76
+    DIVISION_OPERATOR  shift, and go to state 77
+    MOD_OPERATOR       shift, and go to state 78
+    POWER_OPERATOR     shift, and go to state 79
+    CONCAT             shift, and go to state 80
+
+    body  go to state 93
+
+
+State 55
+
+   22 for: FOR PARENTHESES_INITIATOR . init PARENTHESES_TERMINATOR body
+
+    TYPE  shift, and go to state 94
+
+    init  go to state 95
+
+
+State 56
+
+   23 if: IF expr . body if_opt
+   63 expr: expr . PLUS_OPERATOR expr
+   64     | expr . MINUS_OPERATOR expr
+   65     | expr . MULTI_OPERATOR expr
+   66     | expr . DIVISION_OPERATOR expr
+   67     | expr . MOD_OPERATOR expr
+   68     | expr . POWER_OPERATOR expr
+   69     | expr . CONCAT expr
+   70     | expr . EQUAL expr
+   71     | expr . NOT_EQUAL expr
+   72     | expr . LEQ expr
+   73     | expr . GEQ expr
+   74     | expr . LESS_THAN expr
+   75     | expr . GREATER_THAN expr
+   77     | expr . AND expr
+   78     | expr . OR expr
+
+    BRACES_INITIATOR   shift, and go to state 92
+    EQUAL              shift, and go to state 66
+    NOT_EQUAL          shift, and go to state 67
+    LEQ                shift, and go to state 68
+    GEQ                shift, and go to state 69
+    GREATER_THAN       shift, and go to state 70
+    LESS_THAN          shift, and go to state 71
+    AND                shift, and go to state 72
+    OR                 shift, and go to state 73
+    PLUS_OPERATOR      shift, and go to state 74
+    MINUS_OPERATOR     shift, and go to state 75
+    MULTI_OPERATOR     shift, and go to state 76
+    DIVISION_OPERATOR  shift, and go to state 77
+    MOD_OPERATOR       shift, and go to state 78
+    POWER_OPERATOR     shift, and go to state 79
+    CONCAT             shift, and go to state 80
+
+    body  go to state 96
+
+
+State 57
+
+   19 return: RETURN expr .
+   63 expr: expr . PLUS_OPERATOR expr
+   64     | expr . MINUS_OPERATOR expr
+   65     | expr . MULTI_OPERATOR expr
+   66     | expr . DIVISION_OPERATOR expr
+   67     | expr . MOD_OPERATOR expr
+   68     | expr . POWER_OPERATOR expr
+   69     | expr . CONCAT expr
+   70     | expr . EQUAL expr
+   71     | expr . NOT_EQUAL expr
+   72     | expr . LEQ expr
+   73     | expr . GEQ expr
+   74     | expr . LESS_THAN expr
+   75     | expr . GREATER_THAN expr
+   77     | expr . AND expr
+   78     | expr . OR expr
+
+    EQUAL              shift, and go to state 66
+    NOT_EQUAL          shift, and go to state 67
+    LEQ                shift, and go to state 68
+    GEQ                shift, and go to state 69
+    GREATER_THAN       shift, and go to state 70
+    LESS_THAN          shift, and go to state 71
+    AND                shift, and go to state 72
+    OR                 shift, and go to state 73
+    PLUS_OPERATOR      shift, and go to state 74
+    MINUS_OPERATOR     shift, and go to state 75
+    MULTI_OPERATOR     shift, and go to state 76
+    DIVISION_OPERATOR  shift, and go to state 77
+    MOD_OPERATOR       shift, and go to state 78
+    POWER_OPERATOR     shift, and go to state 79
+    CONCAT             shift, and go to state 80
+
+    $default  reduce using rule 19 (return)
+
+
+State 58
+
+   63 expr: expr . PLUS_OPERATOR expr
+   64     | expr . MINUS_OPERATOR expr
+   65     | expr . MULTI_OPERATOR expr
+   66     | expr . DIVISION_OPERATOR expr
+   67     | expr . MOD_OPERATOR expr
+   68     | expr . POWER_OPERATOR expr
+   69     | expr . CONCAT expr
+   70     | expr . EQUAL expr
+   71     | expr . NOT_EQUAL expr
+   72     | expr . LEQ expr
+   73     | expr . GEQ expr
+   74     | expr . LESS_THAN expr
+   75     | expr . GREATER_THAN expr
+   77     | expr . AND expr
+   78     | expr . OR expr
+   79     | PARENTHESES_INITIATOR expr . PARENTHESES_TERMINATOR
+
+    PARENTHESES_TERMINATOR  shift, and go to state 97
+    EQUAL                   shift, and go to state 66
+    NOT_EQUAL               shift, and go to state 67
+    LEQ                     shift, and go to state 68
+    GEQ                     shift, and go to state 69
+    GREATER_THAN            shift, and go to state 70
+    LESS_THAN               shift, and go to state 71
+    AND                     shift, and go to state 72
+    OR                      shift, and go to state 73
+    PLUS_OPERATOR           shift, and go to state 74
+    MINUS_OPERATOR          shift, and go to state 75
+    MULTI_OPERATOR          shift, and go to state 76
+    DIVISION_OPERATOR       shift, and go to state 77
+    MOD_OPERATOR            shift, and go to state 78
+    POWER_OPERATOR          shift, and go to state 79
+    CONCAT                  shift, and go to state 80
+
+
+State 59
+
+   30 in: IN PARENTHESES_INITIATOR . ID PARENTHESES_TERMINATOR
+
+    ID  shift, and go to state 98
+
+
+State 60
+
+   31 out: OUT expr .
+   63 expr: expr . PLUS_OPERATOR expr
+   64     | expr . MINUS_OPERATOR expr
+   65     | expr . MULTI_OPERATOR expr
+   66     | expr . DIVISION_OPERATOR expr
+   67     | expr . MOD_OPERATOR expr
+   68     | expr . POWER_OPERATOR expr
+   69     | expr . CONCAT expr
+   70     | expr . EQUAL expr
+   71     | expr . NOT_EQUAL expr
+   72     | expr . LEQ expr
+   73     | expr . GEQ expr
+   74     | expr . LESS_THAN expr
+   75     | expr . GREATER_THAN expr
+   77     | expr . AND expr
+   78     | expr . OR expr
+
+    EQUAL              shift, and go to state 66
+    NOT_EQUAL          shift, and go to state 67
+    LEQ                shift, and go to state 68
+    GEQ                shift, and go to state 69
+    GREATER_THAN       shift, and go to state 70
+    LESS_THAN          shift, and go to state 71
+    AND                shift, and go to state 72
+    OR                 shift, and go to state 73
+    PLUS_OPERATOR      shift, and go to state 74
+    MINUS_OPERATOR     shift, and go to state 75
+    MULTI_OPERATOR     shift, and go to state 76
+    DIVISION_OPERATOR  shift, and go to state 77
+    MOD_OPERATOR       shift, and go to state 78
+    POWER_OPERATOR     shift, and go to state 79
+    CONCAT             shift, and go to state 80
+
+    $default  reduce using rule 31 (out)
+
+
+State 61
+
+   85 open: OPEN PARENTHESES_INITIATOR . val PARENTHESES_TERMINATOR
+
+    ID     shift, and go to state 99
+    VALUE  shift, and go to state 3
+
+    val  go to state 100
+
+
+State 62
+
+   86 close: CLOSE PARENTHESES_INITIATOR . val PARENTHESES_TERMINATOR
+
+    ID     shift, and go to state 99
+    VALUE  shift, and go to state 3
+
+    val  go to state 101
+
+
+State 63
+
+   63 expr: expr . PLUS_OPERATOR expr
+   64     | expr . MINUS_OPERATOR expr
+   65     | expr . MULTI_OPERATOR expr
+   66     | expr . DIVISION_OPERATOR expr
+   67     | expr . MOD_OPERATOR expr
+   68     | expr . POWER_OPERATOR expr
+   69     | expr . CONCAT expr
+   70     | expr . EQUAL expr
+   71     | expr . NOT_EQUAL expr
+   72     | expr . LEQ expr
+   73     | expr . GEQ expr
+   74     | expr . LESS_THAN expr
+   75     | expr . GREATER_THAN expr
+   76     | NOT expr .
+   77     | expr . AND expr
+   78     | expr . OR expr
+
+    EQUAL              shift, and go to state 66
+    NOT_EQUAL          shift, and go to state 67
+    LEQ                shift, and go to state 68
+    GEQ                shift, and go to state 69
+    GREATER_THAN       shift, and go to state 70
+    LESS_THAN          shift, and go to state 71
+    PLUS_OPERATOR      shift, and go to state 74
+    MINUS_OPERATOR     shift, and go to state 75
+    MULTI_OPERATOR     shift, and go to state 76
+    DIVISION_OPERATOR  shift, and go to state 77
+    MOD_OPERATOR       shift, and go to state 78
+    POWER_OPERATOR     shift, and go to state 79
+    CONCAT             shift, and go to state 80
+
+    $default  reduce using rule 76 (expr)
+
+
+State 64
 
     0 $accept: prog $end .
 
     $default  accept
 
 
-State 53
+State 65
 
     2 stmlist: stm SEMICOLON .
     3        | stm SEMICOLON . stmlist
@@ -971,389 +1136,402 @@ State 53
 
     $default  reduce using rule 2 (stmlist)
 
-    stmlist     go to state 90
-    stm         go to state 21
-    funcdef     go to state 22
-    if          go to state 23
-    decl        go to state 24
-    assignment  go to state 25
-    expr        go to state 26
-    attrlist    go to state 27
-    val         go to state 28
-
-
-State 54
-
-   57 expr: expr EQUAL . expr
-
-    ID                     shift, and go to state 41
-    VALUE                  shift, and go to state 3
-    PARENTHESES_INITIATOR  shift, and go to state 13
-    NOT                    shift, and go to state 18
-
-    expr      go to state 91
-    attrlist  go to state 27
-    val       go to state 28
-
-
-State 55
-
-   58 expr: expr NOT_EQUAL . expr
-
-    ID                     shift, and go to state 41
-    VALUE                  shift, and go to state 3
-    PARENTHESES_INITIATOR  shift, and go to state 13
-    NOT                    shift, and go to state 18
-
-    expr      go to state 92
-    attrlist  go to state 27
-    val       go to state 28
-
-
-State 56
-
-   59 expr: expr LEQ . expr
-
-    ID                     shift, and go to state 41
-    VALUE                  shift, and go to state 3
-    PARENTHESES_INITIATOR  shift, and go to state 13
-    NOT                    shift, and go to state 18
-
-    expr      go to state 93
-    attrlist  go to state 27
-    val       go to state 28
-
-
-State 57
-
-   60 expr: expr GEQ . expr
-
-    ID                     shift, and go to state 41
-    VALUE                  shift, and go to state 3
-    PARENTHESES_INITIATOR  shift, and go to state 13
-    NOT                    shift, and go to state 18
-
-    expr      go to state 94
-    attrlist  go to state 27
-    val       go to state 28
-
-
-State 58
-
-   62 expr: expr GREATER_THAN . expr
-
-    ID                     shift, and go to state 41
-    VALUE                  shift, and go to state 3
-    PARENTHESES_INITIATOR  shift, and go to state 13
-    NOT                    shift, and go to state 18
-
-    expr      go to state 95
-    attrlist  go to state 27
-    val       go to state 28
-
-
-State 59
-
-   61 expr: expr LESS_THAN . expr
-
-    ID                     shift, and go to state 41
-    VALUE                  shift, and go to state 3
-    PARENTHESES_INITIATOR  shift, and go to state 13
-    NOT                    shift, and go to state 18
-
-    expr      go to state 96
-    attrlist  go to state 27
-    val       go to state 28
-
-
-State 60
-
-   64 expr: expr AND . expr
-
-    ID                     shift, and go to state 41
-    VALUE                  shift, and go to state 3
-    PARENTHESES_INITIATOR  shift, and go to state 13
-    NOT                    shift, and go to state 18
-
-    expr      go to state 97
-    attrlist  go to state 27
-    val       go to state 28
-
-
-State 61
-
-   65 expr: expr OR . expr
-
-    ID                     shift, and go to state 41
-    VALUE                  shift, and go to state 3
-    PARENTHESES_INITIATOR  shift, and go to state 13
-    NOT                    shift, and go to state 18
-
-    expr      go to state 98
-    attrlist  go to state 27
-    val       go to state 28
-
-
-State 62
-
-   50 expr: expr PLUS_OPERATOR . expr
-
-    ID                     shift, and go to state 41
-    VALUE                  shift, and go to state 3
-    PARENTHESES_INITIATOR  shift, and go to state 13
-    NOT                    shift, and go to state 18
-
-    expr      go to state 99
-    attrlist  go to state 27
-    val       go to state 28
-
-
-State 63
-
-   51 expr: expr MINUS_OPERATOR . expr
-
-    ID                     shift, and go to state 41
-    VALUE                  shift, and go to state 3
-    PARENTHESES_INITIATOR  shift, and go to state 13
-    NOT                    shift, and go to state 18
-
-    expr      go to state 100
-    attrlist  go to state 27
-    val       go to state 28
-
-
-State 64
-
-   52 expr: expr MULTI_OPERATOR . expr
-
-    ID                     shift, and go to state 41
-    VALUE                  shift, and go to state 3
-    PARENTHESES_INITIATOR  shift, and go to state 13
-    NOT                    shift, and go to state 18
-
-    expr      go to state 101
-    attrlist  go to state 27
-    val       go to state 28
-
-
-State 65
-
-   53 expr: expr DIVISION_OPERATOR . expr
-
-    ID                     shift, and go to state 41
-    VALUE                  shift, and go to state 3
-    PARENTHESES_INITIATOR  shift, and go to state 13
-    NOT                    shift, and go to state 18
-
-    expr      go to state 102
-    attrlist  go to state 27
-    val       go to state 28
+    stmlist      go to state 102
+    stm          go to state 21
+    funcdef      go to state 22
+    return       go to state 23
+    break        go to state 24
+    while        go to state 25
+    for          go to state 26
+    if           go to state 27
+    in           go to state 28
+    out          go to state 29
+    str_copy     go to state 30
+    decl         go to state 31
+    assignment   go to state 32
+    struct_decl  go to state 33
+    tuple_decl   go to state 34
+    array_decl   go to state 35
+    expr         go to state 36
+    attrlist     go to state 37
+    val          go to state 38
+    open         go to state 39
+    close        go to state 40
 
 
 State 66
 
-   54 expr: expr MOD_OPERATOR . expr
+   70 expr: expr EQUAL . expr
 
-    ID                     shift, and go to state 41
+    ID                     shift, and go to state 53
     VALUE                  shift, and go to state 3
     PARENTHESES_INITIATOR  shift, and go to state 13
     NOT                    shift, and go to state 18
 
     expr      go to state 103
-    attrlist  go to state 27
-    val       go to state 28
+    attrlist  go to state 37
+    val       go to state 38
 
 
 State 67
 
-   55 expr: expr POWER_OPERATOR . expr
+   71 expr: expr NOT_EQUAL . expr
 
-    ID                     shift, and go to state 41
+    ID                     shift, and go to state 53
     VALUE                  shift, and go to state 3
     PARENTHESES_INITIATOR  shift, and go to state 13
     NOT                    shift, and go to state 18
 
     expr      go to state 104
-    attrlist  go to state 27
-    val       go to state 28
+    attrlist  go to state 37
+    val       go to state 38
 
 
 State 68
 
-   56 expr: expr CONCAT . expr
+   72 expr: expr LEQ . expr
 
-    ID                     shift, and go to state 41
+    ID                     shift, and go to state 53
     VALUE                  shift, and go to state 3
     PARENTHESES_INITIATOR  shift, and go to state 13
     NOT                    shift, and go to state 18
 
     expr      go to state 105
-    attrlist  go to state 27
-    val       go to state 28
+    attrlist  go to state 37
+    val       go to state 38
 
 
 State 69
 
-   37 assignment: ID ASSIGN expr .
-   50 expr: expr . PLUS_OPERATOR expr
-   51     | expr . MINUS_OPERATOR expr
-   52     | expr . MULTI_OPERATOR expr
-   53     | expr . DIVISION_OPERATOR expr
-   54     | expr . MOD_OPERATOR expr
-   55     | expr . POWER_OPERATOR expr
-   56     | expr . CONCAT expr
-   57     | expr . EQUAL expr
-   58     | expr . NOT_EQUAL expr
-   59     | expr . LEQ expr
-   60     | expr . GEQ expr
-   61     | expr . LESS_THAN expr
-   62     | expr . GREATER_THAN expr
-   64     | expr . AND expr
-   65     | expr . OR expr
+   73 expr: expr GEQ . expr
 
-    EQUAL              shift, and go to state 54
-    NOT_EQUAL          shift, and go to state 55
-    LEQ                shift, and go to state 56
-    GEQ                shift, and go to state 57
-    GREATER_THAN       shift, and go to state 58
-    LESS_THAN          shift, and go to state 59
-    AND                shift, and go to state 60
-    OR                 shift, and go to state 61
-    PLUS_OPERATOR      shift, and go to state 62
-    MINUS_OPERATOR     shift, and go to state 63
-    MULTI_OPERATOR     shift, and go to state 64
-    DIVISION_OPERATOR  shift, and go to state 65
-    MOD_OPERATOR       shift, and go to state 66
-    POWER_OPERATOR     shift, and go to state 67
-    CONCAT             shift, and go to state 68
+    ID                     shift, and go to state 53
+    VALUE                  shift, and go to state 3
+    PARENTHESES_INITIATOR  shift, and go to state 13
+    NOT                    shift, and go to state 18
 
-    $default  reduce using rule 37 (assignment)
+    expr      go to state 106
+    attrlist  go to state 37
+    val       go to state 38
 
 
 State 70
 
-   68 attrlist: ID . SEPARATOR ID
-   68         | ID SEPARATOR ID .
-   69         | ID . SEPARATOR attrlist
+   75 expr: expr GREATER_THAN . expr
 
-    SEPARATOR  shift, and go to state 30
+    ID                     shift, and go to state 53
+    VALUE                  shift, and go to state 3
+    PARENTHESES_INITIATOR  shift, and go to state 13
+    NOT                    shift, and go to state 18
 
-    $default  reduce using rule 68 (attrlist)
+    expr      go to state 107
+    attrlist  go to state 37
+    val       go to state 38
 
 
 State 71
 
-   69 attrlist: ID SEPARATOR attrlist .
+   74 expr: expr LESS_THAN . expr
 
-    $default  reduce using rule 69 (attrlist)
+    ID                     shift, and go to state 53
+    VALUE                  shift, and go to state 3
+    PARENTHESES_INITIATOR  shift, and go to state 13
+    NOT                    shift, and go to state 18
+
+    expr      go to state 108
+    attrlist  go to state 37
+    val       go to state 38
 
 
 State 72
 
-    7 stm: ID COPY_STRING expr .
-   50 expr: expr . PLUS_OPERATOR expr
-   51     | expr . MINUS_OPERATOR expr
-   52     | expr . MULTI_OPERATOR expr
-   53     | expr . DIVISION_OPERATOR expr
-   54     | expr . MOD_OPERATOR expr
-   55     | expr . POWER_OPERATOR expr
-   56     | expr . CONCAT expr
-   57     | expr . EQUAL expr
-   58     | expr . NOT_EQUAL expr
-   59     | expr . LEQ expr
-   60     | expr . GEQ expr
-   61     | expr . LESS_THAN expr
-   62     | expr . GREATER_THAN expr
-   64     | expr . AND expr
-   65     | expr . OR expr
+   77 expr: expr AND . expr
 
-    EQUAL              shift, and go to state 54
-    NOT_EQUAL          shift, and go to state 55
-    LEQ                shift, and go to state 56
-    GEQ                shift, and go to state 57
-    GREATER_THAN       shift, and go to state 58
-    LESS_THAN          shift, and go to state 59
-    AND                shift, and go to state 60
-    OR                 shift, and go to state 61
-    PLUS_OPERATOR      shift, and go to state 62
-    MINUS_OPERATOR     shift, and go to state 63
-    MULTI_OPERATOR     shift, and go to state 64
-    DIVISION_OPERATOR  shift, and go to state 65
-    MOD_OPERATOR       shift, and go to state 66
-    POWER_OPERATOR     shift, and go to state 67
-    CONCAT             shift, and go to state 68
+    ID                     shift, and go to state 53
+    VALUE                  shift, and go to state 3
+    PARENTHESES_INITIATOR  shift, and go to state 13
+    NOT                    shift, and go to state 18
 
-    $default  reduce using rule 7 (stm)
+    expr      go to state 109
+    attrlist  go to state 37
+    val       go to state 38
 
 
 State 73
 
-   34 idlist: decl_elem COMMA . idlist
+   78 expr: expr OR . expr
 
-    ID  shift, and go to state 32
+    ID                     shift, and go to state 53
+    VALUE                  shift, and go to state 3
+    PARENTHESES_INITIATOR  shift, and go to state 13
+    NOT                    shift, and go to state 18
 
-    idlist      go to state 106
-    decl_elem   go to state 34
-    assignment  go to state 35
+    expr      go to state 110
+    attrlist  go to state 37
+    val       go to state 38
 
 
 State 74
 
-   46 field: TYPE ID .
+   63 expr: expr PLUS_OPERATOR . expr
 
-    $default  reduce using rule 46 (field)
+    ID                     shift, and go to state 53
+    VALUE                  shift, and go to state 3
+    PARENTHESES_INITIATOR  shift, and go to state 13
+    NOT                    shift, and go to state 18
+
+    expr      go to state 111
+    attrlist  go to state 37
+    val       go to state 38
 
 
 State 75
 
-   21 funcdef: DEF field PARENTHESES_INITIATOR . paramlist PARENTHESES_TERMINATOR body
+   64 expr: expr MINUS_OPERATOR . expr
 
-    TYPE  shift, and go to state 36
+    ID                     shift, and go to state 53
+    VALUE                  shift, and go to state 3
+    PARENTHESES_INITIATOR  shift, and go to state 13
+    NOT                    shift, and go to state 18
 
-    $default  reduce using rule 42 (param)
-
-    paramlist  go to state 107
-    param      go to state 108
-    field      go to state 109
+    expr      go to state 112
+    attrlist  go to state 37
+    val       go to state 38
 
 
 State 76
 
-   18 stm: ARRAY BRACKETS_INITIATOR VALUE . BRACKETS_TERMINATOR
+   65 expr: expr MULTI_OPERATOR . expr
 
-    BRACKETS_TERMINATOR  shift, and go to state 110
+    ID                     shift, and go to state 53
+    VALUE                  shift, and go to state 3
+    PARENTHESES_INITIATOR  shift, and go to state 13
+    NOT                    shift, and go to state 18
+
+    expr      go to state 113
+    attrlist  go to state 37
+    val       go to state 38
 
 
 State 77
 
-   16 stm: STRUCT ID BRACES_INITIATOR . fieldlist BRACES_TERMINATOR
+   66 expr: expr DIVISION_OPERATOR . expr
 
-    TYPE  shift, and go to state 36
+    ID                     shift, and go to state 53
+    VALUE                  shift, and go to state 3
+    PARENTHESES_INITIATOR  shift, and go to state 13
+    NOT                    shift, and go to state 18
 
-    fieldlist  go to state 111
-    field      go to state 112
+    expr      go to state 114
+    attrlist  go to state 37
+    val       go to state 38
 
 
 State 78
 
-   38 types: TYPE .
-   39      | TYPE . COMMA types
+   67 expr: expr MOD_OPERATOR . expr
 
-    COMMA  shift, and go to state 113
+    ID                     shift, and go to state 53
+    VALUE                  shift, and go to state 3
+    PARENTHESES_INITIATOR  shift, and go to state 13
+    NOT                    shift, and go to state 18
 
-    $default  reduce using rule 38 (types)
+    expr      go to state 115
+    attrlist  go to state 37
+    val       go to state 38
 
 
 State 79
 
-   17 stm: TUPLE PARENTHESES_INITIATOR types . PARENTHESES_TERMINATOR ID ASSIGN PARENTHESES_INITIATOR exprlist PARENTHESES_TERMINATOR
+   68 expr: expr POWER_OPERATOR . expr
 
-    PARENTHESES_TERMINATOR  shift, and go to state 114
+    ID                     shift, and go to state 53
+    VALUE                  shift, and go to state 3
+    PARENTHESES_INITIATOR  shift, and go to state 13
+    NOT                    shift, and go to state 18
+
+    expr      go to state 116
+    attrlist  go to state 37
+    val       go to state 38
 
 
 State 80
 
-   28 body: BRACES_INITIATOR . stmlist BRACES_TERMINATOR
+   69 expr: expr CONCAT . expr
+
+    ID                     shift, and go to state 53
+    VALUE                  shift, and go to state 3
+    PARENTHESES_INITIATOR  shift, and go to state 13
+    NOT                    shift, and go to state 18
+
+    expr      go to state 117
+    attrlist  go to state 37
+    val       go to state 38
+
+
+State 81
+
+   44 assignment: ID ASSIGN expr .
+   63 expr: expr . PLUS_OPERATOR expr
+   64     | expr . MINUS_OPERATOR expr
+   65     | expr . MULTI_OPERATOR expr
+   66     | expr . DIVISION_OPERATOR expr
+   67     | expr . MOD_OPERATOR expr
+   68     | expr . POWER_OPERATOR expr
+   69     | expr . CONCAT expr
+   70     | expr . EQUAL expr
+   71     | expr . NOT_EQUAL expr
+   72     | expr . LEQ expr
+   73     | expr . GEQ expr
+   74     | expr . LESS_THAN expr
+   75     | expr . GREATER_THAN expr
+   77     | expr . AND expr
+   78     | expr . OR expr
+
+    EQUAL              shift, and go to state 66
+    NOT_EQUAL          shift, and go to state 67
+    LEQ                shift, and go to state 68
+    GEQ                shift, and go to state 69
+    GREATER_THAN       shift, and go to state 70
+    LESS_THAN          shift, and go to state 71
+    AND                shift, and go to state 72
+    OR                 shift, and go to state 73
+    PLUS_OPERATOR      shift, and go to state 74
+    MINUS_OPERATOR     shift, and go to state 75
+    MULTI_OPERATOR     shift, and go to state 76
+    DIVISION_OPERATOR  shift, and go to state 77
+    MOD_OPERATOR       shift, and go to state 78
+    POWER_OPERATOR     shift, and go to state 79
+    CONCAT             shift, and go to state 80
+
+    $default  reduce using rule 44 (assignment)
+
+
+State 82
+
+   81 attrlist: ID . SEPARATOR ID
+   81         | ID SEPARATOR ID .
+   82         | ID . SEPARATOR attrlist
+
+    SEPARATOR  shift, and go to state 42
+
+    $default  reduce using rule 81 (attrlist)
+
+
+State 83
+
+   82 attrlist: ID SEPARATOR attrlist .
+
+    $default  reduce using rule 82 (attrlist)
+
+
+State 84
+
+   32 str_copy: ID COPY_STRING expr .
+   63 expr: expr . PLUS_OPERATOR expr
+   64     | expr . MINUS_OPERATOR expr
+   65     | expr . MULTI_OPERATOR expr
+   66     | expr . DIVISION_OPERATOR expr
+   67     | expr . MOD_OPERATOR expr
+   68     | expr . POWER_OPERATOR expr
+   69     | expr . CONCAT expr
+   70     | expr . EQUAL expr
+   71     | expr . NOT_EQUAL expr
+   72     | expr . LEQ expr
+   73     | expr . GEQ expr
+   74     | expr . LESS_THAN expr
+   75     | expr . GREATER_THAN expr
+   77     | expr . AND expr
+   78     | expr . OR expr
+
+    EQUAL              shift, and go to state 66
+    NOT_EQUAL          shift, and go to state 67
+    LEQ                shift, and go to state 68
+    GEQ                shift, and go to state 69
+    GREATER_THAN       shift, and go to state 70
+    LESS_THAN          shift, and go to state 71
+    AND                shift, and go to state 72
+    OR                 shift, and go to state 73
+    PLUS_OPERATOR      shift, and go to state 74
+    MINUS_OPERATOR     shift, and go to state 75
+    MULTI_OPERATOR     shift, and go to state 76
+    DIVISION_OPERATOR  shift, and go to state 77
+    MOD_OPERATOR       shift, and go to state 78
+    POWER_OPERATOR     shift, and go to state 79
+    CONCAT             shift, and go to state 80
+
+    $default  reduce using rule 32 (str_copy)
+
+
+State 85
+
+   41 idlist: decl_elem COMMA . idlist
+
+    ID  shift, and go to state 44
+
+    idlist      go to state 118
+    decl_elem   go to state 46
+    assignment  go to state 47
+
+
+State 86
+
+   59 field: TYPE ID .
+
+    $default  reduce using rule 59 (field)
+
+
+State 87
+
+   18 funcdef: DEF field PARENTHESES_INITIATOR . paramlist PARENTHESES_TERMINATOR body
+
+    TYPE  shift, and go to state 48
+
+    $default  reduce using rule 55 (param)
+
+    paramlist  go to state 119
+    param      go to state 120
+    field      go to state 121
+
+
+State 88
+
+   47 array_decl: ARRAY LESS_THAN TYPE . GREATER_THAN ID BRACKETS_INITIATOR VALUE BRACKETS_TERMINATOR
+   48           | ARRAY LESS_THAN TYPE . GREATER_THAN ID ASSIGN BRACKETS_INITIATOR values BRACKETS_TERMINATOR
+
+    GREATER_THAN  shift, and go to state 122
+
+
+State 89
+
+   45 struct_decl: STRUCT ID BRACES_INITIATOR . fieldlist BRACES_TERMINATOR
+
+    TYPE  shift, and go to state 48
+
+    fieldlist  go to state 123
+    field      go to state 124
+
+
+State 90
+
+   49 types: TYPE .
+   50      | TYPE . COMMA types
+
+    COMMA  shift, and go to state 125
+
+    $default  reduce using rule 49 (types)
+
+
+State 91
+
+   46 tuple_decl: TUPLE PARENTHESES_INITIATOR types . PARENTHESES_TERMINATOR ID ASSIGN PARENTHESES_INITIATOR exprlist PARENTHESES_TERMINATOR
+
+    PARENTHESES_TERMINATOR  shift, and go to state 126
+
+
+State 92
+
+   29 body: BRACES_INITIATOR . stmlist BRACES_TERMINATOR
 
     ID                     shift, and go to state 1
     TYPE                   shift, and go to state 2
@@ -1374,1108 +1552,1207 @@ State 80
     CLOSE                  shift, and go to state 17
     NOT                    shift, and go to state 18
 
-    stmlist     go to state 115
-    stm         go to state 21
-    funcdef     go to state 22
-    if          go to state 23
-    decl        go to state 24
-    assignment  go to state 25
-    expr        go to state 26
-    attrlist    go to state 27
-    val         go to state 28
+    stmlist      go to state 127
+    stm          go to state 21
+    funcdef      go to state 22
+    return       go to state 23
+    break        go to state 24
+    while        go to state 25
+    for          go to state 26
+    if           go to state 27
+    in           go to state 28
+    out          go to state 29
+    str_copy     go to state 30
+    decl         go to state 31
+    assignment   go to state 32
+    struct_decl  go to state 33
+    tuple_decl   go to state 34
+    array_decl   go to state 35
+    expr         go to state 36
+    attrlist     go to state 37
+    val          go to state 38
+    open         go to state 39
+    close        go to state 40
 
 
-State 81
+State 93
 
-    9 stm: WHILE expr body .
+   21 while: WHILE expr body .
 
-    $default  reduce using rule 9 (stm)
-
-
-State 82
-
-   29 init: TYPE . ID ITERATOR range
-
-    ID  shift, and go to state 116
+    $default  reduce using rule 21 (while)
 
 
-State 83
+State 94
 
-   10 stm: FOR PARENTHESES_INITIATOR init . PARENTHESES_TERMINATOR body
+   33 init: TYPE . ID ITERATOR range
 
-    PARENTHESES_TERMINATOR  shift, and go to state 117
+    ID  shift, and go to state 128
 
 
-State 84
+State 95
 
-   22 if: IF expr body . if_opt
+   22 for: FOR PARENTHESES_INITIATOR init . PARENTHESES_TERMINATOR body
 
-    ID                     shift, and go to state 41
+    PARENTHESES_TERMINATOR  shift, and go to state 129
+
+
+State 96
+
+   23 if: IF expr body . if_opt
+
+    ID                     shift, and go to state 53
     VALUE                  shift, and go to state 3
     PARENTHESES_INITIATOR  shift, and go to state 13
     NOT                    shift, and go to state 18
 
-    $default  reduce using rule 24 (elif_opt)
+    $default  reduce using rule 25 (elif_opt)
 
-    if_opt    go to state 118
-    elif_opt  go to state 119
-    expr      go to state 120
-    attrlist  go to state 27
-    val       go to state 28
-
-
-State 85
-
-   66 expr: PARENTHESES_INITIATOR expr PARENTHESES_TERMINATOR .
-
-    $default  reduce using rule 66 (expr)
+    if_opt    go to state 130
+    elif_opt  go to state 131
+    expr      go to state 132
+    attrlist  go to state 37
+    val       go to state 38
 
 
-State 86
+State 97
 
-   14 stm: IN PARENTHESES_INITIATOR ID . PARENTHESES_TERMINATOR
+   79 expr: PARENTHESES_INITIATOR expr PARENTHESES_TERMINATOR .
 
-    PARENTHESES_TERMINATOR  shift, and go to state 121
-
-
-State 87
-
-   70 val: ID .
-
-    $default  reduce using rule 70 (val)
+    $default  reduce using rule 79 (expr)
 
 
-State 88
+State 98
 
-   19 stm: OPEN PARENTHESES_INITIATOR val . PARENTHESES_TERMINATOR
+   30 in: IN PARENTHESES_INITIATOR ID . PARENTHESES_TERMINATOR
 
-    PARENTHESES_TERMINATOR  shift, and go to state 122
-
-
-State 89
-
-   20 stm: CLOSE PARENTHESES_INITIATOR val . PARENTHESES_TERMINATOR
-
-    PARENTHESES_TERMINATOR  shift, and go to state 123
+    PARENTHESES_TERMINATOR  shift, and go to state 133
 
 
-State 90
+State 99
+
+   83 val: ID .
+
+    $default  reduce using rule 83 (val)
+
+
+State 100
+
+   85 open: OPEN PARENTHESES_INITIATOR val . PARENTHESES_TERMINATOR
+
+    PARENTHESES_TERMINATOR  shift, and go to state 134
+
+
+State 101
+
+   86 close: CLOSE PARENTHESES_INITIATOR val . PARENTHESES_TERMINATOR
+
+    PARENTHESES_TERMINATOR  shift, and go to state 135
+
+
+State 102
 
     3 stmlist: stm SEMICOLON stmlist .
 
     $default  reduce using rule 3 (stmlist)
 
 
-State 91
-
-   50 expr: expr . PLUS_OPERATOR expr
-   51     | expr . MINUS_OPERATOR expr
-   52     | expr . MULTI_OPERATOR expr
-   53     | expr . DIVISION_OPERATOR expr
-   54     | expr . MOD_OPERATOR expr
-   55     | expr . POWER_OPERATOR expr
-   56     | expr . CONCAT expr
-   57     | expr . EQUAL expr
-   57     | expr EQUAL expr .
-   58     | expr . NOT_EQUAL expr
-   59     | expr . LEQ expr
-   60     | expr . GEQ expr
-   61     | expr . LESS_THAN expr
-   62     | expr . GREATER_THAN expr
-   64     | expr . AND expr
-   65     | expr . OR expr
-
-    PLUS_OPERATOR      shift, and go to state 62
-    MINUS_OPERATOR     shift, and go to state 63
-    MULTI_OPERATOR     shift, and go to state 64
-    DIVISION_OPERATOR  shift, and go to state 65
-    MOD_OPERATOR       shift, and go to state 66
-    POWER_OPERATOR     shift, and go to state 67
-    CONCAT             shift, and go to state 68
-
-    EQUAL         error (nonassociative)
-    NOT_EQUAL     error (nonassociative)
-    LEQ           error (nonassociative)
-    GEQ           error (nonassociative)
-    GREATER_THAN  error (nonassociative)
-    LESS_THAN     error (nonassociative)
-
-    $default  reduce using rule 57 (expr)
-
-
-State 92
-
-   50 expr: expr . PLUS_OPERATOR expr
-   51     | expr . MINUS_OPERATOR expr
-   52     | expr . MULTI_OPERATOR expr
-   53     | expr . DIVISION_OPERATOR expr
-   54     | expr . MOD_OPERATOR expr
-   55     | expr . POWER_OPERATOR expr
-   56     | expr . CONCAT expr
-   57     | expr . EQUAL expr
-   58     | expr . NOT_EQUAL expr
-   58     | expr NOT_EQUAL expr .
-   59     | expr . LEQ expr
-   60     | expr . GEQ expr
-   61     | expr . LESS_THAN expr
-   62     | expr . GREATER_THAN expr
-   64     | expr . AND expr
-   65     | expr . OR expr
-
-    PLUS_OPERATOR      shift, and go to state 62
-    MINUS_OPERATOR     shift, and go to state 63
-    MULTI_OPERATOR     shift, and go to state 64
-    DIVISION_OPERATOR  shift, and go to state 65
-    MOD_OPERATOR       shift, and go to state 66
-    POWER_OPERATOR     shift, and go to state 67
-    CONCAT             shift, and go to state 68
-
-    EQUAL         error (nonassociative)
-    NOT_EQUAL     error (nonassociative)
-    LEQ           error (nonassociative)
-    GEQ           error (nonassociative)
-    GREATER_THAN  error (nonassociative)
-    LESS_THAN     error (nonassociative)
-
-    $default  reduce using rule 58 (expr)
-
-
-State 93
-
-   50 expr: expr . PLUS_OPERATOR expr
-   51     | expr . MINUS_OPERATOR expr
-   52     | expr . MULTI_OPERATOR expr
-   53     | expr . DIVISION_OPERATOR expr
-   54     | expr . MOD_OPERATOR expr
-   55     | expr . POWER_OPERATOR expr
-   56     | expr . CONCAT expr
-   57     | expr . EQUAL expr
-   58     | expr . NOT_EQUAL expr
-   59     | expr . LEQ expr
-   59     | expr LEQ expr .
-   60     | expr . GEQ expr
-   61     | expr . LESS_THAN expr
-   62     | expr . GREATER_THAN expr
-   64     | expr . AND expr
-   65     | expr . OR expr
-
-    PLUS_OPERATOR      shift, and go to state 62
-    MINUS_OPERATOR     shift, and go to state 63
-    MULTI_OPERATOR     shift, and go to state 64
-    DIVISION_OPERATOR  shift, and go to state 65
-    MOD_OPERATOR       shift, and go to state 66
-    POWER_OPERATOR     shift, and go to state 67
-    CONCAT             shift, and go to state 68
-
-    EQUAL         error (nonassociative)
-    NOT_EQUAL     error (nonassociative)
-    LEQ           error (nonassociative)
-    GEQ           error (nonassociative)
-    GREATER_THAN  error (nonassociative)
-    LESS_THAN     error (nonassociative)
-
-    $default  reduce using rule 59 (expr)
-
-
-State 94
-
-   50 expr: expr . PLUS_OPERATOR expr
-   51     | expr . MINUS_OPERATOR expr
-   52     | expr . MULTI_OPERATOR expr
-   53     | expr . DIVISION_OPERATOR expr
-   54     | expr . MOD_OPERATOR expr
-   55     | expr . POWER_OPERATOR expr
-   56     | expr . CONCAT expr
-   57     | expr . EQUAL expr
-   58     | expr . NOT_EQUAL expr
-   59     | expr . LEQ expr
-   60     | expr . GEQ expr
-   60     | expr GEQ expr .
-   61     | expr . LESS_THAN expr
-   62     | expr . GREATER_THAN expr
-   64     | expr . AND expr
-   65     | expr . OR expr
-
-    PLUS_OPERATOR      shift, and go to state 62
-    MINUS_OPERATOR     shift, and go to state 63
-    MULTI_OPERATOR     shift, and go to state 64
-    DIVISION_OPERATOR  shift, and go to state 65
-    MOD_OPERATOR       shift, and go to state 66
-    POWER_OPERATOR     shift, and go to state 67
-    CONCAT             shift, and go to state 68
-
-    EQUAL         error (nonassociative)
-    NOT_EQUAL     error (nonassociative)
-    LEQ           error (nonassociative)
-    GEQ           error (nonassociative)
-    GREATER_THAN  error (nonassociative)
-    LESS_THAN     error (nonassociative)
-
-    $default  reduce using rule 60 (expr)
-
-
-State 95
-
-   50 expr: expr . PLUS_OPERATOR expr
-   51     | expr . MINUS_OPERATOR expr
-   52     | expr . MULTI_OPERATOR expr
-   53     | expr . DIVISION_OPERATOR expr
-   54     | expr . MOD_OPERATOR expr
-   55     | expr . POWER_OPERATOR expr
-   56     | expr . CONCAT expr
-   57     | expr . EQUAL expr
-   58     | expr . NOT_EQUAL expr
-   59     | expr . LEQ expr
-   60     | expr . GEQ expr
-   61     | expr . LESS_THAN expr
-   62     | expr . GREATER_THAN expr
-   62     | expr GREATER_THAN expr .
-   64     | expr . AND expr
-   65     | expr . OR expr
-
-    PLUS_OPERATOR      shift, and go to state 62
-    MINUS_OPERATOR     shift, and go to state 63
-    MULTI_OPERATOR     shift, and go to state 64
-    DIVISION_OPERATOR  shift, and go to state 65
-    MOD_OPERATOR       shift, and go to state 66
-    POWER_OPERATOR     shift, and go to state 67
-    CONCAT             shift, and go to state 68
-
-    EQUAL         error (nonassociative)
-    NOT_EQUAL     error (nonassociative)
-    LEQ           error (nonassociative)
-    GEQ           error (nonassociative)
-    GREATER_THAN  error (nonassociative)
-    LESS_THAN     error (nonassociative)
-
-    $default  reduce using rule 62 (expr)
-
-
-State 96
-
-   50 expr: expr . PLUS_OPERATOR expr
-   51     | expr . MINUS_OPERATOR expr
-   52     | expr . MULTI_OPERATOR expr
-   53     | expr . DIVISION_OPERATOR expr
-   54     | expr . MOD_OPERATOR expr
-   55     | expr . POWER_OPERATOR expr
-   56     | expr . CONCAT expr
-   57     | expr . EQUAL expr
-   58     | expr . NOT_EQUAL expr
-   59     | expr . LEQ expr
-   60     | expr . GEQ expr
-   61     | expr . LESS_THAN expr
-   61     | expr LESS_THAN expr .
-   62     | expr . GREATER_THAN expr
-   64     | expr . AND expr
-   65     | expr . OR expr
-
-    PLUS_OPERATOR      shift, and go to state 62
-    MINUS_OPERATOR     shift, and go to state 63
-    MULTI_OPERATOR     shift, and go to state 64
-    DIVISION_OPERATOR  shift, and go to state 65
-    MOD_OPERATOR       shift, and go to state 66
-    POWER_OPERATOR     shift, and go to state 67
-    CONCAT             shift, and go to state 68
-
-    EQUAL         error (nonassociative)
-    NOT_EQUAL     error (nonassociative)
-    LEQ           error (nonassociative)
-    GEQ           error (nonassociative)
-    GREATER_THAN  error (nonassociative)
-    LESS_THAN     error (nonassociative)
-
-    $default  reduce using rule 61 (expr)
-
-
-State 97
-
-   50 expr: expr . PLUS_OPERATOR expr
-   51     | expr . MINUS_OPERATOR expr
-   52     | expr . MULTI_OPERATOR expr
-   53     | expr . DIVISION_OPERATOR expr
-   54     | expr . MOD_OPERATOR expr
-   55     | expr . POWER_OPERATOR expr
-   56     | expr . CONCAT expr
-   57     | expr . EQUAL expr
-   58     | expr . NOT_EQUAL expr
-   59     | expr . LEQ expr
-   60     | expr . GEQ expr
-   61     | expr . LESS_THAN expr
-   62     | expr . GREATER_THAN expr
-   64     | expr . AND expr
-   64     | expr AND expr .
-   65     | expr . OR expr
-
-    EQUAL              shift, and go to state 54
-    NOT_EQUAL          shift, and go to state 55
-    LEQ                shift, and go to state 56
-    GEQ                shift, and go to state 57
-    GREATER_THAN       shift, and go to state 58
-    LESS_THAN          shift, and go to state 59
-    PLUS_OPERATOR      shift, and go to state 62
-    MINUS_OPERATOR     shift, and go to state 63
-    MULTI_OPERATOR     shift, and go to state 64
-    DIVISION_OPERATOR  shift, and go to state 65
-    MOD_OPERATOR       shift, and go to state 66
-    POWER_OPERATOR     shift, and go to state 67
-    CONCAT             shift, and go to state 68
-
-    $default  reduce using rule 64 (expr)
-
-
-State 98
-
-   50 expr: expr . PLUS_OPERATOR expr
-   51     | expr . MINUS_OPERATOR expr
-   52     | expr . MULTI_OPERATOR expr
-   53     | expr . DIVISION_OPERATOR expr
-   54     | expr . MOD_OPERATOR expr
-   55     | expr . POWER_OPERATOR expr
-   56     | expr . CONCAT expr
-   57     | expr . EQUAL expr
-   58     | expr . NOT_EQUAL expr
-   59     | expr . LEQ expr
-   60     | expr . GEQ expr
-   61     | expr . LESS_THAN expr
-   62     | expr . GREATER_THAN expr
-   64     | expr . AND expr
-   65     | expr . OR expr
-   65     | expr OR expr .
-
-    EQUAL              shift, and go to state 54
-    NOT_EQUAL          shift, and go to state 55
-    LEQ                shift, and go to state 56
-    GEQ                shift, and go to state 57
-    GREATER_THAN       shift, and go to state 58
-    LESS_THAN          shift, and go to state 59
-    AND                shift, and go to state 60
-    PLUS_OPERATOR      shift, and go to state 62
-    MINUS_OPERATOR     shift, and go to state 63
-    MULTI_OPERATOR     shift, and go to state 64
-    DIVISION_OPERATOR  shift, and go to state 65
-    MOD_OPERATOR       shift, and go to state 66
-    POWER_OPERATOR     shift, and go to state 67
-    CONCAT             shift, and go to state 68
-
-    $default  reduce using rule 65 (expr)
-
-
-State 99
-
-   50 expr: expr . PLUS_OPERATOR expr
-   50     | expr PLUS_OPERATOR expr .
-   51     | expr . MINUS_OPERATOR expr
-   52     | expr . MULTI_OPERATOR expr
-   53     | expr . DIVISION_OPERATOR expr
-   54     | expr . MOD_OPERATOR expr
-   55     | expr . POWER_OPERATOR expr
-   56     | expr . CONCAT expr
-   57     | expr . EQUAL expr
-   58     | expr . NOT_EQUAL expr
-   59     | expr . LEQ expr
-   60     | expr . GEQ expr
-   61     | expr . LESS_THAN expr
-   62     | expr . GREATER_THAN expr
-   64     | expr . AND expr
-   65     | expr . OR expr
-
-    MULTI_OPERATOR     shift, and go to state 64
-    DIVISION_OPERATOR  shift, and go to state 65
-    MOD_OPERATOR       shift, and go to state 66
-    POWER_OPERATOR     shift, and go to state 67
-    CONCAT             shift, and go to state 68
-
-    $default  reduce using rule 50 (expr)
-
-
-State 100
-
-   50 expr: expr . PLUS_OPERATOR expr
-   51     | expr . MINUS_OPERATOR expr
-   51     | expr MINUS_OPERATOR expr .
-   52     | expr . MULTI_OPERATOR expr
-   53     | expr . DIVISION_OPERATOR expr
-   54     | expr . MOD_OPERATOR expr
-   55     | expr . POWER_OPERATOR expr
-   56     | expr . CONCAT expr
-   57     | expr . EQUAL expr
-   58     | expr . NOT_EQUAL expr
-   59     | expr . LEQ expr
-   60     | expr . GEQ expr
-   61     | expr . LESS_THAN expr
-   62     | expr . GREATER_THAN expr
-   64     | expr . AND expr
-   65     | expr . OR expr
-
-    MULTI_OPERATOR     shift, and go to state 64
-    DIVISION_OPERATOR  shift, and go to state 65
-    MOD_OPERATOR       shift, and go to state 66
-    POWER_OPERATOR     shift, and go to state 67
-    CONCAT             shift, and go to state 68
-
-    $default  reduce using rule 51 (expr)
-
-
-State 101
-
-   50 expr: expr . PLUS_OPERATOR expr
-   51     | expr . MINUS_OPERATOR expr
-   52     | expr . MULTI_OPERATOR expr
-   52     | expr MULTI_OPERATOR expr .
-   53     | expr . DIVISION_OPERATOR expr
-   54     | expr . MOD_OPERATOR expr
-   55     | expr . POWER_OPERATOR expr
-   56     | expr . CONCAT expr
-   57     | expr . EQUAL expr
-   58     | expr . NOT_EQUAL expr
-   59     | expr . LEQ expr
-   60     | expr . GEQ expr
-   61     | expr . LESS_THAN expr
-   62     | expr . GREATER_THAN expr
-   64     | expr . AND expr
-   65     | expr . OR expr
-
-    CONCAT  shift, and go to state 68
-
-    $default  reduce using rule 52 (expr)
-
-
-State 102
-
-   50 expr: expr . PLUS_OPERATOR expr
-   51     | expr . MINUS_OPERATOR expr
-   52     | expr . MULTI_OPERATOR expr
-   53     | expr . DIVISION_OPERATOR expr
-   53     | expr DIVISION_OPERATOR expr .
-   54     | expr . MOD_OPERATOR expr
-   55     | expr . POWER_OPERATOR expr
-   56     | expr . CONCAT expr
-   57     | expr . EQUAL expr
-   58     | expr . NOT_EQUAL expr
-   59     | expr . LEQ expr
-   60     | expr . GEQ expr
-   61     | expr . LESS_THAN expr
-   62     | expr . GREATER_THAN expr
-   64     | expr . AND expr
-   65     | expr . OR expr
-
-    CONCAT  shift, and go to state 68
-
-    $default  reduce using rule 53 (expr)
-
-
 State 103
 
-   50 expr: expr . PLUS_OPERATOR expr
-   51     | expr . MINUS_OPERATOR expr
-   52     | expr . MULTI_OPERATOR expr
-   53     | expr . DIVISION_OPERATOR expr
-   54     | expr . MOD_OPERATOR expr
-   54     | expr MOD_OPERATOR expr .
-   55     | expr . POWER_OPERATOR expr
-   56     | expr . CONCAT expr
-   57     | expr . EQUAL expr
-   58     | expr . NOT_EQUAL expr
-   59     | expr . LEQ expr
-   60     | expr . GEQ expr
-   61     | expr . LESS_THAN expr
-   62     | expr . GREATER_THAN expr
-   64     | expr . AND expr
-   65     | expr . OR expr
+   63 expr: expr . PLUS_OPERATOR expr
+   64     | expr . MINUS_OPERATOR expr
+   65     | expr . MULTI_OPERATOR expr
+   66     | expr . DIVISION_OPERATOR expr
+   67     | expr . MOD_OPERATOR expr
+   68     | expr . POWER_OPERATOR expr
+   69     | expr . CONCAT expr
+   70     | expr . EQUAL expr
+   70     | expr EQUAL expr .
+   71     | expr . NOT_EQUAL expr
+   72     | expr . LEQ expr
+   73     | expr . GEQ expr
+   74     | expr . LESS_THAN expr
+   75     | expr . GREATER_THAN expr
+   77     | expr . AND expr
+   78     | expr . OR expr
 
-    CONCAT  shift, and go to state 68
+    PLUS_OPERATOR      shift, and go to state 74
+    MINUS_OPERATOR     shift, and go to state 75
+    MULTI_OPERATOR     shift, and go to state 76
+    DIVISION_OPERATOR  shift, and go to state 77
+    MOD_OPERATOR       shift, and go to state 78
+    POWER_OPERATOR     shift, and go to state 79
+    CONCAT             shift, and go to state 80
 
-    $default  reduce using rule 54 (expr)
+    EQUAL         error (nonassociative)
+    NOT_EQUAL     error (nonassociative)
+    LEQ           error (nonassociative)
+    GEQ           error (nonassociative)
+    GREATER_THAN  error (nonassociative)
+    LESS_THAN     error (nonassociative)
+
+    $default  reduce using rule 70 (expr)
 
 
 State 104
 
-   50 expr: expr . PLUS_OPERATOR expr
-   51     | expr . MINUS_OPERATOR expr
-   52     | expr . MULTI_OPERATOR expr
-   53     | expr . DIVISION_OPERATOR expr
-   54     | expr . MOD_OPERATOR expr
-   55     | expr . POWER_OPERATOR expr
-   55     | expr POWER_OPERATOR expr .
-   56     | expr . CONCAT expr
-   57     | expr . EQUAL expr
-   58     | expr . NOT_EQUAL expr
-   59     | expr . LEQ expr
-   60     | expr . GEQ expr
-   61     | expr . LESS_THAN expr
-   62     | expr . GREATER_THAN expr
-   64     | expr . AND expr
-   65     | expr . OR expr
+   63 expr: expr . PLUS_OPERATOR expr
+   64     | expr . MINUS_OPERATOR expr
+   65     | expr . MULTI_OPERATOR expr
+   66     | expr . DIVISION_OPERATOR expr
+   67     | expr . MOD_OPERATOR expr
+   68     | expr . POWER_OPERATOR expr
+   69     | expr . CONCAT expr
+   70     | expr . EQUAL expr
+   71     | expr . NOT_EQUAL expr
+   71     | expr NOT_EQUAL expr .
+   72     | expr . LEQ expr
+   73     | expr . GEQ expr
+   74     | expr . LESS_THAN expr
+   75     | expr . GREATER_THAN expr
+   77     | expr . AND expr
+   78     | expr . OR expr
 
-    CONCAT  shift, and go to state 68
+    PLUS_OPERATOR      shift, and go to state 74
+    MINUS_OPERATOR     shift, and go to state 75
+    MULTI_OPERATOR     shift, and go to state 76
+    DIVISION_OPERATOR  shift, and go to state 77
+    MOD_OPERATOR       shift, and go to state 78
+    POWER_OPERATOR     shift, and go to state 79
+    CONCAT             shift, and go to state 80
 
-    $default  reduce using rule 55 (expr)
+    EQUAL         error (nonassociative)
+    NOT_EQUAL     error (nonassociative)
+    LEQ           error (nonassociative)
+    GEQ           error (nonassociative)
+    GREATER_THAN  error (nonassociative)
+    LESS_THAN     error (nonassociative)
+
+    $default  reduce using rule 71 (expr)
 
 
 State 105
 
-   50 expr: expr . PLUS_OPERATOR expr
-   51     | expr . MINUS_OPERATOR expr
-   52     | expr . MULTI_OPERATOR expr
-   53     | expr . DIVISION_OPERATOR expr
-   54     | expr . MOD_OPERATOR expr
-   55     | expr . POWER_OPERATOR expr
-   56     | expr . CONCAT expr
-   56     | expr CONCAT expr .
-   57     | expr . EQUAL expr
-   58     | expr . NOT_EQUAL expr
-   59     | expr . LEQ expr
-   60     | expr . GEQ expr
-   61     | expr . LESS_THAN expr
-   62     | expr . GREATER_THAN expr
-   64     | expr . AND expr
-   65     | expr . OR expr
+   63 expr: expr . PLUS_OPERATOR expr
+   64     | expr . MINUS_OPERATOR expr
+   65     | expr . MULTI_OPERATOR expr
+   66     | expr . DIVISION_OPERATOR expr
+   67     | expr . MOD_OPERATOR expr
+   68     | expr . POWER_OPERATOR expr
+   69     | expr . CONCAT expr
+   70     | expr . EQUAL expr
+   71     | expr . NOT_EQUAL expr
+   72     | expr . LEQ expr
+   72     | expr LEQ expr .
+   73     | expr . GEQ expr
+   74     | expr . LESS_THAN expr
+   75     | expr . GREATER_THAN expr
+   77     | expr . AND expr
+   78     | expr . OR expr
 
-    CONCAT  error (nonassociative)
+    PLUS_OPERATOR      shift, and go to state 74
+    MINUS_OPERATOR     shift, and go to state 75
+    MULTI_OPERATOR     shift, and go to state 76
+    DIVISION_OPERATOR  shift, and go to state 77
+    MOD_OPERATOR       shift, and go to state 78
+    POWER_OPERATOR     shift, and go to state 79
+    CONCAT             shift, and go to state 80
 
-    $default  reduce using rule 56 (expr)
+    EQUAL         error (nonassociative)
+    NOT_EQUAL     error (nonassociative)
+    LEQ           error (nonassociative)
+    GEQ           error (nonassociative)
+    GREATER_THAN  error (nonassociative)
+    LESS_THAN     error (nonassociative)
+
+    $default  reduce using rule 72 (expr)
 
 
 State 106
 
-   34 idlist: decl_elem COMMA idlist .
+   63 expr: expr . PLUS_OPERATOR expr
+   64     | expr . MINUS_OPERATOR expr
+   65     | expr . MULTI_OPERATOR expr
+   66     | expr . DIVISION_OPERATOR expr
+   67     | expr . MOD_OPERATOR expr
+   68     | expr . POWER_OPERATOR expr
+   69     | expr . CONCAT expr
+   70     | expr . EQUAL expr
+   71     | expr . NOT_EQUAL expr
+   72     | expr . LEQ expr
+   73     | expr . GEQ expr
+   73     | expr GEQ expr .
+   74     | expr . LESS_THAN expr
+   75     | expr . GREATER_THAN expr
+   77     | expr . AND expr
+   78     | expr . OR expr
 
-    $default  reduce using rule 34 (idlist)
+    PLUS_OPERATOR      shift, and go to state 74
+    MINUS_OPERATOR     shift, and go to state 75
+    MULTI_OPERATOR     shift, and go to state 76
+    DIVISION_OPERATOR  shift, and go to state 77
+    MOD_OPERATOR       shift, and go to state 78
+    POWER_OPERATOR     shift, and go to state 79
+    CONCAT             shift, and go to state 80
+
+    EQUAL         error (nonassociative)
+    NOT_EQUAL     error (nonassociative)
+    LEQ           error (nonassociative)
+    GEQ           error (nonassociative)
+    GREATER_THAN  error (nonassociative)
+    LESS_THAN     error (nonassociative)
+
+    $default  reduce using rule 73 (expr)
 
 
 State 107
 
-   21 funcdef: DEF field PARENTHESES_INITIATOR paramlist . PARENTHESES_TERMINATOR body
+   63 expr: expr . PLUS_OPERATOR expr
+   64     | expr . MINUS_OPERATOR expr
+   65     | expr . MULTI_OPERATOR expr
+   66     | expr . DIVISION_OPERATOR expr
+   67     | expr . MOD_OPERATOR expr
+   68     | expr . POWER_OPERATOR expr
+   69     | expr . CONCAT expr
+   70     | expr . EQUAL expr
+   71     | expr . NOT_EQUAL expr
+   72     | expr . LEQ expr
+   73     | expr . GEQ expr
+   74     | expr . LESS_THAN expr
+   75     | expr . GREATER_THAN expr
+   75     | expr GREATER_THAN expr .
+   77     | expr . AND expr
+   78     | expr . OR expr
 
-    PARENTHESES_TERMINATOR  shift, and go to state 124
+    PLUS_OPERATOR      shift, and go to state 74
+    MINUS_OPERATOR     shift, and go to state 75
+    MULTI_OPERATOR     shift, and go to state 76
+    DIVISION_OPERATOR  shift, and go to state 77
+    MOD_OPERATOR       shift, and go to state 78
+    POWER_OPERATOR     shift, and go to state 79
+    CONCAT             shift, and go to state 80
+
+    EQUAL         error (nonassociative)
+    NOT_EQUAL     error (nonassociative)
+    LEQ           error (nonassociative)
+    GEQ           error (nonassociative)
+    GREATER_THAN  error (nonassociative)
+    LESS_THAN     error (nonassociative)
+
+    $default  reduce using rule 75 (expr)
 
 
 State 108
 
-   40 paramlist: param .
-   41          | param . COMMA paramlist
+   63 expr: expr . PLUS_OPERATOR expr
+   64     | expr . MINUS_OPERATOR expr
+   65     | expr . MULTI_OPERATOR expr
+   66     | expr . DIVISION_OPERATOR expr
+   67     | expr . MOD_OPERATOR expr
+   68     | expr . POWER_OPERATOR expr
+   69     | expr . CONCAT expr
+   70     | expr . EQUAL expr
+   71     | expr . NOT_EQUAL expr
+   72     | expr . LEQ expr
+   73     | expr . GEQ expr
+   74     | expr . LESS_THAN expr
+   74     | expr LESS_THAN expr .
+   75     | expr . GREATER_THAN expr
+   77     | expr . AND expr
+   78     | expr . OR expr
 
-    COMMA  shift, and go to state 125
+    PLUS_OPERATOR      shift, and go to state 74
+    MINUS_OPERATOR     shift, and go to state 75
+    MULTI_OPERATOR     shift, and go to state 76
+    DIVISION_OPERATOR  shift, and go to state 77
+    MOD_OPERATOR       shift, and go to state 78
+    POWER_OPERATOR     shift, and go to state 79
+    CONCAT             shift, and go to state 80
 
-    $default  reduce using rule 40 (paramlist)
+    EQUAL         error (nonassociative)
+    NOT_EQUAL     error (nonassociative)
+    LEQ           error (nonassociative)
+    GEQ           error (nonassociative)
+    GREATER_THAN  error (nonassociative)
+    LESS_THAN     error (nonassociative)
+
+    $default  reduce using rule 74 (expr)
 
 
 State 109
 
-   43 param: field .
+   63 expr: expr . PLUS_OPERATOR expr
+   64     | expr . MINUS_OPERATOR expr
+   65     | expr . MULTI_OPERATOR expr
+   66     | expr . DIVISION_OPERATOR expr
+   67     | expr . MOD_OPERATOR expr
+   68     | expr . POWER_OPERATOR expr
+   69     | expr . CONCAT expr
+   70     | expr . EQUAL expr
+   71     | expr . NOT_EQUAL expr
+   72     | expr . LEQ expr
+   73     | expr . GEQ expr
+   74     | expr . LESS_THAN expr
+   75     | expr . GREATER_THAN expr
+   77     | expr . AND expr
+   77     | expr AND expr .
+   78     | expr . OR expr
 
-    $default  reduce using rule 43 (param)
+    EQUAL              shift, and go to state 66
+    NOT_EQUAL          shift, and go to state 67
+    LEQ                shift, and go to state 68
+    GEQ                shift, and go to state 69
+    GREATER_THAN       shift, and go to state 70
+    LESS_THAN          shift, and go to state 71
+    PLUS_OPERATOR      shift, and go to state 74
+    MINUS_OPERATOR     shift, and go to state 75
+    MULTI_OPERATOR     shift, and go to state 76
+    DIVISION_OPERATOR  shift, and go to state 77
+    MOD_OPERATOR       shift, and go to state 78
+    POWER_OPERATOR     shift, and go to state 79
+    CONCAT             shift, and go to state 80
+
+    $default  reduce using rule 77 (expr)
 
 
 State 110
 
-   18 stm: ARRAY BRACKETS_INITIATOR VALUE BRACKETS_TERMINATOR .
+   63 expr: expr . PLUS_OPERATOR expr
+   64     | expr . MINUS_OPERATOR expr
+   65     | expr . MULTI_OPERATOR expr
+   66     | expr . DIVISION_OPERATOR expr
+   67     | expr . MOD_OPERATOR expr
+   68     | expr . POWER_OPERATOR expr
+   69     | expr . CONCAT expr
+   70     | expr . EQUAL expr
+   71     | expr . NOT_EQUAL expr
+   72     | expr . LEQ expr
+   73     | expr . GEQ expr
+   74     | expr . LESS_THAN expr
+   75     | expr . GREATER_THAN expr
+   77     | expr . AND expr
+   78     | expr . OR expr
+   78     | expr OR expr .
 
-    $default  reduce using rule 18 (stm)
+    EQUAL              shift, and go to state 66
+    NOT_EQUAL          shift, and go to state 67
+    LEQ                shift, and go to state 68
+    GEQ                shift, and go to state 69
+    GREATER_THAN       shift, and go to state 70
+    LESS_THAN          shift, and go to state 71
+    AND                shift, and go to state 72
+    PLUS_OPERATOR      shift, and go to state 74
+    MINUS_OPERATOR     shift, and go to state 75
+    MULTI_OPERATOR     shift, and go to state 76
+    DIVISION_OPERATOR  shift, and go to state 77
+    MOD_OPERATOR       shift, and go to state 78
+    POWER_OPERATOR     shift, and go to state 79
+    CONCAT             shift, and go to state 80
+
+    $default  reduce using rule 78 (expr)
 
 
 State 111
 
-   16 stm: STRUCT ID BRACES_INITIATOR fieldlist . BRACES_TERMINATOR
+   63 expr: expr . PLUS_OPERATOR expr
+   63     | expr PLUS_OPERATOR expr .
+   64     | expr . MINUS_OPERATOR expr
+   65     | expr . MULTI_OPERATOR expr
+   66     | expr . DIVISION_OPERATOR expr
+   67     | expr . MOD_OPERATOR expr
+   68     | expr . POWER_OPERATOR expr
+   69     | expr . CONCAT expr
+   70     | expr . EQUAL expr
+   71     | expr . NOT_EQUAL expr
+   72     | expr . LEQ expr
+   73     | expr . GEQ expr
+   74     | expr . LESS_THAN expr
+   75     | expr . GREATER_THAN expr
+   77     | expr . AND expr
+   78     | expr . OR expr
 
-    BRACES_TERMINATOR  shift, and go to state 126
+    MULTI_OPERATOR     shift, and go to state 76
+    DIVISION_OPERATOR  shift, and go to state 77
+    MOD_OPERATOR       shift, and go to state 78
+    POWER_OPERATOR     shift, and go to state 79
+    CONCAT             shift, and go to state 80
+
+    $default  reduce using rule 63 (expr)
 
 
 State 112
 
-   44 fieldlist: field . SEMICOLON
-   45          | field . SEMICOLON fieldlist
+   63 expr: expr . PLUS_OPERATOR expr
+   64     | expr . MINUS_OPERATOR expr
+   64     | expr MINUS_OPERATOR expr .
+   65     | expr . MULTI_OPERATOR expr
+   66     | expr . DIVISION_OPERATOR expr
+   67     | expr . MOD_OPERATOR expr
+   68     | expr . POWER_OPERATOR expr
+   69     | expr . CONCAT expr
+   70     | expr . EQUAL expr
+   71     | expr . NOT_EQUAL expr
+   72     | expr . LEQ expr
+   73     | expr . GEQ expr
+   74     | expr . LESS_THAN expr
+   75     | expr . GREATER_THAN expr
+   77     | expr . AND expr
+   78     | expr . OR expr
 
-    SEMICOLON  shift, and go to state 127
+    MULTI_OPERATOR     shift, and go to state 76
+    DIVISION_OPERATOR  shift, and go to state 77
+    MOD_OPERATOR       shift, and go to state 78
+    POWER_OPERATOR     shift, and go to state 79
+    CONCAT             shift, and go to state 80
+
+    $default  reduce using rule 64 (expr)
 
 
 State 113
 
-   39 types: TYPE COMMA . types
+   63 expr: expr . PLUS_OPERATOR expr
+   64     | expr . MINUS_OPERATOR expr
+   65     | expr . MULTI_OPERATOR expr
+   65     | expr MULTI_OPERATOR expr .
+   66     | expr . DIVISION_OPERATOR expr
+   67     | expr . MOD_OPERATOR expr
+   68     | expr . POWER_OPERATOR expr
+   69     | expr . CONCAT expr
+   70     | expr . EQUAL expr
+   71     | expr . NOT_EQUAL expr
+   72     | expr . LEQ expr
+   73     | expr . GEQ expr
+   74     | expr . LESS_THAN expr
+   75     | expr . GREATER_THAN expr
+   77     | expr . AND expr
+   78     | expr . OR expr
 
-    TYPE  shift, and go to state 78
+    CONCAT  shift, and go to state 80
 
-    types  go to state 128
+    $default  reduce using rule 65 (expr)
 
 
 State 114
 
-   17 stm: TUPLE PARENTHESES_INITIATOR types PARENTHESES_TERMINATOR . ID ASSIGN PARENTHESES_INITIATOR exprlist PARENTHESES_TERMINATOR
+   63 expr: expr . PLUS_OPERATOR expr
+   64     | expr . MINUS_OPERATOR expr
+   65     | expr . MULTI_OPERATOR expr
+   66     | expr . DIVISION_OPERATOR expr
+   66     | expr DIVISION_OPERATOR expr .
+   67     | expr . MOD_OPERATOR expr
+   68     | expr . POWER_OPERATOR expr
+   69     | expr . CONCAT expr
+   70     | expr . EQUAL expr
+   71     | expr . NOT_EQUAL expr
+   72     | expr . LEQ expr
+   73     | expr . GEQ expr
+   74     | expr . LESS_THAN expr
+   75     | expr . GREATER_THAN expr
+   77     | expr . AND expr
+   78     | expr . OR expr
 
-    ID  shift, and go to state 129
+    CONCAT  shift, and go to state 80
+
+    $default  reduce using rule 66 (expr)
 
 
 State 115
 
-   28 body: BRACES_INITIATOR stmlist . BRACES_TERMINATOR
+   63 expr: expr . PLUS_OPERATOR expr
+   64     | expr . MINUS_OPERATOR expr
+   65     | expr . MULTI_OPERATOR expr
+   66     | expr . DIVISION_OPERATOR expr
+   67     | expr . MOD_OPERATOR expr
+   67     | expr MOD_OPERATOR expr .
+   68     | expr . POWER_OPERATOR expr
+   69     | expr . CONCAT expr
+   70     | expr . EQUAL expr
+   71     | expr . NOT_EQUAL expr
+   72     | expr . LEQ expr
+   73     | expr . GEQ expr
+   74     | expr . LESS_THAN expr
+   75     | expr . GREATER_THAN expr
+   77     | expr . AND expr
+   78     | expr . OR expr
 
-    BRACES_TERMINATOR  shift, and go to state 130
+    CONCAT  shift, and go to state 80
+
+    $default  reduce using rule 67 (expr)
 
 
 State 116
 
-   29 init: TYPE ID . ITERATOR range
+   63 expr: expr . PLUS_OPERATOR expr
+   64     | expr . MINUS_OPERATOR expr
+   65     | expr . MULTI_OPERATOR expr
+   66     | expr . DIVISION_OPERATOR expr
+   67     | expr . MOD_OPERATOR expr
+   68     | expr . POWER_OPERATOR expr
+   68     | expr POWER_OPERATOR expr .
+   69     | expr . CONCAT expr
+   70     | expr . EQUAL expr
+   71     | expr . NOT_EQUAL expr
+   72     | expr . LEQ expr
+   73     | expr . GEQ expr
+   74     | expr . LESS_THAN expr
+   75     | expr . GREATER_THAN expr
+   77     | expr . AND expr
+   78     | expr . OR expr
 
-    ITERATOR  shift, and go to state 131
+    CONCAT  shift, and go to state 80
+
+    $default  reduce using rule 68 (expr)
 
 
 State 117
 
-   10 stm: FOR PARENTHESES_INITIATOR init PARENTHESES_TERMINATOR . body
+   63 expr: expr . PLUS_OPERATOR expr
+   64     | expr . MINUS_OPERATOR expr
+   65     | expr . MULTI_OPERATOR expr
+   66     | expr . DIVISION_OPERATOR expr
+   67     | expr . MOD_OPERATOR expr
+   68     | expr . POWER_OPERATOR expr
+   69     | expr . CONCAT expr
+   69     | expr CONCAT expr .
+   70     | expr . EQUAL expr
+   71     | expr . NOT_EQUAL expr
+   72     | expr . LEQ expr
+   73     | expr . GEQ expr
+   74     | expr . LESS_THAN expr
+   75     | expr . GREATER_THAN expr
+   77     | expr . AND expr
+   78     | expr . OR expr
 
-    BRACES_INITIATOR  shift, and go to state 80
+    CONCAT  error (nonassociative)
 
-    body  go to state 132
+    $default  reduce using rule 69 (expr)
 
 
 State 118
 
-   22 if: IF expr body if_opt .
+   41 idlist: decl_elem COMMA idlist .
 
-    $default  reduce using rule 22 (if)
+    $default  reduce using rule 41 (idlist)
 
 
 State 119
 
-   23 if_opt: elif_opt . else_opt
+   18 funcdef: DEF field PARENTHESES_INITIATOR paramlist . PARENTHESES_TERMINATOR body
 
-    BRACES_INITIATOR  shift, and go to state 80
-
-    $default  reduce using rule 26 (else_opt)
-
-    else_opt  go to state 133
-    body      go to state 134
+    PARENTHESES_TERMINATOR  shift, and go to state 136
 
 
 State 120
 
-   25 elif_opt: expr . body
-   50 expr: expr . PLUS_OPERATOR expr
-   51     | expr . MINUS_OPERATOR expr
-   52     | expr . MULTI_OPERATOR expr
-   53     | expr . DIVISION_OPERATOR expr
-   54     | expr . MOD_OPERATOR expr
-   55     | expr . POWER_OPERATOR expr
-   56     | expr . CONCAT expr
-   57     | expr . EQUAL expr
-   58     | expr . NOT_EQUAL expr
-   59     | expr . LEQ expr
-   60     | expr . GEQ expr
-   61     | expr . LESS_THAN expr
-   62     | expr . GREATER_THAN expr
-   64     | expr . AND expr
-   65     | expr . OR expr
+   53 paramlist: param .
+   54          | param . COMMA paramlist
 
-    BRACES_INITIATOR   shift, and go to state 80
-    EQUAL              shift, and go to state 54
-    NOT_EQUAL          shift, and go to state 55
-    LEQ                shift, and go to state 56
-    GEQ                shift, and go to state 57
-    GREATER_THAN       shift, and go to state 58
-    LESS_THAN          shift, and go to state 59
-    AND                shift, and go to state 60
-    OR                 shift, and go to state 61
-    PLUS_OPERATOR      shift, and go to state 62
-    MINUS_OPERATOR     shift, and go to state 63
-    MULTI_OPERATOR     shift, and go to state 64
-    DIVISION_OPERATOR  shift, and go to state 65
-    MOD_OPERATOR       shift, and go to state 66
-    POWER_OPERATOR     shift, and go to state 67
-    CONCAT             shift, and go to state 68
+    COMMA  shift, and go to state 137
 
-    body  go to state 135
+    $default  reduce using rule 53 (paramlist)
 
 
 State 121
 
-   14 stm: IN PARENTHESES_INITIATOR ID PARENTHESES_TERMINATOR .
+   56 param: field .
 
-    $default  reduce using rule 14 (stm)
+    $default  reduce using rule 56 (param)
 
 
 State 122
 
-   19 stm: OPEN PARENTHESES_INITIATOR val PARENTHESES_TERMINATOR .
+   47 array_decl: ARRAY LESS_THAN TYPE GREATER_THAN . ID BRACKETS_INITIATOR VALUE BRACKETS_TERMINATOR
+   48           | ARRAY LESS_THAN TYPE GREATER_THAN . ID ASSIGN BRACKETS_INITIATOR values BRACKETS_TERMINATOR
 
-    $default  reduce using rule 19 (stm)
+    ID  shift, and go to state 138
 
 
 State 123
 
-   20 stm: CLOSE PARENTHESES_INITIATOR val PARENTHESES_TERMINATOR .
+   45 struct_decl: STRUCT ID BRACES_INITIATOR fieldlist . BRACES_TERMINATOR
 
-    $default  reduce using rule 20 (stm)
+    BRACES_TERMINATOR  shift, and go to state 139
 
 
 State 124
 
-   21 funcdef: DEF field PARENTHESES_INITIATOR paramlist PARENTHESES_TERMINATOR . body
+   57 fieldlist: field . SEMICOLON
+   58          | field . SEMICOLON fieldlist
 
-    BRACES_INITIATOR  shift, and go to state 80
-
-    body  go to state 136
+    SEMICOLON  shift, and go to state 140
 
 
 State 125
 
-   41 paramlist: param COMMA . paramlist
+   50 types: TYPE COMMA . types
 
-    TYPE  shift, and go to state 36
+    TYPE  shift, and go to state 90
 
-    $default  reduce using rule 42 (param)
-
-    paramlist  go to state 137
-    param      go to state 108
-    field      go to state 109
+    types  go to state 141
 
 
 State 126
 
-   16 stm: STRUCT ID BRACES_INITIATOR fieldlist BRACES_TERMINATOR .
+   46 tuple_decl: TUPLE PARENTHESES_INITIATOR types PARENTHESES_TERMINATOR . ID ASSIGN PARENTHESES_INITIATOR exprlist PARENTHESES_TERMINATOR
 
-    $default  reduce using rule 16 (stm)
+    ID  shift, and go to state 142
 
 
 State 127
 
-   44 fieldlist: field SEMICOLON .
-   45          | field SEMICOLON . fieldlist
+   29 body: BRACES_INITIATOR stmlist . BRACES_TERMINATOR
 
-    TYPE  shift, and go to state 36
-
-    $default  reduce using rule 44 (fieldlist)
-
-    fieldlist  go to state 138
-    field      go to state 112
+    BRACES_TERMINATOR  shift, and go to state 143
 
 
 State 128
 
-   39 types: TYPE COMMA types .
+   33 init: TYPE ID . ITERATOR range
 
-    $default  reduce using rule 39 (types)
+    ITERATOR  shift, and go to state 144
 
 
 State 129
 
-   17 stm: TUPLE PARENTHESES_INITIATOR types PARENTHESES_TERMINATOR ID . ASSIGN PARENTHESES_INITIATOR exprlist PARENTHESES_TERMINATOR
+   22 for: FOR PARENTHESES_INITIATOR init PARENTHESES_TERMINATOR . body
 
-    ASSIGN  shift, and go to state 139
+    BRACES_INITIATOR  shift, and go to state 92
+
+    body  go to state 145
 
 
 State 130
 
-   28 body: BRACES_INITIATOR stmlist BRACES_TERMINATOR .
+   23 if: IF expr body if_opt .
 
-    $default  reduce using rule 28 (body)
+    $default  reduce using rule 23 (if)
 
 
 State 131
 
-   29 init: TYPE ID ITERATOR . range
+   24 if_opt: elif_opt . else_opt
 
-    ID                  shift, and go to state 140
-    BRACKETS_INITIATOR  shift, and go to state 141
+    BRACES_INITIATOR  shift, and go to state 92
 
-    range  go to state 142
+    $default  reduce using rule 27 (else_opt)
+
+    else_opt  go to state 146
+    body      go to state 147
 
 
 State 132
 
-   10 stm: FOR PARENTHESES_INITIATOR init PARENTHESES_TERMINATOR body .
+   26 elif_opt: expr . body
+   63 expr: expr . PLUS_OPERATOR expr
+   64     | expr . MINUS_OPERATOR expr
+   65     | expr . MULTI_OPERATOR expr
+   66     | expr . DIVISION_OPERATOR expr
+   67     | expr . MOD_OPERATOR expr
+   68     | expr . POWER_OPERATOR expr
+   69     | expr . CONCAT expr
+   70     | expr . EQUAL expr
+   71     | expr . NOT_EQUAL expr
+   72     | expr . LEQ expr
+   73     | expr . GEQ expr
+   74     | expr . LESS_THAN expr
+   75     | expr . GREATER_THAN expr
+   77     | expr . AND expr
+   78     | expr . OR expr
 
-    $default  reduce using rule 10 (stm)
+    BRACES_INITIATOR   shift, and go to state 92
+    EQUAL              shift, and go to state 66
+    NOT_EQUAL          shift, and go to state 67
+    LEQ                shift, and go to state 68
+    GEQ                shift, and go to state 69
+    GREATER_THAN       shift, and go to state 70
+    LESS_THAN          shift, and go to state 71
+    AND                shift, and go to state 72
+    OR                 shift, and go to state 73
+    PLUS_OPERATOR      shift, and go to state 74
+    MINUS_OPERATOR     shift, and go to state 75
+    MULTI_OPERATOR     shift, and go to state 76
+    DIVISION_OPERATOR  shift, and go to state 77
+    MOD_OPERATOR       shift, and go to state 78
+    POWER_OPERATOR     shift, and go to state 79
+    CONCAT             shift, and go to state 80
+
+    body  go to state 148
 
 
 State 133
 
-   23 if_opt: elif_opt else_opt .
+   30 in: IN PARENTHESES_INITIATOR ID PARENTHESES_TERMINATOR .
 
-    $default  reduce using rule 23 (if_opt)
+    $default  reduce using rule 30 (in)
 
 
 State 134
 
-   27 else_opt: body .
+   85 open: OPEN PARENTHESES_INITIATOR val PARENTHESES_TERMINATOR .
 
-    $default  reduce using rule 27 (else_opt)
+    $default  reduce using rule 85 (open)
 
 
 State 135
 
-   25 elif_opt: expr body .
+   86 close: CLOSE PARENTHESES_INITIATOR val PARENTHESES_TERMINATOR .
 
-    $default  reduce using rule 25 (elif_opt)
+    $default  reduce using rule 86 (close)
 
 
 State 136
 
-   21 funcdef: DEF field PARENTHESES_INITIATOR paramlist PARENTHESES_TERMINATOR body .
+   18 funcdef: DEF field PARENTHESES_INITIATOR paramlist PARENTHESES_TERMINATOR . body
 
-    $default  reduce using rule 21 (funcdef)
+    BRACES_INITIATOR  shift, and go to state 92
+
+    body  go to state 149
 
 
 State 137
 
-   41 paramlist: param COMMA paramlist .
+   54 paramlist: param COMMA . paramlist
 
-    $default  reduce using rule 41 (paramlist)
+    TYPE  shift, and go to state 48
+
+    $default  reduce using rule 55 (param)
+
+    paramlist  go to state 150
+    param      go to state 120
+    field      go to state 121
 
 
 State 138
 
-   45 fieldlist: field SEMICOLON fieldlist .
+   47 array_decl: ARRAY LESS_THAN TYPE GREATER_THAN ID . BRACKETS_INITIATOR VALUE BRACKETS_TERMINATOR
+   48           | ARRAY LESS_THAN TYPE GREATER_THAN ID . ASSIGN BRACKETS_INITIATOR values BRACKETS_TERMINATOR
 
-    $default  reduce using rule 45 (fieldlist)
+    ASSIGN              shift, and go to state 151
+    BRACKETS_INITIATOR  shift, and go to state 152
 
 
 State 139
 
-   17 stm: TUPLE PARENTHESES_INITIATOR types PARENTHESES_TERMINATOR ID ASSIGN . PARENTHESES_INITIATOR exprlist PARENTHESES_TERMINATOR
+   45 struct_decl: STRUCT ID BRACES_INITIATOR fieldlist BRACES_TERMINATOR .
 
-    PARENTHESES_INITIATOR  shift, and go to state 143
+    $default  reduce using rule 45 (struct_decl)
 
 
 State 140
 
-   31 range: ID .
+   57 fieldlist: field SEMICOLON .
+   58          | field SEMICOLON . fieldlist
 
-    $default  reduce using rule 31 (range)
+    TYPE  shift, and go to state 48
+
+    $default  reduce using rule 57 (fieldlist)
+
+    fieldlist  go to state 153
+    field      go to state 124
 
 
 State 141
 
-   30 range: BRACKETS_INITIATOR . expr COMMA expr BRACKETS_TERMINATOR
+   50 types: TYPE COMMA types .
 
-    ID                     shift, and go to state 41
-    VALUE                  shift, and go to state 3
-    PARENTHESES_INITIATOR  shift, and go to state 13
-    NOT                    shift, and go to state 18
-
-    expr      go to state 144
-    attrlist  go to state 27
-    val       go to state 28
+    $default  reduce using rule 50 (types)
 
 
 State 142
 
-   29 init: TYPE ID ITERATOR range .
+   46 tuple_decl: TUPLE PARENTHESES_INITIATOR types PARENTHESES_TERMINATOR ID . ASSIGN PARENTHESES_INITIATOR exprlist PARENTHESES_TERMINATOR
 
-    $default  reduce using rule 29 (init)
+    ASSIGN  shift, and go to state 154
 
 
 State 143
 
-   17 stm: TUPLE PARENTHESES_INITIATOR types PARENTHESES_TERMINATOR ID ASSIGN PARENTHESES_INITIATOR . exprlist PARENTHESES_TERMINATOR
+   29 body: BRACES_INITIATOR stmlist BRACES_TERMINATOR .
 
-    ID                     shift, and go to state 41
-    VALUE                  shift, and go to state 3
-    PARENTHESES_INITIATOR  shift, and go to state 13
-    NOT                    shift, and go to state 18
-
-    exprlist  go to state 145
-    expr      go to state 146
-    attrlist  go to state 27
-    val       go to state 28
+    $default  reduce using rule 29 (body)
 
 
 State 144
 
-   30 range: BRACKETS_INITIATOR expr . COMMA expr BRACKETS_TERMINATOR
-   50 expr: expr . PLUS_OPERATOR expr
-   51     | expr . MINUS_OPERATOR expr
-   52     | expr . MULTI_OPERATOR expr
-   53     | expr . DIVISION_OPERATOR expr
-   54     | expr . MOD_OPERATOR expr
-   55     | expr . POWER_OPERATOR expr
-   56     | expr . CONCAT expr
-   57     | expr . EQUAL expr
-   58     | expr . NOT_EQUAL expr
-   59     | expr . LEQ expr
-   60     | expr . GEQ expr
-   61     | expr . LESS_THAN expr
-   62     | expr . GREATER_THAN expr
-   64     | expr . AND expr
-   65     | expr . OR expr
+   33 init: TYPE ID ITERATOR . range
 
-    COMMA              shift, and go to state 147
-    EQUAL              shift, and go to state 54
-    NOT_EQUAL          shift, and go to state 55
-    LEQ                shift, and go to state 56
-    GEQ                shift, and go to state 57
-    GREATER_THAN       shift, and go to state 58
-    LESS_THAN          shift, and go to state 59
-    AND                shift, and go to state 60
-    OR                 shift, and go to state 61
-    PLUS_OPERATOR      shift, and go to state 62
-    MINUS_OPERATOR     shift, and go to state 63
-    MULTI_OPERATOR     shift, and go to state 64
-    DIVISION_OPERATOR  shift, and go to state 65
-    MOD_OPERATOR       shift, and go to state 66
-    POWER_OPERATOR     shift, and go to state 67
-    CONCAT             shift, and go to state 68
+    ID                  shift, and go to state 155
+    BRACKETS_INITIATOR  shift, and go to state 156
+
+    range  go to state 157
 
 
 State 145
 
-   17 stm: TUPLE PARENTHESES_INITIATOR types PARENTHESES_TERMINATOR ID ASSIGN PARENTHESES_INITIATOR exprlist . PARENTHESES_TERMINATOR
-   48 exprlist: exprlist . COMMA expr
+   22 for: FOR PARENTHESES_INITIATOR init PARENTHESES_TERMINATOR body .
 
-    COMMA                   shift, and go to state 148
-    PARENTHESES_TERMINATOR  shift, and go to state 149
+    $default  reduce using rule 22 (for)
 
 
 State 146
 
-   47 exprlist: expr .
-   50 expr: expr . PLUS_OPERATOR expr
-   51     | expr . MINUS_OPERATOR expr
-   52     | expr . MULTI_OPERATOR expr
-   53     | expr . DIVISION_OPERATOR expr
-   54     | expr . MOD_OPERATOR expr
-   55     | expr . POWER_OPERATOR expr
-   56     | expr . CONCAT expr
-   57     | expr . EQUAL expr
-   58     | expr . NOT_EQUAL expr
-   59     | expr . LEQ expr
-   60     | expr . GEQ expr
-   61     | expr . LESS_THAN expr
-   62     | expr . GREATER_THAN expr
-   64     | expr . AND expr
-   65     | expr . OR expr
+   24 if_opt: elif_opt else_opt .
 
-    EQUAL              shift, and go to state 54
-    NOT_EQUAL          shift, and go to state 55
-    LEQ                shift, and go to state 56
-    GEQ                shift, and go to state 57
-    GREATER_THAN       shift, and go to state 58
-    LESS_THAN          shift, and go to state 59
-    AND                shift, and go to state 60
-    OR                 shift, and go to state 61
-    PLUS_OPERATOR      shift, and go to state 62
-    MINUS_OPERATOR     shift, and go to state 63
-    MULTI_OPERATOR     shift, and go to state 64
-    DIVISION_OPERATOR  shift, and go to state 65
-    MOD_OPERATOR       shift, and go to state 66
-    POWER_OPERATOR     shift, and go to state 67
-    CONCAT             shift, and go to state 68
-
-    $default  reduce using rule 47 (exprlist)
+    $default  reduce using rule 24 (if_opt)
 
 
 State 147
 
-   30 range: BRACKETS_INITIATOR expr COMMA . expr BRACKETS_TERMINATOR
+   28 else_opt: body .
 
-    ID                     shift, and go to state 41
-    VALUE                  shift, and go to state 3
-    PARENTHESES_INITIATOR  shift, and go to state 13
-    NOT                    shift, and go to state 18
-
-    expr      go to state 150
-    attrlist  go to state 27
-    val       go to state 28
+    $default  reduce using rule 28 (else_opt)
 
 
 State 148
 
-   48 exprlist: exprlist COMMA . expr
+   26 elif_opt: expr body .
 
-    ID                     shift, and go to state 41
-    VALUE                  shift, and go to state 3
-    PARENTHESES_INITIATOR  shift, and go to state 13
-    NOT                    shift, and go to state 18
-
-    expr      go to state 151
-    attrlist  go to state 27
-    val       go to state 28
+    $default  reduce using rule 26 (elif_opt)
 
 
 State 149
 
-   17 stm: TUPLE PARENTHESES_INITIATOR types PARENTHESES_TERMINATOR ID ASSIGN PARENTHESES_INITIATOR exprlist PARENTHESES_TERMINATOR .
+   18 funcdef: DEF field PARENTHESES_INITIATOR paramlist PARENTHESES_TERMINATOR body .
 
-    $default  reduce using rule 17 (stm)
+    $default  reduce using rule 18 (funcdef)
 
 
 State 150
 
-   30 range: BRACKETS_INITIATOR expr COMMA expr . BRACKETS_TERMINATOR
-   50 expr: expr . PLUS_OPERATOR expr
-   51     | expr . MINUS_OPERATOR expr
-   52     | expr . MULTI_OPERATOR expr
-   53     | expr . DIVISION_OPERATOR expr
-   54     | expr . MOD_OPERATOR expr
-   55     | expr . POWER_OPERATOR expr
-   56     | expr . CONCAT expr
-   57     | expr . EQUAL expr
-   58     | expr . NOT_EQUAL expr
-   59     | expr . LEQ expr
-   60     | expr . GEQ expr
-   61     | expr . LESS_THAN expr
-   62     | expr . GREATER_THAN expr
-   64     | expr . AND expr
-   65     | expr . OR expr
+   54 paramlist: param COMMA paramlist .
 
-    BRACKETS_TERMINATOR  shift, and go to state 152
-    EQUAL                shift, and go to state 54
-    NOT_EQUAL            shift, and go to state 55
-    LEQ                  shift, and go to state 56
-    GEQ                  shift, and go to state 57
-    GREATER_THAN         shift, and go to state 58
-    LESS_THAN            shift, and go to state 59
-    AND                  shift, and go to state 60
-    OR                   shift, and go to state 61
-    PLUS_OPERATOR        shift, and go to state 62
-    MINUS_OPERATOR       shift, and go to state 63
-    MULTI_OPERATOR       shift, and go to state 64
-    DIVISION_OPERATOR    shift, and go to state 65
-    MOD_OPERATOR         shift, and go to state 66
-    POWER_OPERATOR       shift, and go to state 67
-    CONCAT               shift, and go to state 68
+    $default  reduce using rule 54 (paramlist)
 
 
 State 151
 
-   48 exprlist: exprlist COMMA expr .
-   50 expr: expr . PLUS_OPERATOR expr
-   51     | expr . MINUS_OPERATOR expr
-   52     | expr . MULTI_OPERATOR expr
-   53     | expr . DIVISION_OPERATOR expr
-   54     | expr . MOD_OPERATOR expr
-   55     | expr . POWER_OPERATOR expr
-   56     | expr . CONCAT expr
-   57     | expr . EQUAL expr
-   58     | expr . NOT_EQUAL expr
-   59     | expr . LEQ expr
-   60     | expr . GEQ expr
-   61     | expr . LESS_THAN expr
-   62     | expr . GREATER_THAN expr
-   64     | expr . AND expr
-   65     | expr . OR expr
+   48 array_decl: ARRAY LESS_THAN TYPE GREATER_THAN ID ASSIGN . BRACKETS_INITIATOR values BRACKETS_TERMINATOR
 
-    EQUAL              shift, and go to state 54
-    NOT_EQUAL          shift, and go to state 55
-    LEQ                shift, and go to state 56
-    GEQ                shift, and go to state 57
-    GREATER_THAN       shift, and go to state 58
-    LESS_THAN          shift, and go to state 59
-    AND                shift, and go to state 60
-    OR                 shift, and go to state 61
-    PLUS_OPERATOR      shift, and go to state 62
-    MINUS_OPERATOR     shift, and go to state 63
-    MULTI_OPERATOR     shift, and go to state 64
-    DIVISION_OPERATOR  shift, and go to state 65
-    MOD_OPERATOR       shift, and go to state 66
-    POWER_OPERATOR     shift, and go to state 67
-    CONCAT             shift, and go to state 68
-
-    $default  reduce using rule 48 (exprlist)
+    BRACKETS_INITIATOR  shift, and go to state 158
 
 
 State 152
 
-   30 range: BRACKETS_INITIATOR expr COMMA expr BRACKETS_TERMINATOR .
+   47 array_decl: ARRAY LESS_THAN TYPE GREATER_THAN ID BRACKETS_INITIATOR . VALUE BRACKETS_TERMINATOR
 
-    $default  reduce using rule 30 (range)
+    VALUE  shift, and go to state 159
+
+
+State 153
+
+   58 fieldlist: field SEMICOLON fieldlist .
+
+    $default  reduce using rule 58 (fieldlist)
+
+
+State 154
+
+   46 tuple_decl: TUPLE PARENTHESES_INITIATOR types PARENTHESES_TERMINATOR ID ASSIGN . PARENTHESES_INITIATOR exprlist PARENTHESES_TERMINATOR
+
+    PARENTHESES_INITIATOR  shift, and go to state 160
+
+
+State 155
+
+   35 range: ID .
+
+    $default  reduce using rule 35 (range)
+
+
+State 156
+
+   34 range: BRACKETS_INITIATOR . expr COMMA expr BRACKETS_TERMINATOR
+
+    ID                     shift, and go to state 53
+    VALUE                  shift, and go to state 3
+    PARENTHESES_INITIATOR  shift, and go to state 13
+    NOT                    shift, and go to state 18
+
+    expr      go to state 161
+    attrlist  go to state 37
+    val       go to state 38
+
+
+State 157
+
+   33 init: TYPE ID ITERATOR range .
+
+    $default  reduce using rule 33 (init)
+
+
+State 158
+
+   48 array_decl: ARRAY LESS_THAN TYPE GREATER_THAN ID ASSIGN BRACKETS_INITIATOR . values BRACKETS_TERMINATOR
+
+    VALUE  shift, and go to state 162
+
+    values  go to state 163
+
+
+State 159
+
+   47 array_decl: ARRAY LESS_THAN TYPE GREATER_THAN ID BRACKETS_INITIATOR VALUE . BRACKETS_TERMINATOR
+
+    BRACKETS_TERMINATOR  shift, and go to state 164
+
+
+State 160
+
+   46 tuple_decl: TUPLE PARENTHESES_INITIATOR types PARENTHESES_TERMINATOR ID ASSIGN PARENTHESES_INITIATOR . exprlist PARENTHESES_TERMINATOR
+
+    ID                     shift, and go to state 53
+    VALUE                  shift, and go to state 3
+    PARENTHESES_INITIATOR  shift, and go to state 13
+    NOT                    shift, and go to state 18
+
+    exprlist  go to state 165
+    expr      go to state 166
+    attrlist  go to state 37
+    val       go to state 38
+
+
+State 161
+
+   34 range: BRACKETS_INITIATOR expr . COMMA expr BRACKETS_TERMINATOR
+   63 expr: expr . PLUS_OPERATOR expr
+   64     | expr . MINUS_OPERATOR expr
+   65     | expr . MULTI_OPERATOR expr
+   66     | expr . DIVISION_OPERATOR expr
+   67     | expr . MOD_OPERATOR expr
+   68     | expr . POWER_OPERATOR expr
+   69     | expr . CONCAT expr
+   70     | expr . EQUAL expr
+   71     | expr . NOT_EQUAL expr
+   72     | expr . LEQ expr
+   73     | expr . GEQ expr
+   74     | expr . LESS_THAN expr
+   75     | expr . GREATER_THAN expr
+   77     | expr . AND expr
+   78     | expr . OR expr
+
+    COMMA              shift, and go to state 167
+    EQUAL              shift, and go to state 66
+    NOT_EQUAL          shift, and go to state 67
+    LEQ                shift, and go to state 68
+    GEQ                shift, and go to state 69
+    GREATER_THAN       shift, and go to state 70
+    LESS_THAN          shift, and go to state 71
+    AND                shift, and go to state 72
+    OR                 shift, and go to state 73
+    PLUS_OPERATOR      shift, and go to state 74
+    MINUS_OPERATOR     shift, and go to state 75
+    MULTI_OPERATOR     shift, and go to state 76
+    DIVISION_OPERATOR  shift, and go to state 77
+    MOD_OPERATOR       shift, and go to state 78
+    POWER_OPERATOR     shift, and go to state 79
+    CONCAT             shift, and go to state 80
+
+
+State 162
+
+   51 values: VALUE .
+   52       | VALUE . COMMA values
+
+    COMMA  shift, and go to state 168
+
+    $default  reduce using rule 51 (values)
+
+
+State 163
+
+   48 array_decl: ARRAY LESS_THAN TYPE GREATER_THAN ID ASSIGN BRACKETS_INITIATOR values . BRACKETS_TERMINATOR
+
+    BRACKETS_TERMINATOR  shift, and go to state 169
+
+
+State 164
+
+   47 array_decl: ARRAY LESS_THAN TYPE GREATER_THAN ID BRACKETS_INITIATOR VALUE BRACKETS_TERMINATOR .
+
+    $default  reduce using rule 47 (array_decl)
+
+
+State 165
+
+   46 tuple_decl: TUPLE PARENTHESES_INITIATOR types PARENTHESES_TERMINATOR ID ASSIGN PARENTHESES_INITIATOR exprlist . PARENTHESES_TERMINATOR
+   61 exprlist: exprlist . COMMA expr
+
+    COMMA                   shift, and go to state 170
+    PARENTHESES_TERMINATOR  shift, and go to state 171
+
+
+State 166
+
+   60 exprlist: expr .
+   63 expr: expr . PLUS_OPERATOR expr
+   64     | expr . MINUS_OPERATOR expr
+   65     | expr . MULTI_OPERATOR expr
+   66     | expr . DIVISION_OPERATOR expr
+   67     | expr . MOD_OPERATOR expr
+   68     | expr . POWER_OPERATOR expr
+   69     | expr . CONCAT expr
+   70     | expr . EQUAL expr
+   71     | expr . NOT_EQUAL expr
+   72     | expr . LEQ expr
+   73     | expr . GEQ expr
+   74     | expr . LESS_THAN expr
+   75     | expr . GREATER_THAN expr
+   77     | expr . AND expr
+   78     | expr . OR expr
+
+    EQUAL              shift, and go to state 66
+    NOT_EQUAL          shift, and go to state 67
+    LEQ                shift, and go to state 68
+    GEQ                shift, and go to state 69
+    GREATER_THAN       shift, and go to state 70
+    LESS_THAN          shift, and go to state 71
+    AND                shift, and go to state 72
+    OR                 shift, and go to state 73
+    PLUS_OPERATOR      shift, and go to state 74
+    MINUS_OPERATOR     shift, and go to state 75
+    MULTI_OPERATOR     shift, and go to state 76
+    DIVISION_OPERATOR  shift, and go to state 77
+    MOD_OPERATOR       shift, and go to state 78
+    POWER_OPERATOR     shift, and go to state 79
+    CONCAT             shift, and go to state 80
+
+    $default  reduce using rule 60 (exprlist)
+
+
+State 167
+
+   34 range: BRACKETS_INITIATOR expr COMMA . expr BRACKETS_TERMINATOR
+
+    ID                     shift, and go to state 53
+    VALUE                  shift, and go to state 3
+    PARENTHESES_INITIATOR  shift, and go to state 13
+    NOT                    shift, and go to state 18
+
+    expr      go to state 172
+    attrlist  go to state 37
+    val       go to state 38
+
+
+State 168
+
+   52 values: VALUE COMMA . values
+
+    VALUE  shift, and go to state 162
+
+    values  go to state 173
+
+
+State 169
+
+   48 array_decl: ARRAY LESS_THAN TYPE GREATER_THAN ID ASSIGN BRACKETS_INITIATOR values BRACKETS_TERMINATOR .
+
+    $default  reduce using rule 48 (array_decl)
+
+
+State 170
+
+   61 exprlist: exprlist COMMA . expr
+
+    ID                     shift, and go to state 53
+    VALUE                  shift, and go to state 3
+    PARENTHESES_INITIATOR  shift, and go to state 13
+    NOT                    shift, and go to state 18
+
+    expr      go to state 174
+    attrlist  go to state 37
+    val       go to state 38
+
+
+State 171
+
+   46 tuple_decl: TUPLE PARENTHESES_INITIATOR types PARENTHESES_TERMINATOR ID ASSIGN PARENTHESES_INITIATOR exprlist PARENTHESES_TERMINATOR .
+
+    $default  reduce using rule 46 (tuple_decl)
+
+
+State 172
+
+   34 range: BRACKETS_INITIATOR expr COMMA expr . BRACKETS_TERMINATOR
+   63 expr: expr . PLUS_OPERATOR expr
+   64     | expr . MINUS_OPERATOR expr
+   65     | expr . MULTI_OPERATOR expr
+   66     | expr . DIVISION_OPERATOR expr
+   67     | expr . MOD_OPERATOR expr
+   68     | expr . POWER_OPERATOR expr
+   69     | expr . CONCAT expr
+   70     | expr . EQUAL expr
+   71     | expr . NOT_EQUAL expr
+   72     | expr . LEQ expr
+   73     | expr . GEQ expr
+   74     | expr . LESS_THAN expr
+   75     | expr . GREATER_THAN expr
+   77     | expr . AND expr
+   78     | expr . OR expr
+
+    BRACKETS_TERMINATOR  shift, and go to state 175
+    EQUAL                shift, and go to state 66
+    NOT_EQUAL            shift, and go to state 67
+    LEQ                  shift, and go to state 68
+    GEQ                  shift, and go to state 69
+    GREATER_THAN         shift, and go to state 70
+    LESS_THAN            shift, and go to state 71
+    AND                  shift, and go to state 72
+    OR                   shift, and go to state 73
+    PLUS_OPERATOR        shift, and go to state 74
+    MINUS_OPERATOR       shift, and go to state 75
+    MULTI_OPERATOR       shift, and go to state 76
+    DIVISION_OPERATOR    shift, and go to state 77
+    MOD_OPERATOR         shift, and go to state 78
+    POWER_OPERATOR       shift, and go to state 79
+    CONCAT               shift, and go to state 80
+
+
+State 173
+
+   52 values: VALUE COMMA values .
+
+    $default  reduce using rule 52 (values)
+
+
+State 174
+
+   61 exprlist: exprlist COMMA expr .
+   63 expr: expr . PLUS_OPERATOR expr
+   64     | expr . MINUS_OPERATOR expr
+   65     | expr . MULTI_OPERATOR expr
+   66     | expr . DIVISION_OPERATOR expr
+   67     | expr . MOD_OPERATOR expr
+   68     | expr . POWER_OPERATOR expr
+   69     | expr . CONCAT expr
+   70     | expr . EQUAL expr
+   71     | expr . NOT_EQUAL expr
+   72     | expr . LEQ expr
+   73     | expr . GEQ expr
+   74     | expr . LESS_THAN expr
+   75     | expr . GREATER_THAN expr
+   77     | expr . AND expr
+   78     | expr . OR expr
+
+    EQUAL              shift, and go to state 66
+    NOT_EQUAL          shift, and go to state 67
+    LEQ                shift, and go to state 68
+    GEQ                shift, and go to state 69
+    GREATER_THAN       shift, and go to state 70
+    LESS_THAN          shift, and go to state 71
+    AND                shift, and go to state 72
+    OR                 shift, and go to state 73
+    PLUS_OPERATOR      shift, and go to state 74
+    MINUS_OPERATOR     shift, and go to state 75
+    MULTI_OPERATOR     shift, and go to state 76
+    DIVISION_OPERATOR  shift, and go to state 77
+    MOD_OPERATOR       shift, and go to state 78
+    POWER_OPERATOR     shift, and go to state 79
+    CONCAT             shift, and go to state 80
+
+    $default  reduce using rule 61 (exprlist)
+
+
+State 175
+
+   34 range: BRACKETS_INITIATOR expr COMMA expr BRACKETS_TERMINATOR .
+
+    $default  reduce using rule 34 (range)

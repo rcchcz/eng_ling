@@ -39,38 +39,44 @@ extern char * yytext;
 %left MULTI_OPERATOR DIVISION_OPERATOR MOD_OPERATOR POWER_OPERATOR
 %nonassoc CONCAT
 %%
-prog    : stmlist                                                               {} 
-        ;
+prog        : stmlist                                                           {} 
+            ;
 
-stmlist : stm SEMICOLON                                                         {printf("stm1: %s \n", $1);}
-        | stm SEMICOLON stmlist				                                    {printf("stm2: %s \n", $1);}
-        ;
+stmlist     : stm SEMICOLON                                                     {printf("stm1: %s \n", $1);}
+            | stm SEMICOLON stmlist				                                {printf("stm2: %s \n", $1);}
+            ;
 
 stm         : decl                                                              {}
             | assignment                                                        {}
             | expr															    {}
-            | ID COPY_STRING expr                                               {}
+            | str_copy                                                          {}
             | funcdef                                                           {}
-            | WHILE expr body                                                   {}
-            | FOR PARENTHESES_INITIATOR init PARENTHESES_TERMINATOR body        {}
+            | while                                                             {} 
+            | for                                                               {}
             | if                                                                {printf("stm if \n");}
-            | BREAK                                                             {}
-            | RETURN expr                                                       {printf("return \n");}
-            | IN PARENTHESES_INITIATOR ID PARENTHESES_TERMINATOR                {}
-            | OUT expr                                                          {}
-            | STRUCT ID BRACES_INITIATOR fieldlist BRACES_TERMINATOR            {}
-            | TUPLE PARENTHESES_INITIATOR types PARENTHESES_TERMINATOR
-                ID ASSIGN PARENTHESES_INITIATOR exprlist PARENTHESES_TERMINATOR {}
-            | ARRAY LESS_THAN TYPE GREATER_THAN ID
-                BRACKETS_INITIATOR VALUE BRACKETS_TERMINATOR                    {}
-            | ARRAY LESS_THAN TYPE GREATER_THAN ID ASSIGN
-                BRACKETS_INITIATOR values BRACKETS_TERMINATOR                   {}
-            | OPEN PARENTHESES_INITIATOR val PARENTHESES_TERMINATOR             {}
-            | CLOSE PARENTHESES_INITIATOR val PARENTHESES_TERMINATOR            {}
+            | break                                                             {}
+            | return                                                            {printf("return \n");}
+            | in                                                                {}
+            | out                                                               {}
+            | open                                                              {}
+            | close                                                             {}
             ;
 
 funcdef     : DEF field
                 PARENTHESES_INITIATOR paramlist PARENTHESES_TERMINATOR body     {printf("funcdef \n");}
+            ;
+
+return      : RETURN expr                                                       {}
+            ;
+
+break       : BREAK                                                             {}
+            ;
+
+while       : WHILE expr body                                                   {}
+            ;
+
+for         : FOR PARENTHESES_INITIATOR init PARENTHESES_TERMINATOR body        {}
+            ;
 
 if          : IF expr body if_opt                                               {printf("if \n");}
             ;
@@ -89,6 +95,15 @@ else_opt    :                                                                   
 body        : BRACES_INITIATOR stmlist BRACES_TERMINATOR                        {printf("body \n");}
             ;
 
+in          : IN PARENTHESES_INITIATOR ID PARENTHESES_TERMINATOR                {}
+            ;
+
+out         : OUT expr                                                          {}
+            ;
+
+str_copy    : ID COPY_STRING expr                                               {}
+            ;
+
 init        : TYPE ID ITERATOR range                                            {}
             ;
 
@@ -97,12 +112,14 @@ range       : BRACKETS_INITIATOR expr COMMA expr BRACKETS_TERMINATOR            
             ;
 
 decl        : TYPE idlist                                                       {printf("decl type: %s \n", $1);}
+            | struct_decl                                                       {}
+            | tuple_decl                                                        {}
+            | array_decl                                                        {}
             ;
 
 idlist      : decl_elem                                                         {}
             | decl_elem COMMA idlist                                            {}
             ;
-
 
 decl_elem   : ID                                                                {printf("declelem id: %s \n", $1);}
             | assignment                                                        {}
@@ -111,12 +128,25 @@ decl_elem   : ID                                                                
 assignment  : ID ASSIGN expr                                                    {printf("assignment id: %s \n", $1);}
             ;
 
+struct_decl : STRUCT ID BRACES_INITIATOR fieldlist BRACES_TERMINATOR            {}
+            ;
+
+tuple_decl  : TUPLE PARENTHESES_INITIATOR types PARENTHESES_TERMINATOR
+                ID ASSIGN PARENTHESES_INITIATOR exprlist PARENTHESES_TERMINATOR {}
+            ;
+
+array_decl  : ARRAY LESS_THAN TYPE GREATER_THAN ID
+                BRACKETS_INITIATOR VALUE BRACKETS_TERMINATOR                    {}
+            | ARRAY LESS_THAN TYPE GREATER_THAN ID ASSIGN
+                BRACKETS_INITIATOR values BRACKETS_TERMINATOR                   {}
+            ;
+
 types       : TYPE                                                              {}
             | TYPE COMMA types                                                  {}
             ;
 
-values      : VALUE                                                                 {}
-            | VALUE COMMA values                                                    {}
+values      : VALUE                                                             {}
+            | VALUE COMMA values                                                {}
             ;
 
 paramlist   : param                                                             {}
@@ -163,9 +193,15 @@ attrlist    : ID SEPARATOR ID                                                   
             | ID SEPARATOR attrlist                                             {}
             ;
 
-val : ID                                                                        {printf("val id: %s \n", $1);}
-    | VALUE                                                                     {printf("val value: %s \n", $1);}
-    ;
+val         : ID                                                                {printf("val id: %s \n", $1);}
+            | VALUE                                                             {printf("val value: %s \n", $1);}
+            ;
+
+open        : OPEN PARENTHESES_INITIATOR val PARENTHESES_TERMINATOR             {}
+            ;
+
+close       : CLOSE PARENTHESES_INITIATOR val PARENTHESES_TERMINATOR            {}
+            ;
 
 %%
 
