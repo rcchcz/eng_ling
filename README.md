@@ -17,7 +17,7 @@ There is no notation for multiline comments, each line must be commented individ
 ### Evaluation order
 This language evaluates expressions from left to right.
 
-## Short circuit
+### Short circuit
 - `false && A` returns `false` (the value of A is not calculated)
 - `true || A` returns `true` (the value of A is not calculated)
 
