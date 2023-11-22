@@ -33,7 +33,7 @@ extern char * yytext;
 %left OR
 %left AND
 %left NOT
-%left ELSE
+%left ELSE ELIF
 %nonassoc EQUAL NOT_EQUAL LEQ GEQ GREATER_THAN LESS_THAN
 %left PLUS_OPERATOR MINUS_OPERATOR
 %left MULTI_OPERATOR DIVISION_OPERATOR MOD_OPERATOR POWER_OPERATOR
@@ -49,7 +49,7 @@ stmlist     : stm SEMICOLON                                                     
 stm         : funcdef                                                           {}
             | decl                                                              {}
             | assignment                                                        {}
-            | expr															    {}
+            | expr                                                              {}
             | if                                                                {printf("stm if \n");}
             | while                                                             {} 
             | for                                                               {}
@@ -161,15 +161,15 @@ if          : IF expr body if_opt                                               
 if_opt      : elif_opt else_opt                                                 {printf("if_opt \n");}
             ;
 
-elif_opt    :                                                                   {}
-            | %prec ELIF expr body                                              {}
+elif_opt    :                                                                   {printf("elif_opt vazio \n");}
+            | ELIF expr body                                                    {printf("elif_opt \n");}
             ;
 
-else_opt    :                                                                   {}
-            | %prec ELSE body                                                   {}
+else_opt    :                                                                   {printf("else_opt vazio\n");}
+            | ELSE body                                                         {printf("else_opt \n");}
             ;
 
-while       : WHILE expr body                                                   {}
+while       : WHILE expr body                                                   {printf("while \n");}
             ;
 
 for         : FOR PARENTHESES_INITIATOR init PARENTHESES_TERMINATOR body        {}
