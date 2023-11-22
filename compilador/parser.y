@@ -83,6 +83,7 @@ fieldlist   : field SEMICOLON                                                   
 
 field       : TYPE ID                                                           {printf("field: \n\t type: %s \n\t id: %s \n", $1, $2);}
             | ARRAY LESS_THAN TYPE GREATER_THAN ID                              {printf("arr: \n\t type: %s \n\t id: %s \n", $3, $5);}
+            | ID ID                                                             {printf("struct (possibility of struct, does compiler know this id?): \n\t type: %s \n\t id: %s \n", $1, $2);}
             ;
 
 decl        : TYPE idlist                                                       {printf("decl type: %s \n", $1);}
