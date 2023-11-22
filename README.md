@@ -71,15 +71,35 @@ It is possible to change the order of precedence by assigning higher priority us
 ### Operators precedence
 All relational operators have the same precedence. To calculate the result of the expression, the order in which they appear is considered.
 
-<!-- --------------------------- -->
 ## User-defined data
-### Structs
-<u>lexema:</u> str <br>
-<u>definição:</u> struct nome {
-	tipo_campo1 nome_campo1;
-	tipo_campo2 nome_campo2;
+### Struct
+Generic definition:
+```
+struct nameOfStruct {
+  type1 fieldName1;
+  type2 fieldName2;
+  ...
+  typeN fieldNameN;
 }
-TODO: documentar uso
+```
+
+Access a field:
+```
+structNameVariable.fieldName
+```
+
+As a concrete example, a scruct "Person":
+```
+struct Person {
+  string name;
+  int id;
+  int age;
+}
+```
+<!-- --------------------------- -->
+Creating a variable of type "Person":
+```
+```
 
 ### Arranjos
 <u>lexema:</u> arr <br>
