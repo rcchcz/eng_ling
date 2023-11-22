@@ -46,69 +46,42 @@ stmlist     : stm SEMICOLON                                                     
             | stm SEMICOLON stmlist				                                {printf("stm2: %s \n", $1);}
             ;
 
-stm         : decl                                                              {}
+stm         : funcdef                                                           {}
+            | decl                                                              {}
             | assignment                                                        {}
             | expr															    {}
-            | str_copy                                                          {}
-            | funcdef                                                           {}
+            | if                                                                {printf("stm if \n");}
             | while                                                             {} 
             | for                                                               {}
-            | if                                                                {printf("stm if \n");}
             | break                                                             {}
             | return                                                            {printf("return \n");}
+            | str_copy                                                          {}
             | in                                                                {}
             | out                                                               {}
             | open                                                              {}
             | close                                                             {}
             ;
 
+body        : BRACES_INITIATOR stmlist BRACES_TERMINATOR                        {printf("body \n");}
+            ;
+
 funcdef     : DEF field
                 PARENTHESES_INITIATOR paramlist PARENTHESES_TERMINATOR body     {printf("funcdef \n");}
             ;
 
-return      : RETURN expr                                                       {}
+paramlist   : param                                                             {}
+            | param COMMA paramlist                                             {}
             ;
 
-break       : BREAK                                                             {}
+param       : 
+            | field                                                             {}
             ;
 
-while       : WHILE expr body                                                   {}
+fieldlist   : field SEMICOLON                                                   {}
+            | field SEMICOLON fieldlist                                         {}
             ;
 
-for         : FOR PARENTHESES_INITIATOR init PARENTHESES_TERMINATOR body        {}
-            ;
-
-if          : IF expr body if_opt                                               {printf("if \n");}
-            ;
-
-if_opt      : elif_opt else_opt                                                 {printf("if_opt \n");}
-            ;
-
-elif_opt    :                                                                   {}
-            | %prec ELIF expr body                                              {}
-            ;
-
-else_opt    :                                                                   {}
-            | %prec ELSE body                                                   {}
-            ;
-
-body        : BRACES_INITIATOR stmlist BRACES_TERMINATOR                        {printf("body \n");}
-            ;
-
-in          : IN PARENTHESES_INITIATOR ID PARENTHESES_TERMINATOR                {}
-            ;
-
-out         : OUT expr                                                          {}
-            ;
-
-str_copy    : ID COPY_STRING expr                                               {}
-            ;
-
-init        : TYPE ID ITERATOR range                                            {}
-            ;
-
-range       : BRACKETS_INITIATOR expr COMMA expr BRACKETS_TERMINATOR            {}
-            | ID                                                                {}
+field       : TYPE ID                                                           {printf("field: \n\t type: %s \n\t id: %s \n", $1, $2);}
             ;
 
 decl        : TYPE idlist                                                       {printf("decl type: %s \n", $1);}
@@ -135,37 +108,22 @@ tuple_decl  : TUPLE PARENTHESES_INITIATOR types PARENTHESES_TERMINATOR
                 ID ASSIGN PARENTHESES_INITIATOR exprlist PARENTHESES_TERMINATOR {}
             ;
 
+types       : TYPE                                                              {}
+            | TYPE COMMA types                                                  {}
+            ;
+
+exprlist    : expr                                                              {}
+            | exprlist COMMA expr                                               {}
+            ;
+
 array_decl  : ARRAY LESS_THAN TYPE GREATER_THAN ID
                 BRACKETS_INITIATOR VALUE BRACKETS_TERMINATOR                    {}
             | ARRAY LESS_THAN TYPE GREATER_THAN ID ASSIGN
                 BRACKETS_INITIATOR values BRACKETS_TERMINATOR                   {}
             ;
 
-types       : TYPE                                                              {}
-            | TYPE COMMA types                                                  {}
-            ;
-
 values      : VALUE                                                             {}
             | VALUE COMMA values                                                {}
-            ;
-
-paramlist   : param                                                             {}
-            | param COMMA paramlist                                             {}
-            ;
-
-param       : 
-            | field                                                             {}
-            ;
-
-fieldlist   : field SEMICOLON                                                   {}
-            | field SEMICOLON fieldlist                                         {}
-            ;
-
-field       : TYPE ID                                                           {printf("field: \n\t type: %s \n\t id: %s \n", $1, $2);}
-            ;
-
-exprlist    : expr                                                              {}
-            | exprlist COMMA expr                                               {}
             ;
 
 expr        : val                                                               {}
@@ -195,6 +153,48 @@ attrlist    : ID SEPARATOR ID                                                   
 
 val         : ID                                                                {printf("val id: %s \n", $1);}
             | VALUE                                                             {printf("val value: %s \n", $1);}
+            ;
+
+if          : IF expr body if_opt                                               {printf("if \n");}
+            ;
+
+if_opt      : elif_opt else_opt                                                 {printf("if_opt \n");}
+            ;
+
+elif_opt    :                                                                   {}
+            | %prec ELIF expr body                                              {}
+            ;
+
+else_opt    :                                                                   {}
+            | %prec ELSE body                                                   {}
+            ;
+
+while       : WHILE expr body                                                   {}
+            ;
+
+for         : FOR PARENTHESES_INITIATOR init PARENTHESES_TERMINATOR body        {}
+            ;
+
+init        : TYPE ID ITERATOR range                                            {}
+            ;
+
+range       : BRACKETS_INITIATOR expr COMMA expr BRACKETS_TERMINATOR            {}
+            | ID                                                                {}
+            ;
+
+return      : RETURN expr                                                       {}
+            ;
+
+break       : BREAK                                                             {}
+            ;
+
+str_copy    : ID COPY_STRING expr                                               {}
+            ;
+
+in          : IN PARENTHESES_INITIATOR ID PARENTHESES_TERMINATOR                {}
+            ;
+
+out         : OUT expr                                                          {}
             ;
 
 open        : OPEN PARENTHESES_INITIATOR val PARENTHESES_TERMINATOR             {}
