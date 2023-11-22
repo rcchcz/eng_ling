@@ -23,6 +23,9 @@ This language evaluates expressions from left to right.
 
 ### [TO DO] Accepted forms of expression
 
+### Strings
+It is possible to concatenate two strings using the `++` operator.
+
 ## Arithmetic expressions 
 ### Operators
 - Sum: `+` 
@@ -30,19 +33,20 @@ This language evaluates expressions from left to right.
 - Multiplication: `*`
 - Division: `/`
 - Modulo: `%`
-<!-- Concatenation: `++`-->
+- Power: `**`
 
 ### Operators precedence
+- `**`
 - `/`, `*`, `%`
 - `+`, `-`
 
 It is possible to change the order of precedence by assigning higher priority using parentheses.
 
 ## Primitive data types
-- bool
-- int
-- float
-- string
+- `bool`, hold one of two values: `true` or `false`
+- `int`, hold an integer value from -2,147,483,648 to 2,147,483,647
+- `float`, hold a floating point number from 1.2E-38 to 3.4E+38
+- `string`, hold a sequence of characters terminated with a null character
 
 ## Boolean expressions 
 ### Operators
@@ -67,7 +71,7 @@ It is possible to change the order of precedence by assigning higher priority us
 ### Operators precedence
 All relational operators have the same precedence. To calculate the result of the expression, the order in which they appear is considered.
 
-
+<!-- --------------------------- -->
 ## User-defined data
 ### Structs
 <u>lexema:</u> str <br>
