@@ -128,7 +128,8 @@ values      : VALUE                                                             
             | VALUE COMMA values                                                {}
             ;
 
-expr        : val                                                               {}
+expr        : val    
+            | len                                                               {}
             | expr PLUS_OPERATOR expr                                           {}
             | expr MINUS_OPERATOR expr                                          {}
             | expr MULTI_OPERATOR expr                                          {}
@@ -204,6 +205,9 @@ open        : OPEN PARENTHESES_INITIATOR val PARENTHESES_TERMINATOR             
 
 close       : CLOSE PARENTHESES_INITIATOR val PARENTHESES_TERMINATOR            {}
             ;
+
+len         : LEN_STRING PARENTHESES_INITIATOR VALUE PARENTHESES_TERMINATOR    {printf("len(%s) \n", $3);}
+            ;           
 
 %%
 
