@@ -7,3 +7,4 @@ struct Person {
 
 # Variable instance "p1" of type "Person"
 struct Person p1 = {1, "Umberto", 25};
+struct Person p2 = {2, "Costa", 30};
