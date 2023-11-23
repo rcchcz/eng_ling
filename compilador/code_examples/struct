@@ -1,0 +1,9 @@
+# Define a struct "Person"
+struct Person {
+    int id;
+    string name;
+    int age;
+}
+
+# Variable instance "p1" of type "Person"
+struct Person p1 = {1, "Umberto", 25}
