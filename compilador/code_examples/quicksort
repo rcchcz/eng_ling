@@ -1,9 +1,3 @@
-# Função teste para argumentos
-def void swap(arr<int> vetor, Person personvar, int i) {
-    len("hello, world!1");
-    out("hello, world!2");
-};
-
 # Função auxiliar de troca de  valores em um array
 def void swap(arr<int> vetor, int i, int j) {
     int temp = vetor[i];
