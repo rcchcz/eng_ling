@@ -3,7 +3,7 @@ struct Person {
     int id;
     string name;
     int age;
-}
+};
 
 # Variable instance "p1" of type "Person"
-struct Person p1 = {1, "Umberto", 25}
+struct Person p1 = {1, "Umberto", 25};

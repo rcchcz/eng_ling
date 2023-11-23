@@ -60,6 +60,7 @@ stm         : funcdef                                                           
             | out                                                               {}
             | open                                                              {}
             | close                                                             {}
+            | struct_assignment                                                 {}
             ;
 
 body        : BRACES_INITIATOR stmlist BRACES_TERMINATOR                        {printf("body \n");}
@@ -102,6 +103,9 @@ decl_elem   : ID                                                                
 
 assignment  : ID ASSIGN expr                                                    {printf("assignment id: %s \n", $1);}
             ;
+
+struct_assignment : STRUCT ID ID ASSIGN BRACES_INITIATOR exprlist BRACES_TERMINATOR     {}
+                  ;
 
 struct_decl : STRUCT ID BRACES_INITIATOR fieldlist BRACES_TERMINATOR            {}
             ;
