@@ -11,6 +11,7 @@
 
 *coisas pra fazer*
 - registro (struct) da tabela de símbolos
+    - a alocação da string de parametros deve se atentar ao seu tamanho ao passo que os tipos são adicionados;
 - modularizar condicional
 - modularizar laço for
 - modularizar laço while
