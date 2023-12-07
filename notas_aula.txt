@@ -1,0 +1,21 @@
+- variáveis
+- funções
+- métodos
+
+- uma tabela só para registrar tudo que for necessário, se uma entidade não possui um determinado campo é só setar pra nulo
+- campos: id, tipo, escopo, tem retorno?, tipo de retorno, parâmetros (tipo de cada parâmetro, pode ser uma lista ligada indicando os tipos com strings)
+- se tiver função dentro de função deve guardar escopo, caso não tenha não é necessário guardar escopo
+- não precisa guardar o código da função
+
+
+
+*coisas pra fazer*
+- registro (struct) da tabela de símbolos
+- modularizar condicional
+- modularizar laço for
+- modularizar laço while
+- implementar pilha de escopo
+- checagem de tipos
+- checagem de escopo
+- implementação em c das operações (listar cada uma depois)
+- implementação na nossa linguagm dos problemas propostos
