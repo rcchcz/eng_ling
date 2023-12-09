@@ -44,7 +44,7 @@ void adicionarParametro(struct Entidade *estrutura, char *parametro) {
 }
 
 // Função para liberar a memória alocada para a lista ligada de strings
-void liberarLista(struct Node *head) {
+void liberarListaParametros(struct Node *head) {
     struct Node *temp;
     while (head != NULL) {
         temp = head;
@@ -162,7 +162,7 @@ int main() {
     buscarStruct(2); // Verifica se a remoção foi feita corretamente
 
     // Liberando a memória alocada para a lista ligada de strings
-    liberarLista(exemplo.parametros);
+    liberarListaParametros(exemplo.parametros);
 
     return 0;
 }
