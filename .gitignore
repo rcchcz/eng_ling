@@ -10,3 +10,7 @@
 *.run
 *.app
 *.so
+
+# Ignore executable files without extension (Unix-like)
+* # Ignore all files without extensions
+!*/   # Don't ignore directories
