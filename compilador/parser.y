@@ -43,10 +43,11 @@ prog        : stmlist                                                           
             ;
 
 stmlist     : stm SEMICOLON                                                     {printf("stm1: %s \n", $1);}
-            | stm SEMICOLON stmlist				                                {printf("stm2: %s \n", $1);}
+            | stm SEMICOLON stmlist				                                      {printf("stm2: %s \n", $1);}
             ;
 
 stm         : funcdef                                                           {}
+            | structdef                                                         {}
             | decl                                                              {}
             | assignment                                                        {}
             | expr                                                              {}
@@ -60,7 +61,6 @@ stm         : funcdef                                                           
             | out                                                               {}
             | open                                                              {}
             | close                                                             {}
-            | struct_assignment                                                 {}
             ;
 
 body        : BRACES_INITIATOR stmlist BRACES_TERMINATOR                        {printf("body \n");}
@@ -68,6 +68,9 @@ body        : BRACES_INITIATOR stmlist BRACES_TERMINATOR                        
 
 funcdef     : DEF field
                 PARENTHESES_INITIATOR paramlist PARENTHESES_TERMINATOR body     {printf("funcdef \n");}
+            ;
+
+structdef   : STRUCT ID BRACES_INITIATOR fieldlist BRACES_TERMINATOR            {}
             ;
 
 paramlist   : param                                                             {}
@@ -104,10 +107,11 @@ decl_elem   : ID                                                                
 assignment  : ID ASSIGN expr                                                    {printf("assignment id: %s \n", $1);}
             ;
 
-struct_assignment : STRUCT ID ID ASSIGN BRACES_INITIATOR exprlist BRACES_TERMINATOR     {}
-                  ;
+struct_decl : STRUCT ID ID                                                      {}
+            | STRUCT ID ID ASSIGN construct                                        {}
+            ;
 
-struct_decl : STRUCT ID BRACES_INITIATOR fieldlist BRACES_TERMINATOR            {}
+construct   : BRACES_INITIATOR values BRACES_TERMINATOR                         {}
             ;
 
 tuple_decl  : TUPLE PARENTHESES_INITIATOR types PARENTHESES_TERMINATOR
@@ -123,9 +127,8 @@ exprlist    : expr                                                              
             ;
 
 array_decl  : ARRAY LESS_THAN TYPE GREATER_THAN ID
-                BRACKETS_INITIATOR VALUE BRACKETS_TERMINATOR                    {}
-            | ARRAY LESS_THAN TYPE GREATER_THAN ID ASSIGN
-                BRACKETS_INITIATOR values BRACKETS_TERMINATOR                   {}
+                BRACKETS_INITIATOR expr BRACKETS_TERMINATOR                    {}
+            | ARRAY LESS_THAN TYPE GREATER_THAN ID ASSIGN construct             {}
             ;
 
 values      : VALUE                                                             {}
