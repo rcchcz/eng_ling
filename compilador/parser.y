@@ -176,9 +176,15 @@ expr        : val
             | expr GREATER_THAN expr                                            { char * s = cat($1->code, ">", $3->code, ";");
                                                                                   $$ = createRecord(s, "");
                                                                                   free(s); }
-            | NOT expr                                                          {}
-            | expr AND expr                                                     {}
-            | expr OR expr                                                      {}
+            | NOT expr                                                          { char * s = cat("!", $2->code, ";");
+                                                                                  $$ = createRecord(s, "");
+                                                                                  free(s); }
+            | expr AND expr                                                     { char * s = cat($1->code, "&&", $3->code ";");
+                                                                                  $$ = createRecord(s, "");
+                                                                                  free(s); }
+            | expr OR expr                                                      { char * s = cat($1->code, "||", $3->code ";");
+                                                                                  $$ = createRecord(s, "");
+                                                                                  free(s); }
             | PARENTHESES_INITIATOR expr PARENTHESES_TERMINATOR                 {}
             | attrlist                                                          {}
             ;
