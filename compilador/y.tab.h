@@ -1,8 +1,8 @@
-/* A Bison parser, made by GNU Bison 3.8.2.  */
+/* A Bison parser, made by GNU Bison 3.5.1.  */
 
 /* Bison interface for Yacc-like parsers in C
 
-   Copyright (C) 1984, 1989-1990, 2000-2015, 2018-2021 Free Software Foundation,
+   Copyright (C) 1984, 1989-1990, 2000-2015, 2018-2020 Free Software Foundation,
    Inc.
 
    This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,7 @@
    GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License
-   along with this program.  If not, see <https://www.gnu.org/licenses/>.  */
+   along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
 /* As a special exception, you may create a larger work that contains
    part or all of the Bison parser skeleton and distribute that work
@@ -31,9 +31,8 @@
    This special exception was added by the Free Software Foundation in
    version 2.2 of Bison.  */
 
-/* DO NOT RELY ON FEATURES THAT ARE NOT DOCUMENTED in the manual,
-   especially those whose name start with YY_ or yy_.  They are
-   private implementation details that can be changed or removed.  */
+/* Undocumented macros, especially those whose name start with YY_,
+   are private implementation details.  Do not rely on them.  */
 
 #ifndef YY_YY_Y_TAB_H_INCLUDED
 # define YY_YY_Y_TAB_H_INCLUDED
@@ -45,129 +44,121 @@
 extern int yydebug;
 #endif
 
-/* Token kinds.  */
+/* Token type.  */
 #ifndef YYTOKENTYPE
 # define YYTOKENTYPE
   enum yytokentype
   {
-    YYEMPTY = -2,
-    YYEOF = 0,                     /* "end of file"  */
-    YYerror = 256,                 /* error  */
-    YYUNDEF = 257,                 /* "invalid token"  */
-    ID = 258,                      /* ID  */
-    TYPE = 259,                    /* TYPE  */
-    VALUE = 260,                   /* VALUE  */
-    LEN_STRING = 261,              /* LEN_STRING  */
-    ASSIGN = 262,                  /* ASSIGN  */
-    COMMENT = 263,                 /* COMMENT  */
-    COMMA = 264,                   /* COMMA  */
-    SEMICOLON = 265,               /* SEMICOLON  */
-    SEPARATOR = 266,               /* SEPARATOR  */
-    DEF = 267,                     /* DEF  */
-    ARRAY = 268,                   /* ARRAY  */
-    STRUCT = 269,                  /* STRUCT  */
-    TUPLE = 270,                   /* TUPLE  */
-    WHILE = 271,                   /* WHILE  */
-    FOR = 272,                     /* FOR  */
-    ITERATOR = 273,                /* ITERATOR  */
-    IF = 274,                      /* IF  */
-    ELSE = 275,                    /* ELSE  */
-    ELIF = 276,                    /* ELIF  */
-    BREAK = 277,                   /* BREAK  */
-    RETURN = 278,                  /* RETURN  */
-    BRACES_INITIATOR = 279,        /* BRACES_INITIATOR  */
-    BRACES_TERMINATOR = 280,       /* BRACES_TERMINATOR  */
-    BRACKETS_INITIATOR = 281,      /* BRACKETS_INITIATOR  */
-    BRACKETS_TERMINATOR = 282,     /* BRACKETS_TERMINATOR  */
-    PARENTHESES_INITIATOR = 283,   /* PARENTHESES_INITIATOR  */
-    PARENTHESES_TERMINATOR = 284,  /* PARENTHESES_TERMINATOR  */
-    IN = 285,                      /* IN  */
-    OUT = 286,                     /* OUT  */
-    OPEN = 287,                    /* OPEN  */
-    CLOSE = 288,                   /* CLOSE  */
-    EQUAL = 289,                   /* EQUAL  */
-    NOT_EQUAL = 290,               /* NOT_EQUAL  */
-    LEQ = 291,                     /* LEQ  */
-    GEQ = 292,                     /* GEQ  */
-    GREATER_THAN = 293,            /* GREATER_THAN  */
-    LESS_THAN = 294,               /* LESS_THAN  */
-    NOT = 295,                     /* NOT  */
-    AND = 296,                     /* AND  */
-    OR = 297,                      /* OR  */
-    PLUS_OPERATOR = 298,           /* PLUS_OPERATOR  */
-    MINUS_OPERATOR = 299,          /* MINUS_OPERATOR  */
-    MULTI_OPERATOR = 300,          /* MULTI_OPERATOR  */
-    DIVISION_OPERATOR = 301,       /* DIVISION_OPERATOR  */
-    MOD_OPERATOR = 302,            /* MOD_OPERATOR  */
-    POWER_OPERATOR = 303,          /* POWER_OPERATOR  */
-    CONCAT = 304,                  /* CONCAT  */
-    COPY_STRING = 305              /* COPY_STRING  */
+    ID = 258,
+    TYPE = 259,
+    VALUE = 260,
+    LEN_STRING = 261,
+    ASSIGN = 262,
+    COMMA = 263,
+    SEMICOLON = 264,
+    SEPARATOR = 265,
+    DEF = 266,
+    ARRAY = 267,
+    STRUCT = 268,
+    TUPLE = 269,
+    WHILE = 270,
+    FOR = 271,
+    ITERATOR = 272,
+    IF = 273,
+    ELSE = 274,
+    ELIF = 275,
+    BREAK = 276,
+    RETURN = 277,
+    BRACES_INITIATOR = 278,
+    BRACES_TERMINATOR = 279,
+    BRACKETS_INITIATOR = 280,
+    BRACKETS_TERMINATOR = 281,
+    PARENTHESES_INITIATOR = 282,
+    PARENTHESES_TERMINATOR = 283,
+    IN = 284,
+    OUT = 285,
+    OPEN = 286,
+    CLOSE = 287,
+    EQUAL = 288,
+    NOT_EQUAL = 289,
+    LEQ = 290,
+    GEQ = 291,
+    GREATER_THAN = 292,
+    LESS_THAN = 293,
+    NOT = 294,
+    AND = 295,
+    OR = 296,
+    PLUS_OPERATOR = 297,
+    MINUS_OPERATOR = 298,
+    MULTI_OPERATOR = 299,
+    DIVISION_OPERATOR = 300,
+    MOD_OPERATOR = 301,
+    POWER_OPERATOR = 302,
+    CONCAT = 303,
+    COPY_STRING = 304
   };
-  typedef enum yytokentype yytoken_kind_t;
 #endif
-/* Token kinds.  */
-#define YYEMPTY -2
-#define YYEOF 0
-#define YYerror 256
-#define YYUNDEF 257
+/* Tokens.  */
 #define ID 258
 #define TYPE 259
 #define VALUE 260
 #define LEN_STRING 261
 #define ASSIGN 262
-#define COMMENT 263
-#define COMMA 264
-#define SEMICOLON 265
-#define SEPARATOR 266
-#define DEF 267
-#define ARRAY 268
-#define STRUCT 269
-#define TUPLE 270
-#define WHILE 271
-#define FOR 272
-#define ITERATOR 273
-#define IF 274
-#define ELSE 275
-#define ELIF 276
-#define BREAK 277
-#define RETURN 278
-#define BRACES_INITIATOR 279
-#define BRACES_TERMINATOR 280
-#define BRACKETS_INITIATOR 281
-#define BRACKETS_TERMINATOR 282
-#define PARENTHESES_INITIATOR 283
-#define PARENTHESES_TERMINATOR 284
-#define IN 285
-#define OUT 286
-#define OPEN 287
-#define CLOSE 288
-#define EQUAL 289
-#define NOT_EQUAL 290
-#define LEQ 291
-#define GEQ 292
-#define GREATER_THAN 293
-#define LESS_THAN 294
-#define NOT 295
-#define AND 296
-#define OR 297
-#define PLUS_OPERATOR 298
-#define MINUS_OPERATOR 299
-#define MULTI_OPERATOR 300
-#define DIVISION_OPERATOR 301
-#define MOD_OPERATOR 302
-#define POWER_OPERATOR 303
-#define CONCAT 304
-#define COPY_STRING 305
+#define COMMA 263
+#define SEMICOLON 264
+#define SEPARATOR 265
+#define DEF 266
+#define ARRAY 267
+#define STRUCT 268
+#define TUPLE 269
+#define WHILE 270
+#define FOR 271
+#define ITERATOR 272
+#define IF 273
+#define ELSE 274
+#define ELIF 275
+#define BREAK 276
+#define RETURN 277
+#define BRACES_INITIATOR 278
+#define BRACES_TERMINATOR 279
+#define BRACKETS_INITIATOR 280
+#define BRACKETS_TERMINATOR 281
+#define PARENTHESES_INITIATOR 282
+#define PARENTHESES_TERMINATOR 283
+#define IN 284
+#define OUT 285
+#define OPEN 286
+#define CLOSE 287
+#define EQUAL 288
+#define NOT_EQUAL 289
+#define LEQ 290
+#define GEQ 291
+#define GREATER_THAN 292
+#define LESS_THAN 293
+#define NOT 294
+#define AND 295
+#define OR 296
+#define PLUS_OPERATOR 297
+#define MINUS_OPERATOR 298
+#define MULTI_OPERATOR 299
+#define DIVISION_OPERATOR 300
+#define MOD_OPERATOR 301
+#define POWER_OPERATOR 302
+#define CONCAT 303
+#define COPY_STRING 304
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 12 "parser.y"
+#line 17 "parser.y"
 
     char * sValue;  /* string value */
+    int    iValue; 	/* integer value */
+    double dValue;  /* double value */
+    struct record * rec;
 
-#line 171 "y.tab.h"
+#line 162 "y.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
@@ -178,8 +169,6 @@ typedef union YYSTYPE YYSTYPE;
 
 extern YYSTYPE yylval;
 
-
 int yyparse (void);
-
 
 #endif /* !YY_YY_Y_TAB_H_INCLUDED  */

@@ -5,7 +5,8 @@ int thirdInterval = 0;
 int fourthInterval = 0;
 
 while (true) {
-    num = in("Enter a number (negative to exit): ");
+    out("Enter a number (negative to exit): ");
+    in(num);
 
     if (num < 0) {
         break;
