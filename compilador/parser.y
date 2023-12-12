@@ -154,7 +154,7 @@ expr        : val
             | expr MOD_OPERATOR expr                                            { char * s = cat($1->code, "%" , $3->code, ";");
                                                                                   $$ = createRecord(s, "");
                                                                                   free(s); }
-            | expr POWER_OPERATOR expr                                          { char * s = cat("pow(", $1->code, $3->code, ");");
+            | expr POWER_OPERATOR expr                                          { char * s = cat("pow(", $1->code, ",", $3->code, ");");
                                                                                   $$ = createRecord(s, "");
                                                                                   free(s); }
             | expr CONCAT expr                                                  {}
