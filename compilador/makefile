@@ -10,4 +10,4 @@ y.tab.c: parser.y
 	yacc parser.y -d -v
 
 clean:
-	rm -rf lex.yy.c y.tab.* compiler output.txt y.output
+	rm -rf lex.yy.c y.tab.* compiler output.txt y.output output/*
