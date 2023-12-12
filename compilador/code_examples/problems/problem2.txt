@@ -1,0 +1,28 @@
+int num = 0;
+int firstInterval = 0;
+int secondInterval = 0;
+int thirdInterval = 0;
+int fourthInterval = 0;
+
+while (true) {
+    num = in("Enter a number (negative to exit): ");
+
+    if (num < 0) {
+        break;
+    };
+
+    if (num >= 0 && num <= 25) {
+        firstInterval = firstInterval + 1;
+    } elif (num >= 26 && num <= 50) {
+        secondInterval = secondInterval + 1;
+    } elif (num >= 51 && num <= 75) {
+        thirdInterval = thirdInterval + 1;
+    } else {
+        fourthInterval = fourthInterval + 1;
+    }
+};
+
+out("Numbers in the interval [0, 25]: " ++ firstInterval);
+out("Numbers in the interval [26, 50]: " ++ secondInterval);
+out("Numbers in the interval [51, 75]: " ++ thirdInterval);
+out("Numbers in the interval [76, 100]: " ++ fourthInterval);

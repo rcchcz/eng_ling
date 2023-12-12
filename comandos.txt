@@ -3,3 +3,8 @@ flex lexer.l
 yacc parser.y -d -v -g  (-d: y.tab.h; -v: y.output; -g: y.dot [GraphViz])
 gcc lex.yy.c y.tab.c -o parser.exe 
 ./parser.exe < code_examples/input.txt
+
+
+cd compilador
+make
+./compiler < code_examples/input.txt
