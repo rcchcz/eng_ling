@@ -7,4 +7,4 @@ gcc lex.yy.c y.tab.c -o parser.exe
 
 cd compilador
 make
-./compiler < code_examples/input.txt
+./compiler code_examples/problems/problemX.txt output/outputX.txt
