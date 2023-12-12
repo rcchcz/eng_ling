@@ -169,7 +169,7 @@ if_opt      : elif_opt else_opt                                                 
             ;
 
 elif_opt    :                                                                   {printf("elif_opt vazio \n");}
-            | ELIF expr body                                                    {printf("elif_opt \n");}
+            | ELIF expr body elif_opt                                           {printf("elif_opt \n");}
             ;
 
 else_opt    :                                                                   {printf("else_opt vazio\n");}

@@ -109,7 +109,7 @@ Grammar
    76 if_opt: elif_opt else_opt
 
    77 elif_opt: ε
-   78         | ELIF expr body
+   78         | ELIF expr body elif_opt
 
    79 else_opt: ε
    80         | ELSE body
@@ -275,7 +275,7 @@ Nonterminals, with rules where they appear
         on right: 75
     elif_opt (77)
         on left: 77 78
-        on right: 76
+        on right: 76 78
     else_opt (78)
         on left: 79 80
         on right: 76
@@ -2407,7 +2407,7 @@ State 143
 
 State 144
 
-   78 elif_opt: ELIF • expr body
+   78 elif_opt: ELIF • expr body elif_opt
 
     ID                     shift, and go to state 59
     VALUE                  shift, and go to state 3
@@ -2601,7 +2601,7 @@ State 163
    65     | expr • GREATER_THAN expr
    67     | expr • AND expr
    68     | expr • OR expr
-   78 elif_opt: ELIF expr • body
+   78 elif_opt: ELIF expr • body elif_opt
 
     BRACES_INITIATOR   shift, and go to state 103
     EQUAL              shift, and go to state 72
@@ -2778,9 +2778,13 @@ State 177
 
 State 178
 
-   78 elif_opt: ELIF expr body •
+   78 elif_opt: ELIF expr body • elif_opt
 
-    $default  reduce using rule 78 (elif_opt)
+    ELIF  shift, and go to state 144
+
+    $default  reduce using rule 77 (elif_opt)
+
+    elif_opt  go to state 186
 
 
 State 179
@@ -2816,7 +2820,7 @@ State 181
    67     | expr • AND expr
    68     | expr • OR expr
 
-    BRACKETS_TERMINATOR  shift, and go to state 186
+    BRACKETS_TERMINATOR  shift, and go to state 187
     EQUAL                shift, and go to state 72
     NOT_EQUAL            shift, and go to state 73
     LEQ                  shift, and go to state 74
@@ -2844,7 +2848,7 @@ State 182
     PARENTHESES_INITIATOR  shift, and go to state 14
     NOT                    shift, and go to state 19
 
-    expr      go to state 187
+    expr      go to state 188
     attrlist  go to state 31
     val       go to state 32
     len       go to state 43
@@ -2867,7 +2871,7 @@ State 184
     PARENTHESES_INITIATOR  shift, and go to state 14
     NOT                    shift, and go to state 19
 
-    exprlist  go to state 188
+    exprlist  go to state 189
     expr      go to state 172
     attrlist  go to state 31
     val       go to state 32
@@ -2893,7 +2897,7 @@ State 185
    68     | expr • OR expr
    84 range: BRACKETS_INITIATOR expr • COMMA expr BRACKETS_TERMINATOR
 
-    COMMA              shift, and go to state 189
+    COMMA              shift, and go to state 190
     EQUAL              shift, and go to state 72
     NOT_EQUAL          shift, and go to state 73
     LEQ                shift, and go to state 74
@@ -2913,12 +2917,19 @@ State 185
 
 State 186
 
+   78 elif_opt: ELIF expr body elif_opt •
+
+    $default  reduce using rule 78 (elif_opt)
+
+
+State 187
+
    49 array_decl: ARRAY LESS_THAN TYPE GREATER_THAN ID BRACKETS_INITIATOR expr BRACKETS_TERMINATOR •
 
     $default  reduce using rule 49 (array_decl)
 
 
-State 187
+State 188
 
    48 exprlist: exprlist COMMA expr •
    53 expr: expr • PLUS_OPERATOR expr
@@ -2956,16 +2967,16 @@ State 187
     $default  reduce using rule 48 (exprlist)
 
 
-State 188
+State 189
 
    44 tuple_decl: TUPLE PARENTHESES_INITIATOR types PARENTHESES_TERMINATOR ID ASSIGN PARENTHESES_INITIATOR exprlist • PARENTHESES_TERMINATOR
    48 exprlist: exprlist • COMMA expr
 
     COMMA                   shift, and go to state 182
-    PARENTHESES_TERMINATOR  shift, and go to state 190
+    PARENTHESES_TERMINATOR  shift, and go to state 191
 
 
-State 189
+State 190
 
    84 range: BRACKETS_INITIATOR expr COMMA • expr BRACKETS_TERMINATOR
 
@@ -2975,20 +2986,20 @@ State 189
     PARENTHESES_INITIATOR  shift, and go to state 14
     NOT                    shift, and go to state 19
 
-    expr      go to state 191
+    expr      go to state 192
     attrlist  go to state 31
     val       go to state 32
     len       go to state 43
 
 
-State 190
+State 191
 
    44 tuple_decl: TUPLE PARENTHESES_INITIATOR types PARENTHESES_TERMINATOR ID ASSIGN PARENTHESES_INITIATOR exprlist PARENTHESES_TERMINATOR •
 
     $default  reduce using rule 44 (tuple_decl)
 
 
-State 191
+State 192
 
    53 expr: expr • PLUS_OPERATOR expr
    54     | expr • MINUS_OPERATOR expr
@@ -3007,7 +3018,7 @@ State 191
    68     | expr • OR expr
    84 range: BRACKETS_INITIATOR expr COMMA expr • BRACKETS_TERMINATOR
 
-    BRACKETS_TERMINATOR  shift, and go to state 192
+    BRACKETS_TERMINATOR  shift, and go to state 193
     EQUAL                shift, and go to state 72
     NOT_EQUAL            shift, and go to state 73
     LEQ                  shift, and go to state 74
@@ -3025,7 +3036,7 @@ State 191
     CONCAT               shift, and go to state 86
 
 
-State 192
+State 193
 
    84 range: BRACKETS_INITIATOR expr COMMA expr BRACKETS_TERMINATOR •
 
