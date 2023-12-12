@@ -105,6 +105,7 @@ decl_elem   : ID                                                                
             ;
 
 assignment  : ID ASSIGN expr                                                    {printf("assignment id: %s \n", $1);}
+            | ID ASSIGN in                                                      {printf("assignment id: %s \n", $1);}
             ;
 
 struct_decl : STRUCT ID ID                                                      {}
@@ -197,7 +198,7 @@ break       : BREAK                                                             
 str_copy    : ID COPY_STRING expr                                               {}
             ;
 
-in          : IN PARENTHESES_INITIATOR ID PARENTHESES_TERMINATOR                {}
+in          : IN PARENTHESES_INITIATOR val PARENTHESES_TERMINATOR                {}
             ;
 
 out         : OUT expr                                                          {}
