@@ -214,9 +214,10 @@ elif_opt    :                                                                   
             | ELIF expr body elif_opt                                           {printf("elif_opt \n");}
             ;
 
-else_opt    :                                                                   {printf("else_opt vazio\n");}
-            | ELSE body                                                         {printf("else_opt \n");}
-            ;
+else_opt    :                                                                   { printf("else_opt vazio\n"); }
+            | ELSE body                                                         { char * s = cat("else", $2->code);
+                                                                                  $$ = createRecord(s, "");
+                                                                                  free(s); }
 
 while       : WHILE expr body                                                   {printf("while \n");}
             ;
