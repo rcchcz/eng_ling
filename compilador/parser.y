@@ -9,6 +9,7 @@ int yylex(void);
 int yyerror(char *s);
 extern int yylineno;
 extern char * yytext;
+extern FILE * yyin, * yyout;
 
 char * cat(char *, char *, char *, char *, char *);
 
@@ -35,7 +36,7 @@ char * cat(char *, char *, char *, char *, char *);
 
 %type <rec> prog stmlist stm assignment else_opt out expr val body break return types
 %type <rec> idlist decl decl_elem  exprlist attrlist while for array_decl construct
-%type <rec> field
+%type <rec> param paramlist field fieldlist funcdef str_copy
 
 %start prog
 
@@ -49,7 +50,7 @@ char * cat(char *, char *, char *, char *, char *);
 %left MULTI_OPERATOR DIVISION_OPERATOR MOD_OPERATOR POWER_OPERATOR
 %nonassoc CONCAT
 %%
-prog        : stmlist                                                           {} 
+prog        : stmlist                                                           { fprintf(yyout, "#include <stdio.h>\n#include <stdlib.h>\n#include <string.h>\n int main () {\n%s\n return 0;}", $1->code); } 
             ;
 
 stmlist     : stm SEMICOLON                                                     { char * s = cat($1->code, ";\n", "", "", "");
@@ -63,44 +64,73 @@ stmlist     : stm SEMICOLON                                                     
                                                                                   free(s); }
             ;
 
-stm         : funcdef                                                           {}
+stm         : funcdef                                                           { $$ = createRecord($1->code, "");
+                                                                                  freeRecord($1); }
             | structdef                                                         {}
             | decl                                                              { $$ = createRecord($1->code, "");
                                                                                   freeRecord($1); }
-            | assignment                                                        {}
-            | expr                                                              {}
-            | if                                                                {printf("stm if \n");}
-            | while                                                             {} 
+            | assignment                                                        { $$ = createRecord($1->code, "");
+                                                                                  freeRecord($1); }
+            | expr                                                              { $$ = createRecord($1->code, "");
+                                                                                  freeRecord($1); }
+            | if                                                                {}
+            | while                                                             { $$ = createRecord($1->code, "");
+                                                                                  freeRecord($1); } 
             | for                                                               {}
-            | break                                                             {}
-            | return                                                            {printf("return \n");}
-            | str_copy                                                          {}
+            | break                                                             { $$ = createRecord($1->code, "");
+                                                                                  freeRecord($1); }
+            | return                                                            { $$ = createRecord($1->code, "");
+                                                                                  freeRecord($1); }
+            | str_copy                                                          { $$ = createRecord($1->code, "");
+                                                                                  freeRecord($1); }
             | in                                                                {}
-            | out                                                               {}
+            | out                                                               { $$ = createRecord($1->code, "");
+                                                                                  freeRecord($1); }
             | open                                                              {}
             | close                                                             {}
             ;
 
-body        : BRACES_INITIATOR stmlist BRACES_TERMINATOR                        {printf("body \n");}
+body        : BRACES_INITIATOR stmlist BRACES_TERMINATOR                        { char * s = cat("{", $2->code, "}", "", "");
+                                                                                  $$ = createRecord(s, "");
+                                                                                  freeRecord($2);
+                                                                                  free(s); }
             ;
 
 funcdef     : DEF field
-                PARENTHESES_INITIATOR paramlist PARENTHESES_TERMINATOR body     {printf("funcdef \n");}
+                PARENTHESES_INITIATOR paramlist PARENTHESES_TERMINATOR body     { char * s = cat($2->code, "(", $4->code, ")", $6->code);
+                                                                                  $$ = createRecord(s, "");
+                                                                                  freeRecord($2);
+                                                                                  freeRecord($4);
+                                                                                  freeRecord($6);
+                                                                                  free(s); }
             ;
 
 structdef   : STRUCT ID BRACES_INITIATOR fieldlist BRACES_TERMINATOR            {}
             ;
 
-paramlist   : param                                                             {}
-            | param COMMA paramlist                                             {}
+paramlist   : param                                                             { $$ = createRecord($1->code,""); 
+                                                                                  freeRecord($1); }
+            | param COMMA paramlist                                             { char * s = cat($1->code, ", ", $3->code, "", "");
+                                                                                  $$ = createRecord(s, "");
+                                                                                  freeRecord($1);
+                                                                                  freeRecord($3);
+                                                                                  free(s); }
             ;
 
-param       : 
-            | field                                                             {}
+param       :                                                                   { $$ = createRecord("",""); }
+            | field                                                             { $$ = createRecord($1->code,""); 
+                                                                                  freeRecord($1); }
             ;
 
-fieldlist   : field SEMICOLON                                                   {}
-            | field SEMICOLON fieldlist                                         {}
+fieldlist   : field SEMICOLON                                                   { char * s = cat($1->code, ";", "", "", "");
+                                                                                  $$ = createRecord(s, "");
+                                                                                  freeRecord($1);
+                                                                                  free(s); }
+            | field SEMICOLON fieldlist                                         { char * s = cat($1->code, "; ", $3->code, "", "");
+                                                                                  $$ = createRecord(s, "");
+                                                                                  freeRecord($1);
+                                                                                  freeRecord($3);
+                                                                                  free(s); }
             ;
 
 field       : TYPE ID                                                           { char * s = cat($1, " ", $2, "", "");
@@ -233,7 +263,11 @@ expr        : val                                                               
                                                                                   freeRecord($1);
                                                                                   freeRecord($3);
                                                                                   free(s); }
-            | expr CONCAT expr                                                  {}
+            | expr CONCAT expr                                                  { char * s = cat("strcat(", $1->code, ", ", $3->code, ")");
+                                                                                  $$ = createRecord(s, "");
+                                                                                  freeRecord($1);
+                                                                                  freeRecord($3);
+                                                                                  free(s); }
             | expr EQUAL expr                                                   { char * s = cat($1->code, " == ", $3->code, "", "");
                                                                                   $$ = createRecord(s, "");
                                                                                   freeRecord($1);
@@ -343,7 +377,11 @@ return      : RETURN expr                                                       
 break       : BREAK                                                             { $$ = createRecord("break",""); }
             ;
 
-str_copy    : ID COPY_STRING expr                                               {}
+str_copy    : ID COPY_STRING expr                                               { char * s = cat("strcpy(", $1, ", ", $3->code, ")");
+                                                                                  $$ = createRecord(s, "");
+                                                                                  free($1);
+                                                                                  freeRecord($3);
+                                                                                  free(s); }
             ;
 
 in          : IN PARENTHESES_INITIATOR ID PARENTHESES_TERMINATOR                {}
@@ -366,8 +404,23 @@ len         : LEN_STRING PARENTHESES_INITIATOR expr PARENTHESES_TERMINATOR      
 
 %%
 
-int main (void) {
-  return yyparse ( );
+int main (int argc, char ** argv) {
+ 	int codigo;
+
+    if (argc != 3) {
+       printf("Usage: $./compiler input.txt output.txt\nClosing application...\n");
+       exit(0);
+    }
+    
+    yyin = fopen(argv[1], "r");
+    yyout = fopen(argv[2], "w");
+
+    codigo = yyparse();
+
+    fclose(yyin);
+    fclose(yyout);
+
+	return codigo;
 }
 
 int yyerror (char *msg) {

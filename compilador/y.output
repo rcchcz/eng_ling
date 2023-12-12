@@ -203,19 +203,19 @@ Nonterminals, with rules where they appear
     body <rec> (54)
         on left: 19
         on right: 20 74 77 79 80 81
-    funcdef (55)
+    funcdef <rec> (55)
         on left: 20
         on right: 4
     structdef (56)
         on left: 21
         on right: 5
-    paramlist (57)
+    paramlist <rec> (57)
         on left: 22 23
         on right: 20 23
-    param (58)
+    param <rec> (58)
         on left: 24 25
         on right: 22 23
-    fieldlist (59)
+    fieldlist <rec> (59)
         on left: 26 27
         on right: 21 27
     field <rec> (60)
@@ -290,7 +290,7 @@ Nonterminals, with rules where they appear
     break <rec> (83)
         on left: 86
         on right: 12
-    str_copy (84)
+    str_copy <rec> (84)
         on left: 87
         on right: 14
     in (85)
