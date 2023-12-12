@@ -1,0 +1,8 @@
+
+int x = 25;
+int y = 2;
+int c = 31;
+
+int result = x ** 2 - y + c;
+
+out("Result of the expression: " ++ result);
