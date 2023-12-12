@@ -193,8 +193,10 @@ attrlist    : ID SEPARATOR ID                                                   
             | ID SEPARATOR attrlist                                             {}
             ;
 
-val         : ID                                                                {printf("val id: %s \n", $1);}
-            | VALUE                                                             {printf("val value: %s \n", $1);}
+val         : ID                                                                { $$ = createRecord($1, "");
+                                                                                  free($1); }
+            | VALUE                                                             { $$ = createRecord($1, "");
+                                                                                  free($1); }
             ;
 
 if          : IF expr body if_opt                                               {printf("if \n");}
