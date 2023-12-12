@@ -108,10 +108,10 @@ assignment  : ID ASSIGN expr                                                    
             ;
 
 struct_decl : STRUCT ID ID                                                      {}
-            | STRUCT ID ID ASSIGN construct                                        {}
+            | STRUCT ID ID ASSIGN construct                                     {}
             ;
 
-construct   : BRACES_INITIATOR values BRACES_TERMINATOR                         {}
+construct   : BRACES_INITIATOR exprlist BRACES_TERMINATOR                       {}
             ;
 
 tuple_decl  : TUPLE PARENTHESES_INITIATOR types PARENTHESES_TERMINATOR
@@ -129,10 +129,6 @@ exprlist    : expr                                                              
 array_decl  : ARRAY LESS_THAN TYPE GREATER_THAN ID
                 BRACKETS_INITIATOR expr BRACKETS_TERMINATOR                    {}
             | ARRAY LESS_THAN TYPE GREATER_THAN ID ASSIGN construct             {}
-            ;
-
-values      : VALUE                                                             {}
-            | VALUE COMMA values                                                {}
             ;
 
 expr        : val    
