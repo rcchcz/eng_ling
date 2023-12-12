@@ -1,0 +1,12 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+int main () {
+float x = 25.5;
+float y = 2.3;
+int c = 31;
+int result = pow(x , 2) - y + c;
+printf(strcat("Result of the expression: ", result));
+
+ return 0;
+}

@@ -115,7 +115,7 @@ Grammar
    82 init: TYPE ID ITERATOR range
 
    83 range: BRACKETS_INITIATOR expr COMMA expr BRACKETS_TERMINATOR
-   84      | ID
+   84      | val
 
    85 return: RETURN expr
 
@@ -138,7 +138,7 @@ Terminals, with rules where they appear
 
     $end (0) 0
     error (256)
-    ID <sValue> (258) 21 28 29 30 37 39 40 41 43 48 49 70 71 72 82 84 87 88
+    ID <sValue> (258) 21 28 29 30 37 39 40 41 43 48 49 70 71 72 82 87 88
     TYPE <sValue> (259) 28 29 31 44 45 48 49 82
     VALUE <sValue> (260) 73
     LEN_STRING <sValue> (261) 92
@@ -259,14 +259,14 @@ Nonterminals, with rules where they appear
         on right: 69 71
     val <rec> (73)
         on left: 72 73
-        on right: 50 90 91
-    if (74)
+        on right: 50 84 90 91
+    if <rec> (74)
         on left: 74
         on right: 9
-    if_opt (75)
+    if_opt <rec> (75)
         on left: 75
         on right: 74
-    elif_opt (76)
+    elif_opt <rec> (76)
         on left: 76 77
         on right: 75 77
     else_opt <rec> (77)
@@ -2588,9 +2588,11 @@ State 160
 
    82 init: TYPE ID ITERATOR . range
 
-    ID                  shift, and go to state 174
-    BRACKETS_INITIATOR  shift, and go to state 175
+    ID                  shift, and go to state 109
+    VALUE               shift, and go to state 3
+    BRACKETS_INITIATOR  shift, and go to state 174
 
+    val    go to state 175
     range  go to state 176
 
 
@@ -2765,13 +2767,6 @@ State 173
 
 State 174
 
-   84 range: ID .
-
-    $default  reduce using rule 84 (range)
-
-
-State 175
-
    83 range: BRACKETS_INITIATOR . expr COMMA expr BRACKETS_TERMINATOR
 
     ID                     shift, and go to state 59
@@ -2784,6 +2779,13 @@ State 175
     attrlist  go to state 31
     val       go to state 32
     len       go to state 43
+
+
+State 175
+
+   84 range: val .
+
+    $default  reduce using rule 84 (range)
 
 
 State 176

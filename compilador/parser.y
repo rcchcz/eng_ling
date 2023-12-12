@@ -36,7 +36,7 @@ char * cat(char *, char *, char *, char *, char *);
 
 %type <rec> prog stmlist stm assignment else_opt out expr val body break return types
 %type <rec> idlist decl decl_elem  exprlist attrlist while for array_decl construct
-%type <rec> param paramlist field fieldlist funcdef str_copy
+%type <rec> param paramlist field fieldlist funcdef str_copy if if_opt elif_opt
 
 %start prog
 
@@ -50,7 +50,7 @@ char * cat(char *, char *, char *, char *, char *);
 %left MULTI_OPERATOR DIVISION_OPERATOR MOD_OPERATOR POWER_OPERATOR
 %nonassoc CONCAT
 %%
-prog        : stmlist                                                           { fprintf(yyout, "#include <stdio.h>\n#include <stdlib.h>\n#include <string.h>\n int main () {\n%s\n return 0;}", $1->code); } 
+prog        : stmlist                                                           { fprintf(yyout, "#include <stdio.h>\n#include <stdlib.h>\n#include <string.h>\nint main () {\n%s\n return 0;\n}", $1->code); } 
             ;
 
 stmlist     : stm SEMICOLON                                                     { char * s = cat($1->code, ";\n", "", "", "");
@@ -73,7 +73,8 @@ stm         : funcdef                                                           
                                                                                   freeRecord($1); }
             | expr                                                              { $$ = createRecord($1->code, "");
                                                                                   freeRecord($1); }
-            | if                                                                {}
+            | if                                                                { $$ = createRecord($1->code, "");
+                                                                                  freeRecord($1); }
             | while                                                             { $$ = createRecord($1->code, "");
                                                                                   freeRecord($1); } 
             | for                                                               {}
@@ -90,7 +91,7 @@ stm         : funcdef                                                           
             | close                                                             {}
             ;
 
-body        : BRACES_INITIATOR stmlist BRACES_TERMINATOR                        { char * s = cat("{", $2->code, "}", "", "");
+body        : BRACES_INITIATOR stmlist BRACES_TERMINATOR                        { char * s = cat("{\n", $2->code, "\n}", "", "");
                                                                                   $$ = createRecord(s, "");
                                                                                   freeRecord($2);
                                                                                   free(s); }
@@ -338,20 +339,25 @@ val         : ID                                                                
                                                                                   free($1); }
             ;
 
-if          : IF expr body if_opt                                               {printf("if \n");}
+if          : IF expr body if_opt                                               { char *s = cat("if(", $2->code, ")", $3->code, $4->code);
+                                                                                  $$ = createRecord(s, "");
+                                                                                  freeRecord($2);
+                                                                                  freeRecord($3);
+                                                                                  freeRecord($4);
+                                                                                  free(s); }
             ;
 
-if_opt      : elif_opt else_opt                                                 {printf("if_opt \n");}
+if_opt      : elif_opt else_opt                                                 { $$ = createRecord("",""); }
             ;
 
-elif_opt    :                                                                   {printf("elif_opt vazio \n");}
-            | ELIF expr body elif_opt                                           {printf("elif_opt \n");}
+elif_opt    :                                                                   { $$ = createRecord("",""); }
+            | ELIF expr body elif_opt                                           { $$ = createRecord("",""); }
             ;
 
-else_opt    :                                                                   {}
-            | ELSE body                                                         {}
+else_opt    :                                                                   { $$ = createRecord("",""); }
+            | ELSE body                                                         { $$ = createRecord("",""); }
 
-while       : WHILE expr body                                                   { char * s = cat("loop: if(", $2->code, "){\n", $3->code, "goto loop;\n}");
+while       : WHILE expr body                                                   { char * s = cat("loop: if(", $2->code, ")", $3->code, "goto loop");
                                                                                   $$ = createRecord(s, "");
                                                                                   freeRecord($2);
                                                                                   freeRecord($3);
@@ -365,7 +371,7 @@ init        : TYPE ID ITERATOR range                                            
             ;
 
 range       : BRACKETS_INITIATOR expr COMMA expr BRACKETS_TERMINATOR            {}
-            | ID                                                                {}
+            | val                                                               {}
             ;
 
 return      : RETURN expr                                                       { char * s = cat("return ", $2->code, "", "", "");
@@ -387,7 +393,7 @@ str_copy    : ID COPY_STRING expr                                               
 in          : IN PARENTHESES_INITIATOR ID PARENTHESES_TERMINATOR                {}
             ;
 
-out         : OUT expr                                                          { char * s = cat("printf", "(", $2->code, ")", "");
+out         : OUT expr                                                          { char * s = cat("printf", $2->code, "", "", "");
                                                                                   $$ = createRecord(s, "");
                                                                                   freeRecord($2);
                                                                                   free(s); }
