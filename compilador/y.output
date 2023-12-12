@@ -257,13 +257,13 @@ Nonterminals, with rules where they appear
     array_decl (71)
         on left: 48 49
         on right: 34
-    expr (72)
+    expr <rec> (72)
         on left: 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69
         on right: 8 39 46 47 48 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 74 77 80 83 85 87 89
     attrlist (73)
         on left: 70 71
         on right: 69 71
-    val (74)
+    val <rec> (74)
         on left: 72 73
         on right: 50 90 91
     if (75)
@@ -302,7 +302,7 @@ Nonterminals, with rules where they appear
     in (86)
         on left: 88
         on right: 15
-    out (87)
+    out <rec> (87)
         on left: 89
         on right: 16
     open (88)

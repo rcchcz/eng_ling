@@ -11,6 +11,10 @@ extern char * yytext;
 
 %union {
     char * sValue;  /* string value */
+    int    iValue; 	/* integer value */
+    char * sValue;  /* string value */
+    double dValue;  /* double value */
+    struct record * rec;
 };
 
 %token  <sValue> ID TYPE VALUE LEN_STRING
@@ -24,6 +28,8 @@ extern char * yytext;
         NOT AND OR
         PLUS_OPERATOR MINUS_OPERATOR MULTI_OPERATOR DIVISION_OPERATOR MOD_OPERATOR POWER_OPERATOR
         CONCAT COPY_STRING
+
+%type <rec> out expr val     
 
 %start prog
 
@@ -200,7 +206,10 @@ str_copy    : ID COPY_STRING expr                                               
 in          : IN PARENTHESES_INITIATOR ID PARENTHESES_TERMINATOR                {}
             ;
 
-out         : OUT expr                                                          {}
+out         : OUT expr                                                          { char * s = cat("printf", "(", $2->code, ")", ";");
+                                                                                  freeRecord($2);
+                                                                                  $$ = createRecord(s, "");
+                                                                                  free(s); }
             ;
 
 open        : OPEN PARENTHESES_INITIATOR val PARENTHESES_TERMINATOR             {}
