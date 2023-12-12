@@ -218,7 +218,7 @@ Nonterminals, with rules where they appear
     fieldlist (59)
         on left: 26 27
         on right: 21 27
-    field (60)
+    field <rec> (60)
         on left: 28 29 30
         on right: 20 25 26 27
     decl <rec> (61)
