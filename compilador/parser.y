@@ -1,7 +1,6 @@
 %{
 #include <stdio.h>
 #include <string.h>
-#include "modulos.h"
 
 int yylex(void);
 int yyerror(char *s);
@@ -139,7 +138,7 @@ expr        : val
             | expr MULTI_OPERATOR expr                                          {}
             | expr DIVISION_OPERATOR expr                                       {}
             | expr MOD_OPERATOR expr                                            {}
-            | expr POWER_OPERATOR expr                                          {}
+            | expr POWER_OPERATOR expr                                          {  }
             | expr CONCAT expr                                                  {}
             | expr EQUAL expr                                                   {printf("equal expr \n");}
             | expr NOT_EQUAL expr                                               {}
