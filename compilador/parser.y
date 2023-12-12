@@ -1,6 +1,7 @@
 %{
 #include <stdio.h>
 #include <string.h>
+#include <math.h>
 
 int yylex(void);
 int yyerror(char *s);
@@ -153,14 +154,28 @@ expr        : val
             | expr MOD_OPERATOR expr                                            { char * s = cat($1->code, "%" , $3->code, ";");
                                                                                   $$ = createRecord(s, "");
                                                                                   free(s); }
-            | expr POWER_OPERATOR expr                                          {}
+            | expr POWER_OPERATOR expr                                          { char * s = cat("pow(", $1->code, $3->code, ");");
+                                                                                  $$ = createRecord(s, "");
+                                                                                  free(s); }
             | expr CONCAT expr                                                  {}
-            | expr EQUAL expr                                                   {printf("equal expr \n");}
-            | expr NOT_EQUAL expr                                               {}
-            | expr LEQ expr                                                     {}
-            | expr GEQ expr                                                     {}
-            | expr LESS_THAN expr                                               {}
-            | expr GREATER_THAN expr                                            {}
+            | expr EQUAL expr                                                   { char * s = cat($1->code, "==", $3->code, ";");
+                                                                                  $$ = createRecord(s, "");
+                                                                                  free(s); }
+            | expr NOT_EQUAL expr                                               { char * s = cat($1->code, "!=", $3->code, ";");
+                                                                                  $$ = createRecord(s, "");
+                                                                                  free(s); }
+            | expr LEQ expr                                                     { char * s = cat($1->code, "<=", $3->code, ";");
+                                                                                  $$ = createRecord(s, "");
+                                                                                  free(s); }
+            | expr GEQ expr                                                     { char * s = cat($1->code, ">=", $3->code, ";");
+                                                                                  $$ = createRecord(s, "");
+                                                                                  free(s); }
+            | expr LESS_THAN expr                                               { char * s = cat($1->code, "<", $3->code, ";");
+                                                                                  $$ = createRecord(s, "");
+                                                                                  free(s); }
+            | expr GREATER_THAN expr                                            { char * s = cat($1->code, ">", $3->code, ";");
+                                                                                  $$ = createRecord(s, "");
+                                                                                  free(s); }
             | NOT expr                                                          {}
             | expr AND expr                                                     {}
             | expr OR expr                                                      {}
