@@ -131,7 +131,7 @@ Grammar
 
    91 close: CLOSE PARENTHESES_INITIATOR val PARENTHESES_TERMINATOR
 
-   92 len: LEN_STRING PARENTHESES_INITIATOR VALUE PARENTHESES_TERMINATOR
+   92 len: LEN_STRING PARENTHESES_INITIATOR expr PARENTHESES_TERMINATOR
 
 
 Terminals, with rules where they appear
@@ -140,7 +140,7 @@ Terminals, with rules where they appear
     error (256)
     ID <sValue> (258) 21 28 29 30 37 39 40 41 43 48 49 70 71 72 82 84 87 88
     TYPE <sValue> (259) 28 29 31 44 45 48 49 82
-    VALUE <sValue> (260) 73 92
+    VALUE <sValue> (260) 73
     LEN_STRING <sValue> (261) 92
     ASSIGN (262) 39 41 43 49
     COMMA (263) 23 36 45 47 83
@@ -236,25 +236,25 @@ Nonterminals, with rules where they appear
     struct_decl (65)
         on left: 40 41
         on right: 32
-    construct (66)
+    construct <rec> (66)
         on left: 42
         on right: 41 49
     tuple_decl (67)
         on left: 43
         on right: 33
-    types (68)
+    types <rec> (68)
         on left: 44 45
         on right: 43 45
-    exprlist (69)
+    exprlist <rec> (69)
         on left: 46 47
         on right: 42 43 47
-    array_decl (70)
+    array_decl <rec> (70)
         on left: 48 49
         on right: 34
     expr <rec> (71)
         on left: 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69
-        on right: 8 39 46 47 48 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 74 77 80 83 85 87 89
-    attrlist (72)
+        on right: 8 39 46 47 48 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 74 77 80 83 85 87 89 92
+    attrlist <rec> (72)
         on left: 70 71
         on right: 69 71
     val <rec> (73)
@@ -272,10 +272,10 @@ Nonterminals, with rules where they appear
     else_opt <rec> (77)
         on left: 78 79
         on right: 75
-    while (78)
+    while <rec> (78)
         on left: 80
         on right: 10
-    for (79)
+    for <rec> (79)
         on left: 81
         on right: 11
     init (80)
@@ -284,10 +284,10 @@ Nonterminals, with rules where they appear
     range (81)
         on left: 83 84
         on right: 82
-    return (82)
+    return <rec> (82)
         on left: 85
         on right: 13
-    break (83)
+    break <rec> (83)
         on left: 86
         on right: 12
     str_copy (84)
@@ -395,7 +395,7 @@ State 3
 
 State 4
 
-   92 len: LEN_STRING . PARENTHESES_INITIATOR VALUE PARENTHESES_TERMINATOR
+   92 len: LEN_STRING . PARENTHESES_INITIATOR expr PARENTHESES_TERMINATOR
 
     PARENTHESES_INITIATOR  shift, and go to state 51
 
@@ -844,9 +844,18 @@ State 50
 
 State 51
 
-   92 len: LEN_STRING PARENTHESES_INITIATOR . VALUE PARENTHESES_TERMINATOR
+   92 len: LEN_STRING PARENTHESES_INITIATOR . expr PARENTHESES_TERMINATOR
 
-    VALUE  shift, and go to state 92
+    ID                     shift, and go to state 59
+    VALUE                  shift, and go to state 3
+    LEN_STRING             shift, and go to state 4
+    PARENTHESES_INITIATOR  shift, and go to state 14
+    NOT                    shift, and go to state 19
+
+    expr      go to state 92
+    attrlist  go to state 31
+    val       go to state 32
+    len       go to state 43
 
 
 State 52
@@ -1584,9 +1593,39 @@ State 91
 
 State 92
 
-   92 len: LEN_STRING PARENTHESES_INITIATOR VALUE . PARENTHESES_TERMINATOR
+   52 expr: expr . PLUS_OPERATOR expr
+   53     | expr . MINUS_OPERATOR expr
+   54     | expr . MULTI_OPERATOR expr
+   55     | expr . DIVISION_OPERATOR expr
+   56     | expr . MOD_OPERATOR expr
+   57     | expr . POWER_OPERATOR expr
+   58     | expr . CONCAT expr
+   59     | expr . EQUAL expr
+   60     | expr . NOT_EQUAL expr
+   61     | expr . LEQ expr
+   62     | expr . GEQ expr
+   63     | expr . LESS_THAN expr
+   64     | expr . GREATER_THAN expr
+   66     | expr . AND expr
+   67     | expr . OR expr
+   92 len: LEN_STRING PARENTHESES_INITIATOR expr . PARENTHESES_TERMINATOR
 
     PARENTHESES_TERMINATOR  shift, and go to state 129
+    EQUAL                   shift, and go to state 72
+    NOT_EQUAL               shift, and go to state 73
+    LEQ                     shift, and go to state 74
+    GEQ                     shift, and go to state 75
+    GREATER_THAN            shift, and go to state 76
+    LESS_THAN               shift, and go to state 77
+    AND                     shift, and go to state 78
+    OR                      shift, and go to state 79
+    PLUS_OPERATOR           shift, and go to state 80
+    MINUS_OPERATOR          shift, and go to state 81
+    MULTI_OPERATOR          shift, and go to state 82
+    DIVISION_OPERATOR       shift, and go to state 83
+    MOD_OPERATOR            shift, and go to state 84
+    POWER_OPERATOR          shift, and go to state 85
+    CONCAT                  shift, and go to state 86
 
 
 State 93
@@ -2276,7 +2315,7 @@ State 128
 
 State 129
 
-   92 len: LEN_STRING PARENTHESES_INITIATOR VALUE PARENTHESES_TERMINATOR .
+   92 len: LEN_STRING PARENTHESES_INITIATOR expr PARENTHESES_TERMINATOR .
 
     $default  reduce using rule 92 (len)
 
