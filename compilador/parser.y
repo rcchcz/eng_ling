@@ -110,8 +110,10 @@ decl_elem   : ID                                                                
             | assignment                                                        {}
             ;
 
-assignment  : ID ASSIGN expr                                                    {printf("assignment id: %s \n", $1);}
-            | ID ASSIGN in                                                      {printf("assignment id: %s \n", $1);}
+assignment  : ID ASSIGN expr                                                    { char * s = cat($1, "=", $3->code, ";");
+                                                                                  $$ = createRecord(s, "");
+                                                                                  free(s); }
+            | ID ASSIGN in                                                      {}
             ;
 
 struct_decl : STRUCT ID ID                                                      {}
