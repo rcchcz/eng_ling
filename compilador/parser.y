@@ -34,7 +34,7 @@ char * cat(char *, char *, char *, char *, char *);
         CONCAT COPY_STRING
 
 %type <rec> prog stmlist stm assignment else_opt out expr val body
-%type <rec> idlist decl_elem
+%type <rec> idlist decl decl_elem 
 
 %start prog
 
@@ -53,9 +53,12 @@ prog        : stmlist                                                           
 
 stmlist     : stm SEMICOLON                                                     {char * s = cat($1->code, ";\n", "", "", "");
                                                                                   $$ = createRecord(s, "");
+                                                                                  free($1);
                                                                                   free(s);}
             | stm SEMICOLON stmlist				                                      {char * s = cat($1->code, ";\n", $3->code, "", "");
                                                                                   $$ = createRecord(s, "");
+                                                                                  free($1);
+                                                                                  free($3);
                                                                                   free(s);}
             ;
 
@@ -103,7 +106,10 @@ field       : TYPE ID                                                           
             | ID ID                                                             {printf("struct (possibility of struct, does compiler know this id?): \n\t type: %s \n\t id: %s \n", $1, $2);}
             ;
 
-decl        : TYPE idlist                                                       {printf("decl type: %s \n", $1);}
+decl        : TYPE idlist                                                       {char * s = cat($1, $2->code, "", "", "");
+                                                                                  $$ = createRecord(s, "");
+                                                                                  free($2);
+                                                                                  free(s);}
             | struct_decl                                                       {}
             | tuple_decl                                                        {}
             | array_decl                                                        {}
@@ -113,6 +119,8 @@ idlist      : decl_elem                                                         
                                                                                   free($1);}
             | decl_elem COMMA idlist                                            {char * s = cat($1->code, ", ", $3->code, "", "");
                                                                                   $$ = createRecord(s, "");
+                                                                                  free($1);
+                                                                                  free($3);
                                                                                   free(s);}
             ;
 
@@ -124,6 +132,7 @@ decl_elem   : ID                                                                
 
 assignment  : ID ASSIGN expr                                                    { char * s = cat($1, "=", $3->code, "", "");
                                                                                   $$ = createRecord(s, "");
+                                                                                  free($3);
                                                                                   free(s); }
             ;
 
@@ -155,52 +164,82 @@ expr        : val
             | len                                                               {}
             | expr PLUS_OPERATOR expr                                           { char * s = cat($1->code, "+" , $3->code, "", "");
                                                                                   $$ = createRecord(s, "");
+                                                                                  free($1);
+                                                                                  free($3);
                                                                                   free(s); }
             | expr MINUS_OPERATOR expr                                          { char * s = cat($1->code, "-" , $3->code, "", "");
                                                                                   $$ = createRecord(s, "");
+                                                                                  free($1);
+                                                                                  free($3);
                                                                                   free(s); }
             | expr MULTI_OPERATOR expr                                          { char * s = cat($1->code, "*" , $3->code, "", "");
                                                                                   $$ = createRecord(s, "");
+                                                                                  free($1);
+                                                                                  free($3);
                                                                                   free(s); }
             | expr DIVISION_OPERATOR expr                                       { char * s = cat($1->code, "/" , $3->code, "", "");
                                                                                   $$ = createRecord(s, "");
+                                                                                  free($1);
+                                                                                  free($3);
                                                                                   free(s); }
             | expr MOD_OPERATOR expr                                            { char * s = cat($1->code, "%" , $3->code, "", "");
                                                                                   $$ = createRecord(s, "");
+                                                                                  free($1);
+                                                                                  free($3);
                                                                                   free(s); }
             | expr POWER_OPERATOR expr                                          { char * s = cat("pow(", $1->code, ",", $3->code, ")");
                                                                                   $$ = createRecord(s, "");
+                                                                                  free($1);
+                                                                                  free($3);
                                                                                   free(s); }
             | expr CONCAT expr                                                  {}
             | expr EQUAL expr                                                   { char * s = cat($1->code, "==", $3->code, "", "");
                                                                                   $$ = createRecord(s, "");
+                                                                                  free($1);
+                                                                                  free($3);
                                                                                   free(s); }
             | expr NOT_EQUAL expr                                               { char * s = cat($1->code, "!=", $3->code, "", "");
                                                                                   $$ = createRecord(s, "");
+                                                                                  free($1);
+                                                                                  free($3);
                                                                                   free(s); }
             | expr LEQ expr                                                     { char * s = cat($1->code, "<=", $3->code, "", "");
                                                                                   $$ = createRecord(s, "");
+                                                                                  free($1);
+                                                                                  free($3);
                                                                                   free(s); }
             | expr GEQ expr                                                     { char * s = cat($1->code, ">=", $3->code, "", "");
                                                                                   $$ = createRecord(s, "");
+                                                                                  free($1);
+                                                                                  free($3);
                                                                                   free(s); }
             | expr LESS_THAN expr                                               { char * s = cat($1->code, "<", $3->code, "", "");
                                                                                   $$ = createRecord(s, "");
+                                                                                  free($1);
+                                                                                  free($3);
                                                                                   free(s); }
             | expr GREATER_THAN expr                                            { char * s = cat($1->code, ">", $3->code, "", "");
                                                                                   $$ = createRecord(s, "");
+                                                                                  free($1);
+                                                                                  free($3);
                                                                                   free(s); }
             | NOT expr                                                          { char * s = cat("!", $2->code, "", "", "");
                                                                                   $$ = createRecord(s, "");
+                                                                                  free($2);
                                                                                   free(s); }
             | expr AND expr                                                     { char * s = cat($1->code, "&&", $3->code, "", "");
                                                                                   $$ = createRecord(s, "");
+                                                                                  free($1);
+                                                                                  free($3);
                                                                                   free(s); }
             | expr OR expr                                                      { char * s = cat($1->code, "||", $3->code, "", "");
                                                                                   $$ = createRecord(s, "");
+                                                                                  free($1);
+                                                                                  free($3);
                                                                                   free(s); }
             | PARENTHESES_INITIATOR expr PARENTHESES_TERMINATOR                 { char * s = cat("(", $2->code, ")", "", "");
                                                                                   $$ = createRecord(s, "");
+                                                                                  free($2);
                                                                                   free(s); }
             | attrlist                                                          {}
             ;
@@ -228,6 +267,7 @@ elif_opt    :                                                                   
 else_opt    :                                                                   {}
             | ELSE body                                                         { char * s = cat("else", $2->code, "", "", "");
                                                                                   $$ = createRecord(s, "");
+                                                                                  free($2);
                                                                                   free(s); }
 
 while       : WHILE expr body                                                   {printf("while \n");}
@@ -257,6 +297,7 @@ in          : IN PARENTHESES_INITIATOR ID PARENTHESES_TERMINATOR                
 
 out         : OUT expr                                                          { char * s = cat("printf", "(", $2->code, ")", ";");
                                                                                   $$ = createRecord(s, "");
+                                                                                  free($2);
                                                                                   free(s); }
             ;
 
