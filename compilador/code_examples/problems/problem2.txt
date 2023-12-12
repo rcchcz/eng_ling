@@ -19,7 +19,7 @@ while (true) {
         thirdInterval = thirdInterval + 1;
     } else {
         fourthInterval = fourthInterval + 1;
-    }
+    };
 };
 
 out("Numbers in the interval [0, 25]: " ++ firstInterval);
