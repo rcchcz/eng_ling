@@ -1,0 +1,8 @@
+
+float x = 25.5;
+float y = 2.3;
+int c = 31;
+
+int result = x ** 2 - y + c;
+
+out("Result of the expression: " ++ result);
