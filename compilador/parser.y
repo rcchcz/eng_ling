@@ -11,6 +11,9 @@ extern char * yytext;
 
 %union {
     char * sValue;  /* string value */
+    int    iValue; 	/* integer value */
+    double dValue;  /* double value */
+    struct record * rec;
 };
 
 %token  <sValue> ID TYPE VALUE LEN_STRING
@@ -24,6 +27,8 @@ extern char * yytext;
         NOT AND OR
         PLUS_OPERATOR MINUS_OPERATOR MULTI_OPERATOR DIVISION_OPERATOR MOD_OPERATOR POWER_OPERATOR
         CONCAT COPY_STRING
+
+%type <rec> out expr val  
 
 %start prog
 
@@ -133,11 +138,21 @@ array_decl  : ARRAY LESS_THAN TYPE GREATER_THAN ID
 
 expr        : val    
             | len                                                               {}
-            | expr PLUS_OPERATOR expr                                           {}
-            | expr MINUS_OPERATOR expr                                          {}
-            | expr MULTI_OPERATOR expr                                          {}
-            | expr DIVISION_OPERATOR expr                                       {}
-            | expr MOD_OPERATOR expr                                            {}
+            | expr PLUS_OPERATOR expr                                           { char * s = cat($1->code, "+" , $3->code, ";");
+                                                                                  $$ = createRecord(s, "");
+                                                                                  free(s); }
+            | expr MINUS_OPERATOR expr                                          { char * s = cat($1->code, "-" , $3->code, ";");
+                                                                                  $$ = createRecord(s, "");
+                                                                                  free(s); }
+            | expr MULTI_OPERATOR expr                                          { char * s = cat($1->code, "*" , $3->code, ";");
+                                                                                  $$ = createRecord(s, "");
+                                                                                  free(s); }
+            | expr DIVISION_OPERATOR expr                                       { char * s = cat($1->code, "/" , $3->code, ";");
+                                                                                  $$ = createRecord(s, "");
+                                                                                  free(s); }
+            | expr MOD_OPERATOR expr                                            { char * s = cat($1->code, "%" , $3->code, ";");
+                                                                                  $$ = createRecord(s, "");
+                                                                                  free(s); }
             | expr POWER_OPERATOR expr                                          {}
             | expr CONCAT expr                                                  {}
             | expr EQUAL expr                                                   {printf("equal expr \n");}
@@ -200,7 +215,9 @@ str_copy    : ID COPY_STRING expr                                               
 in          : IN PARENTHESES_INITIATOR ID PARENTHESES_TERMINATOR                {}
             ;
 
-out         : OUT expr                                                          {}
+out         : OUT expr                                                          { char * s = cat("printf", "(", $2->code, ")", ";");
+                                                                                  $$ = createRecord(s, "");
+                                                                                  free(s); }
             ;
 
 open        : OPEN PARENTHESES_INITIATOR val PARENTHESES_TERMINATOR             {}
@@ -209,7 +226,7 @@ open        : OPEN PARENTHESES_INITIATOR val PARENTHESES_TERMINATOR             
 close       : CLOSE PARENTHESES_INITIATOR val PARENTHESES_TERMINATOR            {}
             ;
 
-len         : LEN_STRING PARENTHESES_INITIATOR VALUE PARENTHESES_TERMINATOR    {printf("len(%s) -> %zu \n", $3,  strlen($3)-2);}
+len         : LEN_STRING PARENTHESES_INITIATOR VALUE PARENTHESES_TERMINATOR    { }
             ;           
 
 %%
